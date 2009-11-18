@@ -1,5 +1,5 @@
 # The name of our project is "VSM". CMakeLists files in this project can
-# refer to the root source directory of the project as ${VSM_SOURCE_DIR} and
+# refer to the root source directory of the project as ${KOSIM_SOURCE_DIR} and
 # to the root binary directory of the project as ${VSM_BINARY_DIR}.
 cmake_minimum_required (VERSION 2.6)
 project (KOSIM)
@@ -18,11 +18,10 @@ SET(CMAKE_BUILD_TYPE Debug)
 # search for Boost version 1.37
 find_package( Boost 1.37 COMPONENTS program_options)
 
-link_directories ( ${Boost_LIBRARY_DIRS} )
+link_directories    ( ${Boost_LIBRARY_DIRS} )
 include_directories ( ${Boost_INCLUDE_DIRS} )
 
 target_link_libraries ( ${Boost_LIBRARIES})
-
 
 # Recurse into the subdirectories. This does not actually
 # cause another cmake executable to run. The same process will walk through
