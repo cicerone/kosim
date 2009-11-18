@@ -1,0 +1,34 @@
+# The name of our project is "VSM". CMakeLists files in this project can
+# refer to the root source directory of the project as ${VSM_SOURCE_DIR} and
+# to the root binary directory of the project as ${VSM_BINARY_DIR}.
+cmake_minimum_required (VERSION 2.6)
+project (KOSIM)
+
+#SET(CMAKE_BUILD_TYPE RelWithDebInfo)
+#SET(CMAKE_BUILD_TYPE Release)
+SET(CMAKE_BUILD_TYPE Debug)
+
+
+#SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-ansi -pedantic -Wall -W -Wconversion -Wshadow -Wcast-qual -Wwrite-strings -Wpadded")
+#SET(CMAKE_CXX_FLAGS_RELEASE        "-ansi -pedantic -Wall -W -Wconversion -Wshadow -Wcast-qual -Wwrite-strings -Wpadded")
+#SET(CMAKE_CXX_FLAGS_DEBUG          "-ansi -pedantic -Wall -W -Wconversion -Wshadow -Wcast-qual -Wwrite-strings -Wpadded")
+#SET(CMAKE_CXX_FLAGS_DEBUG          "-pedantic -Wall -W -Wconversion -Wshadow -Wcast-qual -Wwrite-strings -Wpadded")
+#SET(CMAKE_CXX_FLAGS_DEBUG          "-Wall -W -Wconversion -Wshadow -Wcast-qual -Wwrite-strings -Wpadded")
+
+# search for Boost version 1.37
+find_package( Boost 1.37 COMPONENTS program_options)
+
+link_directories ( ${Boost_LIBRARY_DIRS} )
+include_directories ( ${Boost_INCLUDE_DIRS} )
+
+target_link_libraries ( ${Boost_LIBRARIES})
+
+
+# Recurse into the subdirectories. This does not actually
+# cause another cmake executable to run. The same process will walk through
+# the project's entire directory structure.
+
+add_subdirectory (main)
+add_subdirectory (first_class)
+
+
