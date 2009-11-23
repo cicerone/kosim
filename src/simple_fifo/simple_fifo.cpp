@@ -144,8 +144,13 @@ int sc_main (int argc , char *argv[]) {
    return 0;
 }
 
-void run_sim()
+void init_sim()
 {
-   top top1("Top1");
-   sc_start();
+   top* p_top = new  top("Top1");
 }
+
+void start_sim()
+{
+    sc_start();
+}
+

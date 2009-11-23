@@ -13,6 +13,7 @@
 #include "hello.h"
 #include "first_class.h"
 #include "simple_fifo.h"
+#include "hierarchy_scanner.h"
 
 
 using namespace boost::python;
@@ -32,7 +33,9 @@ BOOST_PYTHON_MODULE(kosim)
 
     def("sc_main", sc_main); // entru point in SystemC program                           
 
-    def("run_sim", run_sim); //
+    def("init_sim", init_sim); //
+    def("scan_hierarchy_name", ko_sc::scan_hierarchy_name);
+    def("start_sim", start_sim);
 
 }
 

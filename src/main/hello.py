@@ -9,6 +9,8 @@ hi = kosim.hello('California')
 print hi.greet()
 print kosim.invite(hi)
 print hi.invite()
-kosim.run_sim()
+kosim.init_sim()
+kosim.scan_hierarchy_name("Top1")
+kosim.start_sim()
 
 

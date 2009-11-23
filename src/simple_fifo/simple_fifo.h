@@ -106,4 +106,6 @@ class top : public sc_module
      top(sc_module_name name);
 };
 
-void run_sim();
+void init_sim();
+void start_sim();
+
