@@ -8,9 +8,11 @@
 #include <boost/python/def.hpp>
 #include <boost/python/class.hpp> 
 
-  
+#include "systemc.h"
+ 
 #include "hello.h"
 #include "first_class.h"
+#include "simple_fifo.h"
 
 
 using namespace boost::python;
@@ -27,7 +29,11 @@ BOOST_PYTHON_MODULE(kosim)
     ;
     
     def("invite", invite); // Even better, invite() can also be made a member of module!!!
-                           
+
+    def("sc_main", sc_main); // entru point in SystemC program                           
+
+    def("run_sim", run_sim); //
+
 }
 
 

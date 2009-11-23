@@ -9,5 +9,6 @@ hi = kosim.hello('California')
 print hi.greet()
 print kosim.invite(hi)
 print hi.invite()
+kosim.run_sim()
 
 

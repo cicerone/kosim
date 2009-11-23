@@ -18,10 +18,16 @@ SET(CMAKE_BUILD_TYPE Debug)
 # search for Boost version 1.37
 find_package( Boost 1.37 COMPONENTS program_options)
 
-link_directories    ( ${Boost_LIBRARY_DIRS} )
-include_directories ( ${Boost_INCLUDE_DIRS} )
-
+link_directories      ( ${Boost_LIBRARY_DIRS} )
+include_directories   ( ${Boost_INCLUDE_DIRS} )
 target_link_libraries ( ${Boost_LIBRARIES})
+
+
+#SystemC libs
+link_directories    (/usr/local/systemc-2.2.0/lib-linux)
+link_directories    (/usr/local/scv-1.0p2-sysc2.2/lib-linux)
+include_directories (/usr/local/systemc-2.2.0/include)
+include_directories (/usr/local/scv-1.0p2-sysc2.2/include)
 
 # Recurse into the subdirectories. This does not actually
 # cause another cmake executable to run. The same process will walk through
@@ -29,5 +35,6 @@ target_link_libraries ( ${Boost_LIBRARIES})
 
 add_subdirectory (main)
 add_subdirectory (first_class)
+add_subdirectory (simple_fifo)
 
 
