@@ -3,6 +3,7 @@ include_directories ($ENV{BOOST_ROOT}/boost/thread)
 include_directories (${KOSIM_SOURCE_DIR}/first_class)
 include_directories (${KOSIM_SOURCE_DIR}/simple_fifo)
 include_directories (${KOSIM_SOURCE_DIR}/hierarchy_scanner)
+include_directories (${KOSIM_SOURCE_DIR}/program_options)
 include_directories (/usr/include/python2.5)
 
 
@@ -26,5 +27,5 @@ link_directories (/usr/lib/)
 add_library (kosim SHARED hello.cpp wrap_hello.cpp)
 
 # Link the executable to the used libraries.
-target_link_libraries (kosim first_class simple_fifo hierarchy_scanner libboost_python-gcc43-mt-1_37.so libscv.so libsystemc.a)
+target_link_libraries (kosim first_class simple_fifo hierarchy_scanner program_options libboost_python-gcc43-mt-1_37.so libscv.so libsystemc.a)
 

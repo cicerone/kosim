@@ -3,7 +3,9 @@
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
 #  Hello World Example from the tutorial
 
+import sys
 import kosim 
+
 print kosim.greet()
 hi = kosim.hello('California')
 print hi.greet()
@@ -19,5 +21,18 @@ kosim.print_modules("Top1")
 print "Some threads"
 kosim.print_threads("Top1.Producer1")
 kosim.start_sim()
+print "=================="
+print len(sys.argv)
+for arg in sys.argv:
+    print "arg(%s)\n" % (arg)
+
+opt_builder = kosim.OptionsBuilder()
+
+print "------------------"
+for arg in sys.argv:
+    opt_builder.SetArgument(arg)
+ 
+opt_builder.BuildArgv()
+
 
 

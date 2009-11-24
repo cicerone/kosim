@@ -14,6 +14,7 @@
 #include "first_class.h"
 #include "simple_fifo.h"
 #include "hierarchy_scanner.h"
+#include "options_builder.h"
 
 
 using namespace boost::python;
@@ -38,8 +39,13 @@ BOOST_PYTHON_MODULE(kosim)
     def("print_ports", ko_sc::print_ports);
     def("print_modules", ko_sc::print_modules);
     def("print_threads", ko_sc::print_threads);
+    def("parse_args", ko_sc::parse_args);
     def("start_sim", start_sim);
 
+    class_<OptionsBuilder>("OptionsBuilder", init<>())
+         .def("SetArgument", &OptionsBuilder::SetArgument) 
+         .def("BuildArgv", &OptionsBuilder::BuildArgv) 
+    ;
 }
 
 

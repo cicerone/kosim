@@ -37,5 +37,6 @@ add_subdirectory (main)
 add_subdirectory (first_class)
 add_subdirectory (simple_fifo)
 add_subdirectory (hierarchy_scanner)
+add_subdirectory (program_options)
 
 

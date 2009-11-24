@@ -24,6 +24,7 @@ void print_ports    (const char* p_full_name_);
 void print_modules  (const char* p_full_name_);
 void print_threads  (const char* p_full_name_);
 
+int parse_args(int argc , char *argv[]);      
 
 } // namespace
 
