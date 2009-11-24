@@ -10,7 +10,14 @@ print hi.greet()
 print kosim.invite(hi)
 print hi.invite()
 kosim.init_sim()
-kosim.scan_hierarchy_name("Top1")
+print "And now print_hierarchy()"
+kosim.print_hierarchy()
+print "Some ports"
+kosim.print_ports("Top1.Consumer1")
+print "Some modules"
+kosim.print_modules("Top1")
+print "Some threads"
+kosim.print_threads("Top1.Producer1")
 kosim.start_sim()
 
 

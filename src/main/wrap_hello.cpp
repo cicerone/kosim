@@ -34,7 +34,10 @@ BOOST_PYTHON_MODULE(kosim)
     def("sc_main", sc_main); // entru point in SystemC program                           
 
     def("init_sim", init_sim); //
-    def("scan_hierarchy_name", ko_sc::scan_hierarchy_name);
+    def("print_hierarchy", ko_sc::print_hierarchy);
+    def("print_ports", ko_sc::print_ports);
+    def("print_modules", ko_sc::print_modules);
+    def("print_threads", ko_sc::print_threads);
     def("start_sim", start_sim);
 
 }
