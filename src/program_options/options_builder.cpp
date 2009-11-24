@@ -1,0 +1,31 @@
+#include <stdlib.h>
+#include "options_builder.h"
+
+
+OptionsBuilder::OptionsBuilder()
+{
+}
+
+OptionsBuilder::~OptionsBuilder()
+{
+}
+
+void OptionsBuilder::SetArgument(const char* p_arg_)
+{
+    string arg(p_arg_);
+    m_argv.push_back(arg);
+}
+
+void OptionsBuilder::BuildArgv()
+{
+    printf("size is (%d)\n", m_argv.size());
+
+    mp_argv = (char**)calloc(m_argv.size(), sizeof(char*));
+    for (uint32_t i = 0; i < m_argv.size(); i++)
+    {
+        mp_argv[i] = const_cast<char *>(m_argv[i].c_str());
+        printf("argument(%d) is (%s)\n", i, mp_argv[i]);
+    }
+}
+
+
