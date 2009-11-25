@@ -45,6 +45,7 @@ BOOST_PYTHON_MODULE(kosim)
     class_<OptionsBuilder>("OptionsBuilder", init<>())
          .def("SetArgument", &OptionsBuilder::SetArgument) 
          .def("BuildArgv", &OptionsBuilder::BuildArgv) 
+         .def("InitProgramOptions", &OptionsBuilder::InitProgramOptions) 
     ;
 }
 

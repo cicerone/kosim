@@ -3,5 +3,6 @@
 include_directories ($KOSIM_SOURCE_DIR}/program_options)
 
 # The extension is already found. Any number of sources could be listed here.
-add_library (program_options SHARED options_builder.cpp)
+add_library (program_options SHARED options_builder.cpp program_options.cpp)
+
 

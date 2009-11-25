@@ -13,8 +13,9 @@ class OptionsBuilder
   public:
       OptionsBuilder();
      ~OptionsBuilder();
-     void SetArgument(const char* p_arg_);
-     void BuildArgv();
+     void   SetArgument(const char* p_arg_);
+     void   BuildArgv();
+     void   InitProgramOptions();
   private:
       vector<string> m_argv; // container of the arguments   
       char** mp_argv;

@@ -33,6 +33,7 @@ for arg in sys.argv:
     opt_builder.SetArgument(arg)
  
 opt_builder.BuildArgv()
+opt_builder.InitProgramOptions()
 
 
 

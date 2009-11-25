@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "options_builder.h"
+#include "program_options.h"
 
 
 OptionsBuilder::OptionsBuilder()
@@ -28,4 +29,9 @@ void OptionsBuilder::BuildArgv()
     }
 }
 
+void  OptionsBuilder::InitProgramOptions()
+{
+    ProgramOptions* p_program_options = ProgramOptions::GetInstance(m_argv.size(), mp_argv);
+    p_program_options->Help();
+}
 
