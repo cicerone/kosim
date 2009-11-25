@@ -9,16 +9,10 @@ using namespace std;
 ////////////////////////////////////////////////////////////////////////////////////
 
 
-#define SLEEP_TIME_PER_FRAME                       1    //ms
-#define SLOTMACHINE_HIGH_SPEED_LOW                 1.0f      //pixels per ms
-#define SLOTMACHINE_HIGH_SPEED_HIGH                1.2f      //pixels per ms
+#define SLEEP_TIME_PER_FRAME                       1    // ms
+#define SLOTMACHINE_HS_TIME_LOW                 1000    // ms
+#define SLOTMACHINE_HS_TIME_HIGH                1000    // ms
 
-#define SLOTMACHINE_HS_TIME_LOW                    1500      //ms
-#define SLOTMACHINE_HS_TIME_HIGH                   2000      //ms
-
-#define SLOTMACHINE_SNAP_TIME                      400       //ms
-#define SLOTMACHINE_SHOW_LINE_TIME                 1000      //ms
-#define SLOTMACHINE_SHOW_ALL_LINES_TIME            1500      //ms
 /////////////////////////////////////////////////////////////////////////////////////
 //
 ////////////////////////////////////////////////////////////////////////////////////
@@ -31,21 +25,13 @@ char**          ProgramOptions::mp_argv     = 0;
 //
 ////////////////////////////////////////////////////////////////////////////////////
 ProgramOptions::ProgramOptions(int ac_, char* p_av_[]) : 
-    m_dbg_level                           (0),
+    m_dbg_level                       (0                              ),
 // options from configuration file
-    m_driver_type                        ("NOT_INITIALIZED!"          ),
-    m_game_state                         ("NOT_INITIALIZED!"          ),
+    m_driver_type                     ("NOT_INITIALIZED!"             ),
     m_sleep_time_per_frame            (SLEEP_TIME_PER_FRAME           ),
-    m_sm_high_speed_lowest_value      (SLOTMACHINE_HIGH_SPEED_LOW     ),
-    m_sm_high_speed_highest_value     (SLOTMACHINE_HIGH_SPEED_HIGH    ),    
     m_sm_high_speed_time_lowest_value (SLOTMACHINE_HS_TIME_LOW        ),
     m_sm_high_speed_time_highest_value(SLOTMACHINE_HS_TIME_HIGH       ),
-    m_sm_snap_time                    (SLOTMACHINE_SNAP_TIME          ), 
-    m_sm_show_line_time               (SLOTMACHINE_SHOW_LINE_TIME     ),
-    m_sm_show_all_lines_time          (SLOTMACHINE_SHOW_ALL_LINES_TIME),
-    m_game_sound                      ("NOT_INITIALIZED!"             ),
-    m_game_full_screen                ("NOT_INITIALIZED!"             ),
-
+    m_cmd_line_arg1                   (77                             ),
 // END options from configuration file
    m_config_file         ("NOT_INITIALIZED!"),
 
@@ -93,34 +79,31 @@ ProgramOptions::~ProgramOptions()
 void ProgramOptions::InitConfiguration(int ac_, char* p_av_[])
 {
     mp_generic_options->add_options()
-        ("version,v", "print version string")
-        ("help", "produce help message")    
-        ("cfg", po::value<std::string>(&m_config_file)->default_value("vsm.cfg"), "config file") 
+        ("version, v", "print version string")
+        ("help, h", "produce help message")    
+        ("cfg", po::value<std::string>(&m_config_file)->default_value("kosim.cfg"), "config file") 
         ;
 
     mp_config_options->add_options()
 ///////////  OPTIONS from configuraton file  ////////////////////////////////////
-        ("DriverType"        , po::value<std::string>(&m_driver_type)->default_value("SOFTWARE"), "Irrlicht driver type")
-        ("GameState"         , po::value<std::string>(&m_game_state)->default_value("SLOT_MACHINE"), "Game possible menus/states")
+        ("DriverType"        , po::value<std::string>(&m_driver_type)->default_value("SOFTWARE"), "driver type")
         ("SleepTimePerFrame" , po::value<int32_t>(&m_sleep_time_per_frame)->default_value(SLEEP_TIME_PER_FRAME), "Sleep time for each frame [ms]")
-        ("SpinHighSpeed.HighestValue", po::value<float>(&m_sm_high_speed_highest_value)->default_value(SLOTMACHINE_HIGH_SPEED_HIGH), "Highest value of the high speed")
-        ("SpinHighSpeed.LowestValue", po::value<float>(&m_sm_high_speed_lowest_value)->default_value(SLOTMACHINE_HIGH_SPEED_LOW ), "Lowest value of the high speed")
         ("SpinHighSpeedTime.LowestValue", po::value<int32_t>(&m_sm_high_speed_time_lowest_value)->default_value(SLOTMACHINE_HS_TIME_LOW ), "Lowest value of the duration of high speed spin")
         ("SpinHighSpeedTime.HighestValue", po::value<int32_t>(&m_sm_high_speed_time_highest_value)->default_value(SLOTMACHINE_HS_TIME_HIGH ), "Highest value of the duration of high speed spin")
-        ("SnapTime", po::value<int32_t>(&m_sm_snap_time)->default_value(SLOTMACHINE_SNAP_TIME), "Duration of the snap")
-        ("ShowLineTime", po::value<int32_t>(&m_sm_show_line_time)->default_value(SLOTMACHINE_SHOW_LINE_TIME), "Duration of one line (winning line)")
-        ("ShowAllLinesTime", po::value<int32_t>(&m_sm_show_all_lines_time)->default_value(SLOTMACHINE_SHOW_ALL_LINES_TIME), "Duration of the active lines")
-        ("GameSound"       , po::value<std::string>(&m_game_sound)->default_value("OFF"), "Sound of the game : ON/OFF")
-        ("FullScreen"      , po::value<std::string>(&m_game_full_screen)->default_value("OFF"), "Game is on full screen : ON/OFF")
+        ;
+
+    mp_cmdline_options->add_options()
+///////////  OPTIONS from command line   ////////////////////////////////////
+        ("cmd_line_arg1"        , po::value<int32_t>(&m_cmd_line_arg1)->default_value(77), "first command line argument")
         ;
 
     mp_hidden_options->add_options()
         ("debug_level", po::value<int>(&m_dbg_level)->default_value(0), "debugging level")
         ;
 
-    (*mp_cmdline_options).add(*mp_generic_options).add(*mp_hidden_options);
+    (*mp_cmdline_options).add(*mp_generic_options);
     (*mp_config_file_options).add(*mp_config_options);
-    (*mp_visible_options).add(*mp_generic_options).add(*mp_config_options);
+    (*mp_visible_options).add(*mp_cmdline_options).add(*mp_config_options);
 
 //     mp_positional_options->add("cfg"   , 1);
 

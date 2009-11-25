@@ -33,5 +33,6 @@ void  OptionsBuilder::InitProgramOptions()
 {
     ProgramOptions* p_program_options = ProgramOptions::GetInstance(m_argv.size(), mp_argv);
     p_program_options->Help();
+    printf("SLEEP TIME PER FRAME (%d)\n", p_program_options->get_sleep_time_per_frame());
 }
 
