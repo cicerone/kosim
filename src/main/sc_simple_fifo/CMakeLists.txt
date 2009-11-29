@@ -24,7 +24,7 @@ link_directories (/usr/lib/)
 #MESSAGE( "Your program_options lib is in: $ENV{BOOST_ROOT}/bin.v2/libs/program_options/build/gcc-4.1.2/release/link-static/threading-multi.")
 
 # Add shared library called "kosim" that is built from the source files
-add_library (kosim SHARED hello.cpp wrap_hello.cpp)
+add_library (kosim SHARED hello.cpp wrap_simple_fifo.cpp)
 
 # Link the executable to the used libraries.
 target_link_libraries (kosim first_class simple_fifo hierarchy_scanner program_options libboost_program_options-gcc43-mt-1_37.so libboost_python-gcc43-mt-1_37.so libscv.so libsystemc.a)
