@@ -44,3 +44,12 @@ int sc_main(int, char **)
 
   return 0;
 }
+
+void run_sim()
+{
+  simple_bus_test top("top");
+
+  sc_start(10000, SC_NS);
+
+}
+

@@ -34,6 +34,7 @@ include_directories (/usr/local/scv-1.0p2-sysc2.2/include)
 # the project's entire directory structure.
 
 add_subdirectory (main/sc_simple_fifo)
+add_subdirectory (main/sc_simple_bus)
 add_subdirectory (first_class)
 add_subdirectory (examples/sc/simple_fifo)
 add_subdirectory (examples/sc/simple_bus)

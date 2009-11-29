@@ -104,4 +104,7 @@ SC_MODULE(simple_bus_test)
 
 }; // end class simple_bus_test
 
+void run_sim();
+
+
 #endif
