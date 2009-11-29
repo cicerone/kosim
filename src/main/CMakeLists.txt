@@ -1,7 +1,7 @@
 include_directories ($ENV{BOOST_ROOT}/include)
 include_directories ($ENV{BOOST_ROOT}/boost/thread)
 include_directories (${KOSIM_SOURCE_DIR}/first_class)
-include_directories (${KOSIM_SOURCE_DIR}/simple_fifo)
+include_directories (${KOSIM_SOURCE_DIR}/examples/sc/simple_fifo)
 include_directories (${KOSIM_SOURCE_DIR}/hierarchy_scanner)
 include_directories (${KOSIM_SOURCE_DIR}/program_options)
 include_directories (/usr/include/python2.5)

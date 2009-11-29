@@ -35,7 +35,7 @@ include_directories (/usr/local/scv-1.0p2-sysc2.2/include)
 
 add_subdirectory (main)
 add_subdirectory (first_class)
-add_subdirectory (simple_fifo)
+add_subdirectory (examples/sc/simple_fifo)
 add_subdirectory (hierarchy_scanner)
 add_subdirectory (program_options)
 
