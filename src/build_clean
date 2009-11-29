@@ -3,5 +3,5 @@ make clean
 cmake clean .
 cmake .
 make
-cp ./main/libkosim.so ./main/kosim.so
+cp ./main/sc_simple_fifo/libkosim.so ./main/sc_simple_fifo/kosim.so
 
