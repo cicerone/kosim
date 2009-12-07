@@ -7,4 +7,4 @@ cp ./main/sc_simple_fifo/libkosim.so ./main/sc_simple_fifo/kosim.so
 cp ./main/sc_simple_bus/libkosim_simple_bus.so ./main/sc_simple_bus/kosim_simple_bus.so
 cp ./main/scv_pythagoras/libkosim_pythagoras.so ./main/scv_pythagoras/kosim_pythagoras.so
 cp ./main/tlm_doulos_tutorial1/libkosim_doulos_tutorial1.so ./main/tlm_doulos_tutorial1/kosim_doulos_tutorial1.so
-cp ./main/tlm_doulos_tutorial2/libkosim_doulos_tutorial2.so ./main/tlm_doulos_tutorial1/kosim_doulos_tutorial2.so
+cp ./main/tlm_doulos_tutorial2/libkosim_doulos_tutorial2.so ./main/tlm_doulos_tutorial2/kosim_doulos_tutorial2.so
