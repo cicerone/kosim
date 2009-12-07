@@ -6,5 +6,5 @@ make
 cp ./main/sc_simple_fifo/libkosim.so ./main/sc_simple_fifo/kosim.so
 cp ./main/sc_simple_bus/libkosim_simple_bus.so ./main/sc_simple_bus/kosim_simple_bus.so
 cp ./main/scv_pythagoras/libkosim_pythagoras.so ./main/scv_pythagoras/kosim_pythagoras.so
-cp ./main/tlm_blocking_transport/libkosim_blocking_transport.so ./main/tlm_blocking_transport/kosim_blocking_transport.so
+cp ./main/tlm_doulos_tutorial1/libkosim_doulos_tutorial.so ./main/tlm_doulos_tutorial1/kosim_doulos_tutorial.so
 cp ./main/tlm_tlm2_getting_started_2/libkosim_tlm2_getting_started_2.so ./main/tlm_tlm2_getting_started_2/kosim_tlm2_getting_started_2.so

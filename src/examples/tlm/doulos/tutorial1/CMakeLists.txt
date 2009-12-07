@@ -3,7 +3,7 @@
 #include_directories (${KOSIM_SOURCE_DIR}/examples/sc/simple_fifo)
 
 # The extension is already found. Any number of sources could be listed here.
-add_library (blocking_transport SHARED blocking_transport.cpp)
+add_library (doulos_tutorial1 SHARED tutorial1.cpp)
 #add_library (simple_fifo simple_fifo.cpp)
 
 

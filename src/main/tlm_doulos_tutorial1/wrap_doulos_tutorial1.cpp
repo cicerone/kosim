@@ -13,12 +13,12 @@
 #include "hierarchy_scanner.h"
 #include "options_builder.h"
 
-#include "blocking_transport.h"
+#include "tutorial1.h"
 
 
 using namespace boost::python;
 
-BOOST_PYTHON_MODULE(kosim_blocking_transport)
+BOOST_PYTHON_MODULE(kosim_doulos_tutorial1)
 {
 
     def("run_sim", run_sim); // entru point in SystemC program                           

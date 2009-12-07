@@ -4,14 +4,14 @@
 #  Hello World Example from the tutorial
 
 import sys
-import kosim_blocking_transport 
+import kosim_doulos_tutorial1 
 
 print "=================="
 print len(sys.argv)
 for arg in sys.argv:
     print "arg(%s)\n" % (arg)
 
-opt_builder = kosim_blocking_transport.OptionsBuilder()
+opt_builder = kosim_doulos_tutorial1.OptionsBuilder()
 
 print "------------------"
 for arg in sys.argv:
@@ -19,7 +19,7 @@ for arg in sys.argv:
  
 opt_builder.BuildArgv()
 opt_builder.InitProgramOptions()
-kosim_blocking_transport.run_sim()
+kosim_doulos_tutorial1.run_sim()
 print "DONE"
 
 
