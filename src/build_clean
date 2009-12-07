@@ -5,4 +5,6 @@ cmake .
 make
 cp ./main/sc_simple_fifo/libkosim.so ./main/sc_simple_fifo/kosim.so
 cp ./main/sc_simple_bus/libkosim_simple_bus.so ./main/sc_simple_bus/kosim_simple_bus.so
+cp ./main/scv_pythagoras/libkosim_pythagoras.so ./main/scv_pythagoras/kosim_pythagoras.so
+cp ./main/tlm_blocking_transport/libkosim_blocking_transport.so ./main/tlm_blocking_transport/kosim_blocking_transport.so
 

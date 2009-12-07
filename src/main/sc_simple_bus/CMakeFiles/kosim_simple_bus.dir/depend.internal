@@ -857,6 +857,20 @@ main/sc_simple_bus/CMakeFiles/kosim_simple_bus.dir/wrap_simple_bus.cpp.o
  /usr/local/systemc-2.2.0/include/sysc/utils/sc_vector.h
  /usr/local/systemc-2.2.0/include/systemc
  /usr/local/systemc-2.2.0/include/systemc.h
- first_class/first_class.h
+ examples/sc/simple_bus/simple_bus.h
+ examples/sc/simple_bus/simple_bus_arbiter.h
+ examples/sc/simple_bus/simple_bus_arbiter_if.h
+ examples/sc/simple_bus/simple_bus_blocking_if.h
+ examples/sc/simple_bus/simple_bus_direct_if.h
+ examples/sc/simple_bus/simple_bus_fast_mem.h
+ examples/sc/simple_bus/simple_bus_master_blocking.h
+ examples/sc/simple_bus/simple_bus_master_direct.h
+ examples/sc/simple_bus/simple_bus_master_non_blocking.h
+ examples/sc/simple_bus/simple_bus_non_blocking_if.h
+ examples/sc/simple_bus/simple_bus_request.h
+ examples/sc/simple_bus/simple_bus_slave_if.h
+ examples/sc/simple_bus/simple_bus_slow_mem.h
+ examples/sc/simple_bus/simple_bus_test.h
+ examples/sc/simple_bus/simple_bus_types.h
  hierarchy_scanner/hierarchy_scanner.h
  program_options/options_builder.h

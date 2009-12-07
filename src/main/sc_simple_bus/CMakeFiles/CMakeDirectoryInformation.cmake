@@ -13,6 +13,7 @@ SET(CMAKE_C_INCLUDE_PATH
   "/usr/local/boost_1_37_0/include/boost-1_37"
   "/usr/local/systemc-2.2.0/include"
   "/usr/local/scv-1.0p2-sysc2.2/include"
+  "/usr/local/TLM-2009-07-15/include/tlm"
   "/usr/local/boost_1_37_0/include"
   "/usr/local/boost_1_37_0/boost/thread"
   "first_class"

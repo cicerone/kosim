@@ -856,7 +856,21 @@ main/sc_simple_bus/CMakeFiles/kosim_simple_bus.dir/wrap_simple_bus.cpp.o: /usr/l
 main/sc_simple_bus/CMakeFiles/kosim_simple_bus.dir/wrap_simple_bus.cpp.o: /usr/local/systemc-2.2.0/include/sysc/utils/sc_vector.h
 main/sc_simple_bus/CMakeFiles/kosim_simple_bus.dir/wrap_simple_bus.cpp.o: /usr/local/systemc-2.2.0/include/systemc
 main/sc_simple_bus/CMakeFiles/kosim_simple_bus.dir/wrap_simple_bus.cpp.o: /usr/local/systemc-2.2.0/include/systemc.h
-main/sc_simple_bus/CMakeFiles/kosim_simple_bus.dir/wrap_simple_bus.cpp.o: first_class/first_class.h
+main/sc_simple_bus/CMakeFiles/kosim_simple_bus.dir/wrap_simple_bus.cpp.o: examples/sc/simple_bus/simple_bus.h
+main/sc_simple_bus/CMakeFiles/kosim_simple_bus.dir/wrap_simple_bus.cpp.o: examples/sc/simple_bus/simple_bus_arbiter.h
+main/sc_simple_bus/CMakeFiles/kosim_simple_bus.dir/wrap_simple_bus.cpp.o: examples/sc/simple_bus/simple_bus_arbiter_if.h
+main/sc_simple_bus/CMakeFiles/kosim_simple_bus.dir/wrap_simple_bus.cpp.o: examples/sc/simple_bus/simple_bus_blocking_if.h
+main/sc_simple_bus/CMakeFiles/kosim_simple_bus.dir/wrap_simple_bus.cpp.o: examples/sc/simple_bus/simple_bus_direct_if.h
+main/sc_simple_bus/CMakeFiles/kosim_simple_bus.dir/wrap_simple_bus.cpp.o: examples/sc/simple_bus/simple_bus_fast_mem.h
+main/sc_simple_bus/CMakeFiles/kosim_simple_bus.dir/wrap_simple_bus.cpp.o: examples/sc/simple_bus/simple_bus_master_blocking.h
+main/sc_simple_bus/CMakeFiles/kosim_simple_bus.dir/wrap_simple_bus.cpp.o: examples/sc/simple_bus/simple_bus_master_direct.h
+main/sc_simple_bus/CMakeFiles/kosim_simple_bus.dir/wrap_simple_bus.cpp.o: examples/sc/simple_bus/simple_bus_master_non_blocking.h
+main/sc_simple_bus/CMakeFiles/kosim_simple_bus.dir/wrap_simple_bus.cpp.o: examples/sc/simple_bus/simple_bus_non_blocking_if.h
+main/sc_simple_bus/CMakeFiles/kosim_simple_bus.dir/wrap_simple_bus.cpp.o: examples/sc/simple_bus/simple_bus_request.h
+main/sc_simple_bus/CMakeFiles/kosim_simple_bus.dir/wrap_simple_bus.cpp.o: examples/sc/simple_bus/simple_bus_slave_if.h
+main/sc_simple_bus/CMakeFiles/kosim_simple_bus.dir/wrap_simple_bus.cpp.o: examples/sc/simple_bus/simple_bus_slow_mem.h
+main/sc_simple_bus/CMakeFiles/kosim_simple_bus.dir/wrap_simple_bus.cpp.o: examples/sc/simple_bus/simple_bus_test.h
+main/sc_simple_bus/CMakeFiles/kosim_simple_bus.dir/wrap_simple_bus.cpp.o: examples/sc/simple_bus/simple_bus_types.h
 main/sc_simple_bus/CMakeFiles/kosim_simple_bus.dir/wrap_simple_bus.cpp.o: hierarchy_scanner/hierarchy_scanner.h
 main/sc_simple_bus/CMakeFiles/kosim_simple_bus.dir/wrap_simple_bus.cpp.o: program_options/options_builder.h
 
