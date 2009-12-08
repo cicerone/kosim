@@ -12,3 +12,4 @@ cp ./main/tlm_doulos_tutorial3/libkosim_doulos_tutorial3.so ./main/tlm_doulos_tu
 cp ./main/tlm_doulos_tutorial4/libkosim_doulos_tutorial4.so ./main/tlm_doulos_tutorial4/kosim_doulos_tutorial4.so
 cp ./main/tlm_doulos_tutorial5/libkosim_doulos_tutorial5.so ./main/tlm_doulos_tutorial5/kosim_doulos_tutorial5.so
 cp ./main/tlm_doulos_tutorial6/libkosim_doulos_tutorial6.so ./main/tlm_doulos_tutorial6/kosim_doulos_tutorial6.so
+cp ./main/tlm_doulos_tutorial7/libkosim_doulos_tutorial7.so ./main/tlm_doulos_tutorial7/kosim_doulos_tutorial7.so
