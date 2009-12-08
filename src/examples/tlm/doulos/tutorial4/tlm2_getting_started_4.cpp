@@ -52,6 +52,7 @@ using namespace std;
 #include "tlm_utils/simple_target_socket.h"
 #include "tlm_utils/peq_with_cb_and_phase.h"
 
+#include "tlm2_getting_started_4.h"
 #define DEBUG
 
 static ofstream fout("foo.txt");
@@ -545,4 +546,10 @@ int sc_main(int argc, char* argv[])
   return 0;
 }
 
+
+void run_sim()
+{
+  Top top("top");
+  sc_start();
+}
 

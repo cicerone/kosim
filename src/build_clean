@@ -9,3 +9,4 @@ cp ./main/scv_pythagoras/libkosim_pythagoras.so ./main/scv_pythagoras/kosim_pyth
 cp ./main/tlm_doulos_tutorial1/libkosim_doulos_tutorial1.so ./main/tlm_doulos_tutorial1/kosim_doulos_tutorial1.so
 cp ./main/tlm_doulos_tutorial2/libkosim_doulos_tutorial2.so ./main/tlm_doulos_tutorial2/kosim_doulos_tutorial2.so
 cp ./main/tlm_doulos_tutorial3/libkosim_doulos_tutorial3.so ./main/tlm_doulos_tutorial3/kosim_doulos_tutorial3.so
+cp ./main/tlm_doulos_tutorial4/libkosim_doulos_tutorial4.so ./main/tlm_doulos_tutorial4/kosim_doulos_tutorial4.so

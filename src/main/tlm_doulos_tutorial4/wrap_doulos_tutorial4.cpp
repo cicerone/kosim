@@ -13,7 +13,7 @@
 #include "hierarchy_scanner.h"
 #include "options_builder.h"
 
-#include "tlm2_getting_started_1.h"
+#include "tlm2_getting_started_4.h"
 
 
 using namespace boost::python;
