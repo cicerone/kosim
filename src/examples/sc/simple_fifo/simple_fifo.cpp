@@ -32,8 +32,8 @@
   MODIFICATION LOG - modifiers, enter your name, affiliation, date and
   changes you are making here.
 
-      Name, Affiliation, Date:
-  Description of Modification:
+      Name, Affiliation, Date: Cicerone Mihalache, Kotys LLC
+  Description of Modification: Added init_sim() and start_sim() 
 
  *****************************************************************************/
 
