@@ -711,3 +711,8 @@ int sc_main( int argc, char* argv[])
     return 0;
 }
 
+void run_sim()
+{
+    Top top("top");
+    sc_start();
+}
