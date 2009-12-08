@@ -654,5 +654,4 @@ void run_sim()
 {
     Top top("top");
     sc_start();
-    return 0;
 }
