@@ -1,6 +1,5 @@
 include_directories ($ENV{BOOST_ROOT}/include)
 include_directories ($ENV{BOOST_ROOT}/boost/thread)
-include_directories (${KOSIM_SOURCE_DIR}/first_class)
 include_directories (${KOSIM_SOURCE_DIR}/examples/sc/simple_bus)
 include_directories (${KOSIM_SOURCE_DIR}/hierarchy_scanner)
 include_directories (${KOSIM_SOURCE_DIR}/program_options)
@@ -15,8 +14,6 @@ MESSAGE( "Your Unix home directory is $ENV{HOME}." )
 #SET(CMAKE_CXX_FLAGS_DEBUG          "-ansi -pedantic -Wall -W -Wconversion -Wshadow -Wcast-qual -Wwrite-strings -Wpadded")
 
 # Make sure the linker can find the library once it is built.
-#link_directories (${VSM_SERIAL_BINARY_DIR}/first_class)
-
 #link_directories (/usr/local/lib/)
 link_directories (/usr/lib/)
 
@@ -27,5 +24,5 @@ link_directories (/usr/lib/)
 add_library (kosim_simple_bus SHARED wrap_simple_bus.cpp)
 
 # Link the executable to the used libraries.
-target_link_libraries (kosim_simple_bus first_class simple_bus hierarchy_scanner program_options libboost_program_options-gcc43-mt-1_37.so libboost_python-gcc43-mt-1_37.so libscv.so libsystemc.a)
+target_link_libraries (kosim_simple_bus simple_bus hierarchy_scanner program_options libboost_program_options-gcc43-mt-1_37.so libboost_python-gcc43-mt-1_37.so libscv.so libsystemc.a)
 

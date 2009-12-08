@@ -1,4 +1,4 @@
-#Create a shared library called "first_class" which includes the source file "first_class.cpp".
+#Create a shared library called "hierarchy_scanner"
 #include dirs
 include_directories ($KOSIM_SOURCE_DIR}/hierarchy_scanner)
 

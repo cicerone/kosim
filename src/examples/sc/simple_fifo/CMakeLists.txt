@@ -1,13 +1,9 @@
-#Create a shared library called "first_class" which includes the source file "first_class.cpp".
+#Create a shared library called "simple_fifo"
 #include dirs
 #include_directories (${KOSIM_SOURCE_DIR}/examples/sc/simple_fifo)
 
 # The extension is already found. Any number of sources could be listed here.
-add_library (simple_fifo SHARED simple_fifo.cpp)
-#add_library (simple_fifo simple_fifo.cpp)
-
-
-
+add_library (simple_fifo SHARED simple_fifo.cpp first_class.cpp)
 
 # #Example of HOWTO make an executable in one dir
 # add_executable (simple_fifo simple_fifo.cpp)
