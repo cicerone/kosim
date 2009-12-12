@@ -8,6 +8,8 @@
 #ifndef KOSIM_GC_GENERIC_CPU_H
 #define KOSIM_GC_GENERIC_CPU_H
 
+#include <stdint.h>
+
 #include "systemc.h"
 #include "tlm.h"
 #include "tlm_utils/simple_initiator_socket.h"
@@ -28,7 +30,7 @@ private:
   void thread_process();
 
   // TLM-2 backward DMI method
-  void invalidate_direct_mem_ptr(sc_dt::uint64 start_range_, sc_dt::uint64 end_range_);
+  void invalidate_direct_mem_ptr(uint64_t start_range_, uint64_t end_range_);
 
   bool dmi_ptr_valid;
   tlm::tlm_dmi dmi_data;

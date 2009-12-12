@@ -8,6 +8,7 @@
 #ifndef KOSIM_GC_GC_MEMORY_H
 #define KOSIM_GC_GC_MEMORY_H
 
+#include <stdint.h>
 
 #include "systemc.h"
 #include "tlm.h"
@@ -34,14 +35,14 @@ public:
   // TLM-2 forward DMI method
   bool get_direct_mem_ptr(tlm::tlm_generic_payload& payload_ , tlm::tlm_dmi& dmi_data_ );
   // TLM-2 debug transaction method
-  unsigned int transport_dbg(tlm::tlm_generic_payload& payload_ );
+  uint32_t transport_dbg(tlm::tlm_generic_payload& payload_ );
 
 private:
-  enum { SIZE = 256 };
+  static const uint32_t SIZE = 256;
   const sc_time LATENCY;
 
-  int mem[SIZE];
-  static unsigned int mem_nr;
+  int32_t mem[SIZE];
+  static uint32_t mem_nr;
 };
 
 

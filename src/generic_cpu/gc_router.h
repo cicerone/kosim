@@ -8,23 +8,19 @@
 #ifndef KOSIM_GC_GC_ROUTER_H
 #define KOSIM_GC_GC_ROUTER_H
 
-
+#include <stdint.h>
 #include "systemc.h"
-
 #include "tlm.h"
 #include "tlm_utils/simple_initiator_socket.h"
 #include "tlm_utils/simple_target_socket.h"
 
-using namespace sc_core;
-using namespace sc_dt;
-using namespace std;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // GCRouter implemtents a generic blocking transport router that connects one initiator with 
 // N_TARGETS
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
-template<unsigned int N_TARGETS>
+template<uint32_t N_TARGETS>
 class GCRouter: sc_module
 {
 public:
@@ -41,24 +37,24 @@ private:
   // FORWARD path methods 
   void b_transport( tlm::tlm_generic_payload& payload_, sc_time& delay_ );
   bool get_direct_mem_ptr(tlm::tlm_generic_payload& trans, tlm::tlm_dmi& dmi_data_);
-  unsigned int transport_dbg(tlm::tlm_generic_payload& paylaod_);
+  uint32_t transport_dbg(tlm::tlm_generic_payload& paylaod_);
 
   // BACKWARD path methods 
 
   // Tagged backward DMI method
-  void invalidate_direct_mem_ptr(int id, sc_dt::uint64 start_range_, sc_dt::uint64 end_range_);
+  void invalidate_direct_mem_ptr(int id, sc_dt::uint64 start_range_, uint64_t end_range_);
 
   // Simple fixed address decoding
 
-  inline unsigned int decode_address( sc_dt::uint64 address_, sc_dt::uint64& masked_address_ );
-  inline sc_dt::uint64 compose_address( unsigned int target_nr_, sc_dt::uint64 address_);
+  inline uint32_t decode_address( sc_dt::uint64 address_, sc_dt::uint64& masked_address_ );
+  inline sc_dt::uint64 compose_address( uint32_t target_nr_, uint64_t address_);
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // IN: 
 // OUT: 
 // RET: 
-template <unsigned int N_TARGETS>
+template <uint32_t N_TARGETS>
 GCRouter<N_TARGETS>::GCRouter(sc_module_name name_) : 
     sc_module(name_),
     m_target_socket("target_socket")
@@ -68,7 +64,7 @@ GCRouter<N_TARGETS>::GCRouter(sc_module_name name_) :
     m_target_socket.register_get_direct_mem_ptr(this, &GCRouter::get_direct_mem_ptr);
     m_target_socket.register_transport_dbg(     this, &GCRouter::transport_dbg);
 
-    for (unsigned int i = 0; i < N_TARGETS; i++)
+    for (uint32_t i = 0; i < N_TARGETS; i++)
     {
         char txt[20];
         sprintf(txt, "socket_%d", i);
@@ -83,10 +79,10 @@ GCRouter<N_TARGETS>::GCRouter(sc_module_name name_) :
 // IN: 
 // OUT: 
 // RET: 
-template <unsigned int N_TARGETS>
+template <uint32_t N_TARGETS>
 GCRouter<N_TARGETS>::~GCRouter() 
 {
-    for (unsigned int i = 0; i < N_TARGETS; i++) {
+    for (uint32_t i = 0; i < N_TARGETS; i++) {
         delete mp_initiator_socket[i];
     }
 }
@@ -95,12 +91,12 @@ GCRouter<N_TARGETS>::~GCRouter()
 // IN: 
 // OUT: 
 // RET: 
-template<unsigned int N_TARGETS>
+template<uint32_t N_TARGETS>
 void GCRouter<N_TARGETS>::b_transport( tlm::tlm_generic_payload& payload_, sc_time& delay_ )
 {
     sc_dt::uint64 address = payload_.get_address();
     sc_dt::uint64 masked_address;
-    unsigned int target_nr = decode_address( address, masked_address);
+    uint32_t target_nr = decode_address( address, masked_address);
 
     // Modify address within transaction
     payload_.set_address( masked_address );
@@ -113,11 +109,11 @@ void GCRouter<N_TARGETS>::b_transport( tlm::tlm_generic_payload& payload_, sc_ti
 // IN: 
 // OUT: 
 // RET: 
-template<unsigned int N_TARGETS>
+template<uint32_t N_TARGETS>
 bool GCRouter<N_TARGETS>::get_direct_mem_ptr(tlm::tlm_generic_payload& payload_, tlm::tlm_dmi& dmi_data_)
 {
     sc_dt::uint64 masked_address;
-    unsigned int target_nr = decode_address( payload_.get_address(), masked_address );
+    uint32_t target_nr = decode_address( payload_.get_address(), masked_address );
     payload_.set_address( masked_address );
 
     bool status = ( *mp_initiator_socket[target_nr] )->get_direct_mem_ptr( payload_, dmi_data_ );
@@ -133,11 +129,11 @@ bool GCRouter<N_TARGETS>::get_direct_mem_ptr(tlm::tlm_generic_payload& payload_,
 // IN: 
 // OUT: 
 // RET: 
-template<unsigned int N_TARGETS>
-unsigned int GCRouter<N_TARGETS>::transport_dbg(tlm::tlm_generic_payload& payload_ )
+template<uint32_t N_TARGETS>
+uint32_t GCRouter<N_TARGETS>::transport_dbg(tlm::tlm_generic_payload& payload_ )
 {
     sc_dt::uint64 masked_address;
-    unsigned int target_nr = decode_address( payload_.get_address(), masked_address );
+    uint32_t target_nr = decode_address( payload_.get_address(), masked_address );
     payload_.set_address( masked_address );
 
     // Forward debug transaction to appropriate target
@@ -148,8 +144,8 @@ unsigned int GCRouter<N_TARGETS>::transport_dbg(tlm::tlm_generic_payload& payloa
 // IN: 
 // OUT: 
 // RET: 
-template<unsigned int N_TARGETS>
-void GCRouter<N_TARGETS>::invalidate_direct_mem_ptr(int id, sc_dt::uint64 start_range_, sc_dt::uint64 end_range_)
+template<uint32_t N_TARGETS>
+void GCRouter<N_TARGETS>::invalidate_direct_mem_ptr(int32_t id, uint64_t start_range_, uint64_t end_range_)
 {
     // Reconstruct address range in system memory map
     sc_dt::uint64 bw_start_range_ = compose_address( id, start_range_ );
@@ -161,10 +157,10 @@ void GCRouter<N_TARGETS>::invalidate_direct_mem_ptr(int id, sc_dt::uint64 start_
 // IN: 
 // OUT: 
 // RET: 
-template<unsigned int N_TARGETS>
-unsigned int GCRouter<N_TARGETS>::decode_address( sc_dt::uint64 address_, sc_dt::uint64& masked_address_ )
+template<uint32_t N_TARGETS>
+uint32_t GCRouter<N_TARGETS>::decode_address( uint64_t address_, uint64_t& masked_address_ )
 {
-    unsigned int target_nr = static_cast<unsigned int>( (address_ >> 8) & 0x3 );
+    uint32_t target_nr = static_cast<uint32_t>( (address_ >> 8) & 0x3 );
     masked_address_ = address_ & 0xFF;
     return target_nr;
 }
@@ -173,8 +169,8 @@ unsigned int GCRouter<N_TARGETS>::decode_address( sc_dt::uint64 address_, sc_dt:
 // IN: 
 // OUT: 
 // RET: 
-template<unsigned int N_TARGETS>
-sc_dt::uint64 GCRouter<N_TARGETS>::compose_address( unsigned int target_nr_, sc_dt::uint64 address_)
+template<uint32_t N_TARGETS>
+sc_dt::uint64 GCRouter<N_TARGETS>::compose_address( uint32_t target_nr_, uint64_t address_)
 {
     return (target_nr_ << 8) | (address_ & 0xFF);
 }

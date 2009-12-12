@@ -5,11 +5,10 @@
     Support: kosym@kotys.biz 
 ===============================================================================================*/
 
-#include "systemc.h"
 #include "generic_cpu.h"
 
-using namespace sc_core;
-using namespace sc_dt;
+//using namespace sc_core;
+//using namespace sc_dt;
 using namespace std;
 
 // GenericCPU module generating generic payload transactions
@@ -42,9 +41,9 @@ GenericCPU::thread_process()
     sc_time delay = sc_time(10, SC_NS);
 
     // Generate a random sequence of reads and writes
-    for (int i = 256-64; i < 256+64; i += 4)
+    for (int32_t i = 256-64; i < 256+64; i += 4)
     {
-      int data;
+      int32_t data;
       tlm::tlm_command cmd = static_cast<tlm::tlm_command>(rand() % 2);
       if (cmd == tlm::TLM_WRITE_COMMAND) data = 0xFF000000 | i;
 
@@ -151,7 +150,7 @@ GenericCPU::thread_process()
 // OUT: 
 // RET: 
 void 
-GenericCPU::invalidate_direct_mem_ptr(sc_dt::uint64 start_range_, sc_dt::uint64 end_range_)
+GenericCPU::invalidate_direct_mem_ptr(uint64_t start_range_, uint64_t end_range_)
 {
     // Ignore range and invalidate all DMI pointers regardless
     dmi_ptr_valid = false;
