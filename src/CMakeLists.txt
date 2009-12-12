@@ -1,7 +1,8 @@
 #==============================================================================================
 #  Copyright (c) 2009 Kotys LLC. Distributed under the Boost Software License, Version 1.0. 
 #  (See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
-#  Author: Cicerone Mihalache                                     Support: kosym@kotys.biz 
+#  Author: Cicerone Mihalache                                
+#  Support: kosym@kotys.biz 
 #==============================================================================================
 
 # The name of our project is "VSM". CMakeLists files in this project can
@@ -52,6 +53,7 @@ add_subdirectory (main/tlm/doulos_tutorial4)
 add_subdirectory (main/tlm/doulos_tutorial5)
 add_subdirectory (main/tlm/doulos_tutorial6)
 add_subdirectory (main/tlm/doulos_tutorial7)
+add_subdirectory (main/generic_cpu)
 add_subdirectory (examples/sc/simple_fifo)
 add_subdirectory (examples/sc/simple_bus)
 add_subdirectory (examples/scv/pythagoras)
@@ -64,4 +66,5 @@ add_subdirectory (examples/tlm/doulos/tutorial6)
 add_subdirectory (examples/tlm/doulos/tutorial7)
 add_subdirectory (hierarchy_scanner)
 add_subdirectory (program_options)
+add_subdirectory (generic_cpu)
 
