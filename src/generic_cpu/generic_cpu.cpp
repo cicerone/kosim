@@ -7,154 +7,188 @@
 
 #include "generic_cpu.h"
 
-//using namespace sc_core;
-//using namespace sc_dt;
 using namespace std;
 
 // GenericCPU module generating generic payload transactions
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// IN: 
+// IN: name_ - the name of the module 
 // OUT: 
 // RET: 
 GenericCPU::GenericCPU(sc_module_name name_) : 
     sc_module(name_),
     socket("socket"),  // Construct and name socket
-    dmi_ptr_valid(false)
+    m_is_dmi_ptr_valid(false),
+    mp_payload(0)
 {
     // Register callbacks for incoming interface method calls
     socket.register_invalidate_direct_mem_ptr(this, &GenericCPU::invalidate_direct_mem_ptr);
 
     SC_THREAD(thread_process);
+
+    mp_payload = new tlm::tlm_generic_payload;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // IN: 
 // OUT: 
 // RET: 
+GenericCPU::~GenericCPU()
+{
+    delete mp_payload;
+    delete mp_dmi_payload;
+    delete mp_dbg_payload;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////
+// Uses TLM2 blocking interface to write 32 bit words
+// IN:  addr_ - the address of the 32 bit word to be written
+//      data_ - the data to be written
+// OUT: 
+// RET: 
+void
+GenericCPU::Write32BitWord   (const uint64_t addr_, int32_t data_)
+{
+    CheckAddressAlignment(addr_);
+    mp_payload->set_command        ( tlm::TLM_WRITE_COMMAND);
+    mp_payload->set_address        ( addr_ );
+    mp_payload->set_data_ptr       ( reinterpret_cast<unsigned char*>(&data_) );
+    mp_payload->set_data_length    ( sizeof(int32_t) );
+    mp_payload->set_streaming_width( sizeof(int32_t) );
+    mp_payload->set_byte_enable_ptr( 0               ); // 0 indicates unused
+    mp_payload->set_dmi_allowed    ( false           ); // mandatory initial value
+    mp_payload->set_response_status( tlm::TLM_INCOMPLETE_RESPONSE ); // mandatory initial value
+
+    sc_time delay = sc_time(10, SC_NS);
+    socket->b_transport( *mp_payload, delay );  // Blocking transport call
+
+    if ( mp_payload->is_response_error() ) {
+        string error("Error from b_transport, response status = ");
+        error += mp_payload->get_response_string();
+        SC_REPORT_ERROR("TLM-2", error.c_str());
+    }
+    cout << "trans = {  'W' , " << hex << addr_ << " } , data = " << hex << data_ << " at time " << sc_time_stamp() << endl;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////
+// Uses TLM2 blocking interface to read 32 bit words
+// IN:  addr_ - the address of the word to be read
+// OUT: 
+// RET:  the read value
+int32_t
+GenericCPU::Read32BitWord    (const uint64_t addr_)
+{
+    int32_t read_data = 0;
+    CheckAddressAlignment(addr_);
+    mp_payload->set_command        ( tlm::TLM_READ_COMMAND);
+    mp_payload->set_address        ( addr_ );
+    mp_payload->set_data_ptr       ( reinterpret_cast<unsigned char*>(&read_data) );
+    mp_payload->set_data_length    ( sizeof(int32_t) );
+    mp_payload->set_streaming_width( sizeof(int32_t) );
+    mp_payload->set_byte_enable_ptr( 0               ); // 0 indicates unused
+    mp_payload->set_dmi_allowed    ( false           ); // mandatory initial value
+    mp_payload->set_response_status( tlm::TLM_INCOMPLETE_RESPONSE ); // mandatory initial value
+
+    sc_time delay = sc_time(10, SC_NS);
+    socket->b_transport( *mp_payload, delay );  // Blocking transport call
+
+    if ( mp_payload->is_response_error() ) {
+        string error("Error from b_transport, response status = ");
+        error += mp_payload->get_response_string();
+        SC_REPORT_ERROR("TLM-2", error.c_str());
+    }
+    return read_data;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////
+// Uses dbg interface to write 32 bit words
+// IN:  addr_ - the address of the 32 bit word to be written
+//      data_ - the data to be written
+// OUT: 
+// RET: 
+void    
+GenericCPU::DbgWrite32BitWord(const uint64_t addr_, int32_t data_)
+{
+    CheckAddressAlignment(addr_);
+    uint32_t xfer_size = sizeof(int32_t);
+    mp_dbg_payload->set_address(addr_);
+    mp_dbg_payload->set_write();
+    mp_dbg_payload->set_data_length(xfer_size);
+
+//    unsigned char* data = new unsigned char[256];
+    mp_dbg_payload->set_data_ptr(reinterpret_cast<uint8_t*>(&data_));
+
+    uint32_t number_bytes_wr = socket->transport_dbg( *mp_dbg_payload );
+    if (number_bytes_wr != xfer_size) {
+        fprintf(stderr, "%s transaction was not performed properly!\n", __PRETTY_FUNCTION__);
+        exit(1);
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////
+// Uses dbg interface to read 32 bit words
+// IN:  addr_ - the address of the word to be read
+// OUT: 
+// RET: the read value   
+int32_t 
+GenericCPU::DbgRead32BitWord(const uint64_t addr_)
+{
+    CheckAddressAlignment(addr_);
+    uint32_t xfer_size = sizeof(int32_t);
+    mp_dbg_payload->set_address(addr_);
+    mp_dbg_payload->set_read();
+    mp_dbg_payload->set_data_length(xfer_size);
+
+    int32_t read_data = 0;
+    mp_dbg_payload->set_data_ptr(reinterpret_cast<uint8_t*>(&read_data));
+
+    uint32_t number_bytes_rd = socket->transport_dbg( *mp_dbg_payload );
+    if (number_bytes_rd != xfer_size) {
+        fprintf(stderr, "%s transaction was not performed properly!\n", __PRETTY_FUNCTION__);
+        exit(1);
+    }
+    return read_data;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////
+// The main thread
+// IN: 
+// OUT: 
+// RET: 
 void 
 GenericCPU::thread_process()
 {
-    // TLM-2 generic payload transaction, reused across calls to b_transport, DMI and debug
-    tlm::tlm_generic_payload* trans = new tlm::tlm_generic_payload;
-    sc_time delay = sc_time(10, SC_NS);
-
     // Generate a random sequence of reads and writes
     for (int32_t i = 256-64; i < 256+64; i += 4)
     {
-      int32_t data;
-      tlm::tlm_command cmd = static_cast<tlm::tlm_command>(rand() % 2);
-      if (cmd == tlm::TLM_WRITE_COMMAND) data = 0xFF000000 | i;
-
-      // Use DMI if it is available
-      if (dmi_ptr_valid && sc_dt::uint64(i) >= dmi_data.get_start_address()
-                        && sc_dt::uint64(i) <= dmi_data.get_end_address())
-      {
-        // Bypass transport interface and use direct memory interface
-        // Implement target latency
-        if ( cmd == tlm::TLM_READ_COMMAND )
-        {
-          assert( dmi_data.is_read_allowed() );
-          memcpy(&data, dmi_data.get_dmi_ptr() + i - dmi_data.get_start_address(), 4);
-          wait( dmi_data.get_read_latency() );
-        }
-        else if ( cmd == tlm::TLM_WRITE_COMMAND )
-        {
-          assert( dmi_data.is_write_allowed() );
-          memcpy(dmi_data.get_dmi_ptr() + i - dmi_data.get_start_address(), &data, 4);
-          wait( dmi_data.get_write_latency() );
-        }
-
-        cout << "DMI   = { " << (cmd ? 'W' : 'R') << ", " << hex << i
-             << " } , data = " << hex << data << " at time " << sc_time_stamp() << endl;
-      }
-      else
-      {
-        trans->set_command( cmd );
-        trans->set_address( i );
-        trans->set_data_ptr( reinterpret_cast<unsigned char*>(&data) );
-        trans->set_data_length( 4 );
-        trans->set_streaming_width( 4 ); // = data_length to indicate no streaming
-        trans->set_byte_enable_ptr( 0 ); // 0 indicates unused
-        trans->set_dmi_allowed( false ); // Mandatory initial value
-        trans->set_response_status( tlm::TLM_INCOMPLETE_RESPONSE ); // Mandatory initial value
-
-
-#ifdef INJECT_ERROR
-        if (i > 90) trans->set_streaming_width(2);
-#endif
-
-        // Other fields default: byte enable = 0, streaming width = 0, DMI_hint = false, no extensions
-
-        socket->b_transport( *trans, delay );  // Blocking transport call
-
-        // GenericCPU obliged to check response status
-        if ( trans->is_response_error() )
-        {
-          // Print response string
-          char txt[100];
-          sprintf(txt, "Error from b_transport, response status = %s",
-                       trans->get_response_string().c_str());
-          SC_REPORT_ERROR("TLM-2", txt);
-
-        }
-
-        // Check DMI hint
-        if ( trans->is_dmi_allowed() )
-        {
-          // Re-use transaction object for DMI. Reset the address because it could
-          // have been modified by the interconnect on the previous transport call
-          trans->set_address( i );
-          dmi_ptr_valid = socket->get_direct_mem_ptr( *trans, dmi_data );
-        }
-
-        cout << "trans = { " << (cmd ? 'W' : 'R') << ", " << hex << i
-             << " } , data = " << hex << data << " at time " << sc_time_stamp() << endl;
-      }
+        Write32BitWord(i, i + 1);
     }
 
-    // Use debug transaction interface to dump memory contents, reusing same transaction object
-    sc_dt::uint64 A = 128;
-    trans->set_address(A);
-    trans->set_read();
-    trans->set_data_length(256);
-
-    unsigned char* data = new unsigned char[256];
-    trans->set_data_ptr(data);
-
-    unsigned int n_bytes = socket->transport_dbg( *trans );
-
-    for (unsigned int i = 0; i < n_bytes; i += 4)
-    {
-      cout << "mem[" << (A + i) << "] = "
-           << *(reinterpret_cast<unsigned int*>( &data[i] )) << endl;
-    }
-
-    A = 256;
-    trans->set_address(A);
-    trans->set_data_length(128);
-
-    n_bytes = socket->transport_dbg( *trans );
-
-    for (unsigned int i = 0; i < n_bytes; i += 4)
-    {
-      cout << "mem[" << (A + i) << "] = "
-           << *(reinterpret_cast<unsigned int*>( &data[i] )) << endl;
-    }
+    printf("data[0x%x] = 0x%x\n", 0xc8, Read32BitWord(0xc8));
+    printf("DBG data[0x%x] = 0x%x\n", 0xc8, DbgRead32BitWord(0xc8));
+    DbgWrite32BitWord(0xc8, 0xbaba);
+    printf("DBG data[0x%x] = 0x%x\n", 0xc8, DbgRead32BitWord(0xc8));
+    printf("data[0x%x] = 0x%x\n", 0xc8, Read32BitWord(0xc8));
 }
-
 /////////////////////////////////////////////////////////////////////////////////////////////////
-// TLM-2 backward DMI method
-// IN: 
+// TLM-2 backward DMI method, invalidates dmi access
+// IN:  start_range_ - the start addr of the memory space that is dmi invalidated 
+//      end_range_   - the end addr of the memory space that is dmi invalidated 
 // OUT: 
 // RET: 
 void 
 GenericCPU::invalidate_direct_mem_ptr(uint64_t start_range_, uint64_t end_range_)
 {
     // Ignore range and invalidate all DMI pointers regardless
-    dmi_ptr_valid = false;
+    m_is_dmi_ptr_valid = false;
 }
-
-
+/////////////////////////////////////////////////////////////////////////////////////////////////
+// Exits with error if the address is not 32 bit aligned
+// IN:  addr_  - the address that must be 32 bit aligned 
+// OUT: 
+// RET: 
+void
+GenericCPU::CheckAddressAlignment(const uint32_t addr_)
+{
+    if (addr_ % sizeof(int32_t) != 0) {
+        fprintf(stderr, "ERROR! address must be multiple of 4, addr(0x%x)!\n", addr_);
+        exit(1);
+    }
+} 
 

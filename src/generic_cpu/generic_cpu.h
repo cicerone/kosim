@@ -25,15 +25,25 @@ public:
 
   SC_HAS_PROCESS(GenericCPU);
   GenericCPU(sc_module_name name_);
+  ~GenericCPU();
 
+  void    Write32BitWord   (const uint64_t addr_, int32_t data_);
+  int32_t Read32BitWord    (const uint64_t addr_);
+  void    DbgWrite32BitWord(const uint64_t addr_, int32_t data_);
+  int32_t DbgRead32BitWord (const uint64_t addr_);
+  
 private:
   void thread_process();
 
   // TLM-2 backward DMI method
   void invalidate_direct_mem_ptr(uint64_t start_range_, uint64_t end_range_);
+  void CheckAddressAlignment(const uint32_t addr_);
 
-  bool dmi_ptr_valid;
-  tlm::tlm_dmi dmi_data;
+  bool m_is_dmi_ptr_valid;
+  tlm::tlm_dmi m_dmi_data;
+  tlm::tlm_generic_payload* mp_payload;
+  tlm::tlm_generic_payload* mp_dmi_payload;
+  tlm::tlm_generic_payload* mp_dbg_payload;
 };
 
 
