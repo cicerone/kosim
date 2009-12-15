@@ -46,7 +46,7 @@ private:
 
   // Simple fixed address decoding
 
-  inline uint32_t decode_address( sc_dt::uint64 address_, sc_dt::uint64& masked_address_ );
+  inline uint32_t decode_address( sc_dt::uint64 address_, sc_dt::uint64* p_masked_address_ );
   inline sc_dt::uint64 compose_address( uint32_t target_nr_, uint64_t address_);
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -96,7 +96,7 @@ void GCRouter<N_TARGETS>::b_transport( tlm::tlm_generic_payload& payload_, sc_ti
 {
     sc_dt::uint64 address = payload_.get_address();
     sc_dt::uint64 masked_address;
-    uint32_t target_nr = decode_address( address, masked_address);
+    uint32_t target_nr = decode_address( address, &masked_address);
 
     // Modify address within transaction
     payload_.set_address( masked_address );
@@ -113,7 +113,7 @@ template<uint32_t N_TARGETS>
 bool GCRouter<N_TARGETS>::get_direct_mem_ptr(tlm::tlm_generic_payload& payload_, tlm::tlm_dmi& dmi_data_)
 {
     sc_dt::uint64 masked_address;
-    uint32_t target_nr = decode_address( payload_.get_address(), masked_address );
+    uint32_t target_nr = decode_address( payload_.get_address(), &masked_address );
     payload_.set_address( masked_address );
 
     bool status = ( *mp_initiator_socket[target_nr] )->get_direct_mem_ptr( payload_, dmi_data_ );
@@ -133,7 +133,7 @@ template<uint32_t N_TARGETS>
 uint32_t GCRouter<N_TARGETS>::transport_dbg(tlm::tlm_generic_payload& payload_ )
 {
     sc_dt::uint64 masked_address;
-    uint32_t target_nr = decode_address( payload_.get_address(), masked_address );
+    uint32_t target_nr = decode_address( payload_.get_address(), &masked_address );
     payload_.set_address( masked_address );
 
     // Forward debug transaction to appropriate target
@@ -158,10 +158,10 @@ void GCRouter<N_TARGETS>::invalidate_direct_mem_ptr(int32_t id, uint64_t start_r
 // OUT: 
 // RET: 
 template<uint32_t N_TARGETS>
-uint32_t GCRouter<N_TARGETS>::decode_address( uint64_t address_, uint64_t& masked_address_ )
+uint32_t GCRouter<N_TARGETS>::decode_address( uint64_t address_, uint64_t* p_masked_address_ )
 {
     uint32_t target_nr = static_cast<uint32_t>( (address_ >> 8) & 0x3 );
-    masked_address_ = address_ & 0xFF;
+    *p_masked_address_ = address_ & 0xFF;
     return target_nr;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////

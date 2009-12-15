@@ -25,7 +25,7 @@ GenericCPU::GenericCPU(sc_module_name name_) :
     // Register callbacks for incoming interface method calls
     socket.register_invalidate_direct_mem_ptr(this, &GenericCPU::invalidate_direct_mem_ptr);
 
-    SC_THREAD(thread_process);
+    SC_THREAD(STMain);
 
     mp_payload = new tlm::tlm_generic_payload;
 }
@@ -59,7 +59,7 @@ GenericCPU::Write32BitWord   (const uint64_t addr_, int32_t data_)
     mp_payload->set_dmi_allowed    ( false           ); // mandatory initial value
     mp_payload->set_response_status( tlm::TLM_INCOMPLETE_RESPONSE ); // mandatory initial value
 
-    sc_time delay = sc_time(10, SC_NS);
+    sc_time delay = sc_time(0, SC_NS);
     socket->b_transport( *mp_payload, delay );  // Blocking transport call
 
     if ( mp_payload->is_response_error() ) {
@@ -88,7 +88,7 @@ GenericCPU::Read32BitWord    (const uint64_t addr_)
     mp_payload->set_dmi_allowed    ( false           ); // mandatory initial value
     mp_payload->set_response_status( tlm::TLM_INCOMPLETE_RESPONSE ); // mandatory initial value
 
-    sc_time delay = sc_time(10, SC_NS);
+    sc_time delay = sc_time(0, SC_NS);
     socket->b_transport( *mp_payload, delay );  // Blocking transport call
 
     if ( mp_payload->is_response_error() ) {
@@ -152,19 +152,58 @@ GenericCPU::DbgRead32BitWord(const uint64_t addr_)
 // OUT: 
 // RET: 
 void 
-GenericCPU::thread_process()
+GenericCPU::STMain()
 {
-    // Generate a random sequence of reads and writes
-    for (int32_t i = 256-64; i < 256+64; i += 4)
+    InitSystem();
+    while(1)
     {
-        Write32BitWord(i, i + 1);
+        uint32_t peripheral_id = m_irq.read(); //blocking read 
+        switch(peripheral_id) { 
+            case 0: TreatPeripheral0();
+            break;
+            case 1: TreatPeripheral1();
+            break;
+            default:
+            break;
+        }
+        // read the result
+        printf("data[0x%x] = 0x%x\n", 0xc8, Read32BitWord(0x08));
+        printf("DBG data[0x%x] = 0x%x\n", 0xc8, DbgRead32BitWord(0x08));
+        printf("data[0x%x] = 0x%x\n", 0xc8, Read32BitWord(0x108));
+        printf("DBG data[0x%x] = 0x%x\n", 0xc8, DbgRead32BitWord(0x108));
     }
 
-    printf("data[0x%x] = 0x%x\n", 0xc8, Read32BitWord(0xc8));
-    printf("DBG data[0x%x] = 0x%x\n", 0xc8, DbgRead32BitWord(0xc8));
-    DbgWrite32BitWord(0xc8, 0xbaba);
-    printf("DBG data[0x%x] = 0x%x\n", 0xc8, DbgRead32BitWord(0xc8));
-    printf("data[0x%x] = 0x%x\n", 0xc8, Read32BitWord(0xc8));
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// IN: 
+// OUT: 
+// RET: 
+void 
+GenericCPU::InitSystem()
+{
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// IN: 
+// OUT: 
+// RET: 
+void 
+GenericCPU::TreatPeripheral0()
+{
+    Write32BitWord(0x00, 1);
+    Write32BitWord(0x04, 2);
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// IN: 
+// OUT: 
+// RET: 
+void 
+GenericCPU::TreatPeripheral1()
+{
+    Write32BitWord(0x100, 3);
+    Write32BitWord(0x104, 4);
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // TLM-2 backward DMI method, invalidates dmi access

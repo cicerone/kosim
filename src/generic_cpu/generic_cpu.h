@@ -22,6 +22,7 @@ class GenericCPU : public sc_module
 public:
   // TLM-2 socket, defaults to 32-bits wide, base protocol
   tlm_utils::simple_initiator_socket<GenericCPU> socket;
+  sc_fifo_in <uint32_t> m_irq ;
 
   SC_HAS_PROCESS(GenericCPU);
   GenericCPU(sc_module_name name_);
@@ -33,7 +34,10 @@ public:
   int32_t DbgRead32BitWord (const uint64_t addr_);
   
 private:
-  void thread_process();
+  void STMain();
+  void InitSystem();
+  void TreatPeripheral0();
+  void TreatPeripheral1();
 
   // TLM-2 backward DMI method
   void invalidate_direct_mem_ptr(uint64_t start_range_, uint64_t end_range_);

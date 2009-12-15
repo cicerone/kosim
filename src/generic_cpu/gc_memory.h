@@ -24,10 +24,11 @@ class GCMemory : public sc_module
 
 public:
   SC_HAS_PROCESS(GCMemory);
-  GCMemory(sc_module_name name_);
+  GCMemory(sc_module_name name_, uint32_t id_);
   ~GCMemory() {};
   // TLM-2 socket, defaults to 32-bits wide, base protocol
   tlm_utils::simple_target_socket<GCMemory> socket;
+  sc_fifo_out<uint32_t> m_irq ;
 
 
   // TLM-2 blocking transport method
@@ -38,11 +39,14 @@ public:
   uint32_t transport_dbg(tlm::tlm_generic_payload& payload_ );
 
 private:
+  void STMain();
   static const uint32_t SIZE = 256;
-  const sc_time LATENCY;
+  const sc_time DMI_LATENCY;
 
   int32_t mem[SIZE];
   static uint32_t mem_nr;
+
+  uint32_t m_id;
 };
 
 

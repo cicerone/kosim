@@ -18,10 +18,11 @@ unsigned int GCMemory::mem_nr = 0;
 // IN: 
 // OUT: 
 // RET: 
-GCMemory::GCMemory(sc_module_name name_) : 
+GCMemory::GCMemory(sc_module_name name_, uint32_t id_) : 
     sc_module(name_),
     socket("gc_memory_socket"), 
-    LATENCY(10, SC_NS)
+    DMI_LATENCY(10, SC_NS),
+    m_id(id_)
 {
     // Register callbacks for incoming interface method calls
     socket.register_b_transport(       this, &GCMemory::b_transport);
@@ -32,6 +33,8 @@ GCMemory::GCMemory(sc_module_name name_) :
       mem[i] = 0xcccccccc;
 
     ++mem_nr;
+    
+    SC_THREAD(STMain);
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // TLM-2 blocking transport method
@@ -93,8 +96,8 @@ GCMemory::get_direct_mem_ptr(tlm::tlm_generic_payload& payload_, tlm::tlm_dmi& d
     dmi_data_.set_dmi_ptr( reinterpret_cast<unsigned char*>( &mem[0] ) );
     dmi_data_.set_start_address( 0 );
     dmi_data_.set_end_address( SIZE * sizeof(mem[0]) - 1 );
-    dmi_data_.set_read_latency( LATENCY );
-    dmi_data_.set_write_latency( LATENCY );
+    dmi_data_.set_read_latency( DMI_LATENCY );
+    dmi_data_.set_write_latency( DMI_LATENCY );
 
     return true;
 }
@@ -121,4 +124,17 @@ GCMemory::transport_dbg(tlm::tlm_generic_payload& payload_)
 
     return num_bytes;
 }
-
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// IN: 
+// OUT: 
+// RET: 
+void GCMemory::STMain()
+{
+    while(1)
+    {
+        mem[2] = mem[0] + mem[1];
+        wait(10, SC_NS);
+        m_irq.write(m_id);
+    }
+}
