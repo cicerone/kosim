@@ -28,6 +28,9 @@ GenericCPU::GenericCPU(sc_module_name name_) :
     SC_THREAD(STMain);
 
     mp_payload = new tlm::tlm_generic_payload;
+    mp_dmi_payload = new tlm::tlm_generic_payload;
+    mp_dbg_payload = new tlm::tlm_generic_payload;
+    
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -167,10 +170,12 @@ GenericCPU::STMain()
             break;
         }
         // read the result
-        printf("data[0x%x] = 0x%x\n", 0xc8, Read32BitWord(0x08));
-        printf("DBG data[0x%x] = 0x%x\n", 0xc8, DbgRead32BitWord(0x08));
-        printf("data[0x%x] = 0x%x\n", 0xc8, Read32BitWord(0x108));
-        printf("DBG data[0x%x] = 0x%x\n", 0xc8, DbgRead32BitWord(0x108));
+        
+        printf("data[0x%x] = 0x%x\n", 0x08, Read32BitWord(0x08));
+        printf("data[0x%x] = 0x%x\n", 0x108, Read32BitWord(0x108));
+        
+        printf("DBG data[0x%x] = 0x%x\n", 0x08, DbgRead32BitWord(0x08));
+        printf("DBG data[0x%x] = 0x%x\n", 0x108, DbgRead32BitWord(0x108));
     }
 
 }
@@ -191,6 +196,7 @@ GenericCPU::InitSystem()
 void 
 GenericCPU::TreatPeripheral0()
 {
+printf("%s", __PRETTY_FUNCTION__);
     Write32BitWord(0x00, 1);
     Write32BitWord(0x04, 2);
 }
@@ -202,6 +208,7 @@ GenericCPU::TreatPeripheral0()
 void 
 GenericCPU::TreatPeripheral1()
 {
+printf("%s", __PRETTY_FUNCTION__);
     Write32BitWord(0x100, 3);
     Write32BitWord(0x104, 4);
 }

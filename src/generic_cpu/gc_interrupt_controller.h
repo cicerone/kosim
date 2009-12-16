@@ -62,10 +62,13 @@ GCInterruptController<N_PERIPHERALS>::~GCInterruptController()
 template<uint32_t N_PERIPHERALS>
 void GCInterruptController<N_PERIPHERALS>::ThreadIRQ()
 {
-    for (uint32_t i = 0; i < N_PERIPHERALS; i++) {
-        if (m_irq_in[i].num_available() != 0) m_irq_out.write(m_irq_in[i].read());
+    while(1)
+    {
+        for (uint32_t i = 0; i < N_PERIPHERALS; i++) {
+            if (m_irq_in[i].num_available() != 0) m_irq_out.write(m_irq_in[i].read());
+        }
+        wait(1, SC_NS);
     }
-    wait(1, SC_NS);
 }
 
 #endif // KOSIM_GC_GC_INTERRUPT_CONTROLLER_H

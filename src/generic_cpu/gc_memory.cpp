@@ -133,8 +133,9 @@ void GCMemory::STMain()
 {
     while(1)
     {
+       
         mem[2] = mem[0] + mem[1];
         wait(10, SC_NS);
-        m_irq.write(m_id);
+	m_irq.write(m_id);
     }
 }
