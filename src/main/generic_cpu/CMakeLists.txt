@@ -9,8 +9,7 @@ include_directories ($ENV{BOOST_ROOT}/boost/thread)
 include_directories (${KOSIM_SOURCE_DIR}/generic_cpu)
 include_directories (${KOSIM_SOURCE_DIR}/hierarchy_scanner)
 include_directories (${KOSIM_SOURCE_DIR}/program_options)
-include_directories (/usr/include/python2.5)
-
+include_directories ($ENV{PYTHON_INCLUDE}/)
 
 #some debugging messages
 MESSAGE( "Your Unix home directory is $ENV{HOME}." )
