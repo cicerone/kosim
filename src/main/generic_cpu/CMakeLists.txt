@@ -30,6 +30,6 @@ link_directories (/usr/lib/)
 add_library (kosim_generic_cpu SHARED wrap_generic_cpu.cpp)
 
 # Link the executable to the used libraries.
-target_link_libraries (kosim_generic_cpu generic_cpu hierarchy_scanner program_options libboost_program_options-gcc43-mt-1_37.so libboost_python-gcc43-mt-1_37.so libscv.so libsystemc.a)
+target_link_libraries (kosim_generic_cpu generic_cpu hierarchy_scanner program_options libboost_program_options.so libboost_python.so libscv.so libsystemc.a)
 
 

@@ -29,5 +29,5 @@ link_directories (/usr/lib/)
 add_library (kosim_pythagoras SHARED wrap_pythagoras.cpp)
 
 # Link the executable to the used libraries.
-target_link_libraries (kosim_pythagoras pythagoras hierarchy_scanner program_options libboost_program_options-gcc43-mt-1_37.so libboost_python-gcc43-mt-1_37.so libscv.so libsystemc.a)
+target_link_libraries (kosim_pythagoras pythagoras hierarchy_scanner program_options libboost_program_options.so libboost_python.so libscv.so libsystemc.a)
 

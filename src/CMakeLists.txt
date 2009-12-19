@@ -32,11 +32,12 @@ target_link_libraries ( ${Boost_LIBRARIES})
 
 
 #SystemC libs
-link_directories    (/usr/local/systemc-2.2.0/lib-linux)
-link_directories    (/usr/local/scv-1.0p2-sysc2.2/lib-linux)
-include_directories (/usr/local/systemc-2.2.0/include)
-include_directories (/usr/local/scv-1.0p2-sysc2.2/include)
-include_directories (/usr/local/TLM-2009-07-15/include/tlm)
+link_directories    ($ENV{SYSTEMC_LIB}/)
+link_directories    ($ENV{SCV_LIB}/)
+
+include_directories ($ENV{SYSTEMC_INCLUDE}/)
+include_directories ($ENV{SCV_INCLUDE}/)
+include_directories ($ENV{TLM_INCLUDE}/)
 
 
 # Recurse into the subdirectories. This does not actually

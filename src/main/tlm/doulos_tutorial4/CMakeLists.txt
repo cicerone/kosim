@@ -24,13 +24,10 @@ MESSAGE( "Your Unix home directory is $ENV{HOME}." )
 #link_directories (/usr/local/lib/)
 link_directories (/usr/lib/)
 
-#some debugging messages
-#MESSAGE( "Your program_options lib is in: $ENV{BOOST_ROOT}/bin.v2/libs/program_options/build/gcc-4.1.2/release/link-static/threading-multi.")
-
 # Add shared library called "kosim" that is built from the source files
 add_library (kosim_doulos_tutorial4 SHARED wrap_doulos_tutorial4.cpp)
 
 # Link the executable to the used libraries.
-target_link_libraries (kosim_doulos_tutorial4 doulos_tutorial4 hierarchy_scanner program_options libboost_program_options-gcc43-mt-1_37.so libboost_python-gcc43-mt-1_37.so libscv.so libsystemc.a)
+target_link_libraries (kosim_doulos_tutorial4 doulos_tutorial4 hierarchy_scanner program_options libboost_program_options.so libboost_python.so libscv.so libsystemc.a)
 
 
