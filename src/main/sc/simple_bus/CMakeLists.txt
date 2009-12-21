@@ -26,5 +26,5 @@ link_directories (/usr/lib/)
 add_library (kosim_simple_bus SHARED wrap_simple_bus.cpp)
 
 # Link the executable to the used libraries.
-target_link_libraries (kosim_simple_bus simple_bus hierarchy_scanner program_options libboost_program_options.so libboost_python.so libscv.so libsystemc.a)
+target_link_libraries (kosim_simple_bus simple_bus hierarchy_scanner libboost_python.so libscv.so libsystemc.a)
 

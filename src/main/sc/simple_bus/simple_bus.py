@@ -7,18 +7,6 @@ import sys
 import kosim_simple_bus 
 
 print "=================="
-print len(sys.argv)
-for arg in sys.argv:
-    print "arg(%s)\n" % (arg)
-
-opt_builder = kosim_simple_bus.OptionsBuilder()
-
-print "------------------"
-for arg in sys.argv:
-    opt_builder.SetArgument(arg)
- 
-opt_builder.BuildArgv()
-opt_builder.InitProgramOptions()
 kosim_simple_bus.run_sim()
 
 

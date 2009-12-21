@@ -158,6 +158,7 @@ void
 GenericCPU::STMain()
 {
     InitSystem();
+    int32_t cntr = 0; 
     while(1)
     {
         uint32_t peripheral_id = m_irq.read(); //blocking read 
@@ -176,6 +177,8 @@ GenericCPU::STMain()
         
         printf("DBG data[0x%x] = 0x%x\n", 0x08, DbgRead32BitWord(0x08));
         printf("DBG data[0x%x] = 0x%x\n", 0x108, DbgRead32BitWord(0x108));
+
+        if (cntr++ > 100) exit(1);
     }
 
 }

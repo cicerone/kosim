@@ -42,11 +42,6 @@ BOOST_PYTHON_MODULE(kosim)
     def("parse_args", ko_sc::parse_args);
     def("start_sim", start_sim);
 
-    class_<OptionsBuilder>("OptionsBuilder", init<>())
-         .def("SetArgument", &OptionsBuilder::SetArgument) 
-         .def("BuildArgv", &OptionsBuilder::BuildArgv) 
-         .def("InitProgramOptions", &OptionsBuilder::InitProgramOptions) 
-    ;
 }
 
 

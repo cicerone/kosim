@@ -26,5 +26,5 @@ link_directories (/usr/lib/)
 add_library (kosim SHARED hello.cpp wrap_simple_fifo.cpp)
 
 # Link the executable to the used libraries.
-target_link_libraries (kosim simple_fifo hierarchy_scanner program_options libboost_program_options.so libboost_python.so libscv.so libsystemc.a)
+target_link_libraries (kosim simple_fifo hierarchy_scanner libboost_python.so libscv.so libsystemc.a)
 

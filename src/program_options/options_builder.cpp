@@ -8,7 +8,6 @@
 #include "options_builder.h"
 #include "program_options.h"
 
-
 OptionsBuilder::OptionsBuilder()
 {
 }

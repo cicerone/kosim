@@ -112,6 +112,78 @@ kosim_generic_cpu/fast:
 	cd /home/roni/github_proj/kosim/src && $(MAKE) -f main/generic_cpu/CMakeFiles/kosim_generic_cpu.dir/build.make main/generic_cpu/CMakeFiles/kosim_generic_cpu.dir/build
 .PHONY : kosim_generic_cpu/fast
 
+options_builder.o: options_builder.cpp.o
+.PHONY : options_builder.o
+
+# target to build an object file
+options_builder.cpp.o:
+	cd /home/roni/github_proj/kosim/src && $(MAKE) -f main/generic_cpu/CMakeFiles/kosim_generic_cpu.dir/build.make main/generic_cpu/CMakeFiles/kosim_generic_cpu.dir/options_builder.cpp.o
+.PHONY : options_builder.cpp.o
+
+options_builder.i: options_builder.cpp.i
+.PHONY : options_builder.i
+
+# target to preprocess a source file
+options_builder.cpp.i:
+	cd /home/roni/github_proj/kosim/src && $(MAKE) -f main/generic_cpu/CMakeFiles/kosim_generic_cpu.dir/build.make main/generic_cpu/CMakeFiles/kosim_generic_cpu.dir/options_builder.cpp.i
+.PHONY : options_builder.cpp.i
+
+options_builder.s: options_builder.cpp.s
+.PHONY : options_builder.s
+
+# target to generate assembly for a file
+options_builder.cpp.s:
+	cd /home/roni/github_proj/kosim/src && $(MAKE) -f main/generic_cpu/CMakeFiles/kosim_generic_cpu.dir/build.make main/generic_cpu/CMakeFiles/kosim_generic_cpu.dir/options_builder.cpp.s
+.PHONY : options_builder.cpp.s
+
+program_options.o: program_options.cpp.o
+.PHONY : program_options.o
+
+# target to build an object file
+program_options.cpp.o:
+	cd /home/roni/github_proj/kosim/src && $(MAKE) -f main/generic_cpu/CMakeFiles/kosim_generic_cpu.dir/build.make main/generic_cpu/CMakeFiles/kosim_generic_cpu.dir/program_options.cpp.o
+.PHONY : program_options.cpp.o
+
+program_options.i: program_options.cpp.i
+.PHONY : program_options.i
+
+# target to preprocess a source file
+program_options.cpp.i:
+	cd /home/roni/github_proj/kosim/src && $(MAKE) -f main/generic_cpu/CMakeFiles/kosim_generic_cpu.dir/build.make main/generic_cpu/CMakeFiles/kosim_generic_cpu.dir/program_options.cpp.i
+.PHONY : program_options.cpp.i
+
+program_options.s: program_options.cpp.s
+.PHONY : program_options.s
+
+# target to generate assembly for a file
+program_options.cpp.s:
+	cd /home/roni/github_proj/kosim/src && $(MAKE) -f main/generic_cpu/CMakeFiles/kosim_generic_cpu.dir/build.make main/generic_cpu/CMakeFiles/kosim_generic_cpu.dir/program_options.cpp.s
+.PHONY : program_options.cpp.s
+
+program_options_base.o: program_options_base.cpp.o
+.PHONY : program_options_base.o
+
+# target to build an object file
+program_options_base.cpp.o:
+	cd /home/roni/github_proj/kosim/src && $(MAKE) -f main/generic_cpu/CMakeFiles/kosim_generic_cpu.dir/build.make main/generic_cpu/CMakeFiles/kosim_generic_cpu.dir/program_options_base.cpp.o
+.PHONY : program_options_base.cpp.o
+
+program_options_base.i: program_options_base.cpp.i
+.PHONY : program_options_base.i
+
+# target to preprocess a source file
+program_options_base.cpp.i:
+	cd /home/roni/github_proj/kosim/src && $(MAKE) -f main/generic_cpu/CMakeFiles/kosim_generic_cpu.dir/build.make main/generic_cpu/CMakeFiles/kosim_generic_cpu.dir/program_options_base.cpp.i
+.PHONY : program_options_base.cpp.i
+
+program_options_base.s: program_options_base.cpp.s
+.PHONY : program_options_base.s
+
+# target to generate assembly for a file
+program_options_base.cpp.s:
+	cd /home/roni/github_proj/kosim/src && $(MAKE) -f main/generic_cpu/CMakeFiles/kosim_generic_cpu.dir/build.make main/generic_cpu/CMakeFiles/kosim_generic_cpu.dir/program_options_base.cpp.s
+.PHONY : program_options_base.cpp.s
+
 wrap_generic_cpu.o: wrap_generic_cpu.cpp.o
 .PHONY : wrap_generic_cpu.o
 
@@ -145,6 +217,15 @@ help:
 	@echo "... edit_cache"
 	@echo "... kosim_generic_cpu"
 	@echo "... rebuild_cache"
+	@echo "... options_builder.o"
+	@echo "... options_builder.i"
+	@echo "... options_builder.s"
+	@echo "... program_options.o"
+	@echo "... program_options.i"
+	@echo "... program_options.s"
+	@echo "... program_options_base.o"
+	@echo "... program_options_base.i"
+	@echo "... program_options_base.s"
 	@echo "... wrap_generic_cpu.o"
 	@echo "... wrap_generic_cpu.i"
 	@echo "... wrap_generic_cpu.s"

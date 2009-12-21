@@ -20,20 +20,7 @@ print "Some modules"
 kosim.print_modules("Top1")
 print "Some threads"
 kosim.print_threads("Top1.Producer1")
+
 kosim.start_sim()
-print "=================="
-print len(sys.argv)
-for arg in sys.argv:
-    print "arg(%s)\n" % (arg)
-
-opt_builder = kosim.OptionsBuilder()
-
-print "------------------"
-for arg in sys.argv:
-    opt_builder.SetArgument(arg)
- 
-opt_builder.BuildArgv()
-opt_builder.InitProgramOptions()
-
 
 

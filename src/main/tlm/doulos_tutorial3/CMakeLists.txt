@@ -27,6 +27,6 @@ link_directories (/usr/lib/)
 add_library (kosim_doulos_tutorial3 SHARED wrap_doulos_tutorial3.cpp)
 
 # Link the executable to the used libraries.
-target_link_libraries (kosim_doulos_tutorial3 doulos_tutorial3 hierarchy_scanner program_options libboost_program_options.so libboost_python.so libscv.so libsystemc.a)
+target_link_libraries (kosim_doulos_tutorial3 doulos_tutorial3 hierarchy_scanner libboost_python.so libscv.so libsystemc.a)
 
 

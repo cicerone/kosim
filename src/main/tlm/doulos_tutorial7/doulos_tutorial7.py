@@ -7,18 +7,6 @@ import sys
 import kosim_doulos_tutorial7 
 
 print "=================="
-print len(sys.argv)
-for arg in sys.argv:
-    print "arg(%s)\n" % (arg)
-
-opt_builder = kosim_doulos_tutorial7.OptionsBuilder()
-
-print "------------------"
-for arg in sys.argv:
-    opt_builder.SetArgument(arg)
- 
-opt_builder.BuildArgv()
-opt_builder.InitProgramOptions()
 kosim_doulos_tutorial7.run_sim()
 print "DONE"
 

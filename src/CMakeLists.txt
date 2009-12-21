@@ -66,6 +66,6 @@ add_subdirectory (examples/tlm/doulos/tutorial5)
 add_subdirectory (examples/tlm/doulos/tutorial6)
 add_subdirectory (examples/tlm/doulos/tutorial7)
 add_subdirectory (hierarchy_scanner)
-add_subdirectory (program_options)
+#add_subdirectory (program_options)
 add_subdirectory (generic_cpu)
 

@@ -28,11 +28,6 @@ BOOST_PYTHON_MODULE(kosim_pythagoras)
     def("print_threads", ko_sc::print_threads);
     def("parse_args", ko_sc::parse_args);
 
-    class_<OptionsBuilder>("OptionsBuilder", init<>())
-         .def("SetArgument", &OptionsBuilder::SetArgument) 
-         .def("BuildArgv", &OptionsBuilder::BuildArgv) 
-         .def("InitProgramOptions", &OptionsBuilder::InitProgramOptions) 
-    ;
 }
 
 
