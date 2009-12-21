@@ -36,11 +36,11 @@ public:
     int  Dump();
 
     ~ProgramOptions();
-private:
-    void InitConfiguration(int ac_, char* p_av_[]);
+protected:
     static ProgramOptions* mp_instance;
-    static int             m_argc     ;
-    static char**          mp_argv    ;
+private:
+    void InitConfiguration();
+    void RegisterConfiguration(int ac_, char* p_av_[]);
 
     ProgramOptions(int ac_, char* p_av_[]);
     int         m_dbg_level                       ; // debug level

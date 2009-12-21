@@ -22,8 +22,6 @@ using namespace std;
 //
 ////////////////////////////////////////////////////////////////////////////////////
 ProgramOptions* ProgramOptions::mp_instance = 0;
-int             ProgramOptions::m_argc      = 0;
-char**          ProgramOptions::mp_argv     = 0;
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -58,7 +56,6 @@ ProgramOptions::ProgramOptions(int ac_, char* p_av_[]) :
    mp_variable_map        = new po::variables_map;
    mp_positional_options  = new po::positional_options_description;
 
-   InitConfiguration(ac_, p_av_);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -81,7 +78,7 @@ ProgramOptions::~ProgramOptions()
 /////////////////////////////////////////////////////////////////////////////////////
 //
 ////////////////////////////////////////////////////////////////////////////////////
-void ProgramOptions::InitConfiguration(int ac_, char* p_av_[])
+void ProgramOptions::InitConfiguration()
 {
     mp_generic_options->add_options()
         ("version, v", "print version string")
@@ -105,15 +102,17 @@ void ProgramOptions::InitConfiguration(int ac_, char* p_av_[])
     mp_hidden_options->add_options()
         ("debug_level", po::value<int>(&m_dbg_level)->default_value(0), "debugging level")
         ;
-
+}
+/////////////////////////////////////////////////////////////////////////////////////
+//
+////////////////////////////////////////////////////////////////////////////////////
+void ProgramOptions::RegisterConfiguration(int ac_, char* p_av_[])
+{
     (*mp_cmdline_options).add(*mp_generic_options);
     (*mp_config_file_options).add(*mp_config_options);
     (*mp_visible_options).add(*mp_cmdline_options).add(*mp_config_options);
 
-//     mp_positional_options->add("cfg"   , 1);
-
 //parse command line
-//    store(po::command_line_parser(ac_, p_av_).options(*mp_cmdline_options).positional(*mp_positional_options).run(), *mp_variable_map);
     store(po::command_line_parser(ac_, p_av_).options(*mp_cmdline_options).run(), *mp_variable_map);
     notify(*mp_variable_map);
 
@@ -129,8 +128,9 @@ ProgramOptions* ProgramOptions::GetInstance(int ac_, char* p_av_[])
 {
     if (mp_instance == 0) {
         mp_instance = new ProgramOptions(ac_, p_av_);
-        m_argc  = ac_  ;
-        mp_argv = p_av_; 
+
+        mp_instance->InitConfiguration();
+        mp_instance->RegisterConfiguration(ac_, p_av_);
     }
     return mp_instance;  
 } 
