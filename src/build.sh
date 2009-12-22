@@ -8,7 +8,7 @@ export TLM_INCLUDE=/usr/local/TLM-2009-07-15/include/tlm
 export SYSTEMC_LIB=/usr/local/systemc-2.2.0/lib-linux
 export SCV_LIB=/usr/local/scv-1.0p2-sysc2.2/lib-linux
 
-source main/generic_cpu/build_program_options_links.sh
+python main/generic_cpu/build_program_options_links.py
 
 make clean 
 cmake clean .
