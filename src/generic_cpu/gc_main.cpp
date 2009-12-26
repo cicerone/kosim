@@ -76,6 +76,10 @@ int sc_main(int argc, char* argv[])
 // RET: 
 void run_sim()
 {
+    cout << "=======================================================" << endl;
+    cout << ProgramOptions::GetInstance()->get_test_name() << endl;
+    cout << "=======================================================" << endl;
+
     Top top("top");
     sc_start();
 }

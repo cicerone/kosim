@@ -9,14 +9,6 @@
 
 using namespace std;
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-////////////////////////////////////////////////////////////////////////////////////
-
-
-#define SLEEP_TIME_PER_FRAME                       1    // ms
-#define SLOTMACHINE_HS_TIME_LOW                 1000    // ms
-#define SLOTMACHINE_HS_TIME_HIGH                1000    // ms
 
 /////////////////////////////////////////////////////////////////////////////////////
 //
@@ -28,15 +20,15 @@ ProgramOptions* ProgramOptions::mp_instance = 0;
 //
 ////////////////////////////////////////////////////////////////////////////////////
 ProgramOptions::ProgramOptions(int ac_, char* p_av_[]) : 
-    m_dbg_level                       (0                              ),
+    m_dbg_level                 (0                   ),
 // options from configuration file
-    m_driver_type                     ("NOT_INITIALIZED!"             ),
-    m_sleep_time_per_frame            (SLEEP_TIME_PER_FRAME           ),
-    m_sm_high_speed_time_lowest_value (SLOTMACHINE_HS_TIME_LOW        ),
-    m_sm_high_speed_time_highest_value(SLOTMACHINE_HS_TIME_HIGH       ),
-    m_cmd_line_arg1                   (77                             ),
+    m_test_name                 ("NOT_INITIALIZED!"  ),
+    m_addr_width_int_resources  (8                   ),
+    m_mem0_lowest_value         (0                   ),
+    m_mem0_highest_value        (0                   ),
+    m_cmd_line_arg1             (77                  ),
 // END options from configuration file
-   m_config_file         ("NOT_INITIALIZED!"),
+   m_config_file                ("NOT_INITIALIZED!"),
 
    mp_generic_options    (0),
    mp_config_options     (0),
@@ -88,10 +80,10 @@ void ProgramOptions::InitConfiguration()
 
     mp_config_options->add_options()
 ///////////  OPTIONS from configuraton file  ////////////////////////////////////
-        ("DriverType"        , po::value<std::string>(&m_driver_type)->default_value("SOFTWARE"), "driver type")
-        ("SleepTimePerFrame" , po::value<int32_t>(&m_sleep_time_per_frame)->default_value(SLEEP_TIME_PER_FRAME), "Sleep time for each frame [ms]")
-        ("SpinHighSpeedTime.LowestValue", po::value<int32_t>(&m_sm_high_speed_time_lowest_value)->default_value(SLOTMACHINE_HS_TIME_LOW ), "Lowest value of the duration of high speed spin")
-        ("SpinHighSpeedTime.HighestValue", po::value<int32_t>(&m_sm_high_speed_time_highest_value)->default_value(SLOTMACHINE_HS_TIME_HIGH ), "Highest value of the duration of high speed spin")
+        ("TestName"        , po::value<std::string>(&m_test_name)->default_value("test_x"), "test_name")
+        ("AddressWidthInternalResources" , po::value<int32_t>(&m_addr_width_int_resources)->default_value(8), "address width for the internal resources of a peripheral [bits]")
+        ("Mem0.LowestValue", po::value<int32_t>(&m_mem0_lowest_value)->default_value  (0 ), "Lowest value of the address 0 value")
+        ("Mem0.HighestValue", po::value<int32_t>(&m_mem0_highest_value)->default_value(0 ), "Highest value of the address 0 value")
         ;
 
     mp_cmdline_options->add_options()
@@ -173,7 +165,7 @@ int ProgramOptions::Dump()
         }
 
         cout << "///// OPTIONS from pattern configuration file  //////// " << endl;
-        cout << "m_driver_type                        : " <<  m_driver_type                         << endl;
+        cout << "m_test_name                        : " <<  m_test_name                         << endl;
         return 0;
 }
 

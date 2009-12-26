@@ -6,6 +6,7 @@
 ===============================================================================================*/
 
 #include "gc_memory.h"
+#include  "main/generic_cpu/program_options.h"
 
 using namespace sc_core;
 using namespace sc_dt;
@@ -134,8 +135,16 @@ void GCMemory::STMain()
     while(1)
     {
        
-        mem[2] = mem[0] + mem[1];
+        if ((mem[0] > ProgramOptions::GetInstance()->get_mem0_lowest_value()) &&
+            (mem[0] < ProgramOptions::GetInstance()->get_mem0_highest_value()))
+        {
+            mem[2] = mem[0] + mem[1];
+        }
+        else {
+            mem[2] = mem[0] + 2*mem[1];
+        }
+
         wait(10, SC_NS);
-	m_irq.write(m_id);
+        m_irq.write(m_id);
     }
 }

@@ -14,6 +14,8 @@
 #include "tlm_utils/simple_initiator_socket.h"
 #include "tlm_utils/simple_target_socket.h"
 
+#include "main/generic_cpu/program_options.h"
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // GCRouter implemtents a generic blocking transport router that connects one initiator with 
@@ -160,8 +162,16 @@ void GCRouter<N_TARGETS>::invalidate_direct_mem_ptr(int32_t id, uint64_t start_r
 template<uint32_t N_TARGETS>
 uint32_t GCRouter<N_TARGETS>::decode_address( uint64_t address_, uint64_t* p_masked_address_ )
 {
-    uint32_t target_nr = static_cast<uint32_t>( (address_ >> 8) & 0x3 );
-    *p_masked_address_ = address_ & 0xFF;
+    uint32_t addr_width_int_rsrc = ProgramOptions::GetInstance()->get_addr_width_int_resources();
+    uint32_t addr_mask = 0;
+    if (addr_width_int_rsrc == 8) {
+        addr_mask = 0xff;
+    }
+    else {
+        cerr << "Error! Unknown addr_mask! " << endl;
+    }
+    uint32_t target_nr = static_cast<uint32_t>( (address_ >> addr_width_int_rsrc) & 0x3 );
+    *p_masked_address_ = address_ & addr_mask;
     return target_nr;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////

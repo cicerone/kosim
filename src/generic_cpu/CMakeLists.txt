@@ -7,7 +7,7 @@
 
 #Create a shared library called "hierarchy_scanner"
 #include dirs
-#include_directories ($KOSIM_SOURCE_DIR}/generic_cpu)
+include_directories (${KOSIM_SOURCE_DIR}/)
 
 # The extension is already found. Any number of sources could be listed here.
 add_library (generic_cpu SHARED gc_memory.cpp generic_cpu.cpp gc_main.cpp)
@@ -16,4 +16,4 @@ add_library (generic_cpu SHARED gc_memory.cpp generic_cpu.cpp gc_main.cpp)
 #add_executable (generic_cpu gc_main.cpp gc_memory.cpp generic_cpu.cpp)
 ## Link the executable to the used libraries.
 #target_link_libraries (generic_cpu libscv.so libsystemc.a) 
-
+ 

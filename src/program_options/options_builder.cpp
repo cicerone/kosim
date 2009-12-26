@@ -24,20 +24,19 @@ void OptionsBuilder::SetArgument(const char* p_arg_)
 
 void OptionsBuilder::BuildArgv()
 {
-    printf("size is (%d)\n", m_argv.size());
+//    printf("size is (%d)\n", m_argv.size());
 
     mp_argv = (char**)calloc(m_argv.size(), sizeof(char*));
     for (uint32_t i = 0; i < m_argv.size(); i++)
     {
         mp_argv[i] = const_cast<char *>(m_argv[i].c_str());
-        printf("argument(%d) is (%s)\n", i, mp_argv[i]);
+//        printf("argument(%d) is (%s)\n", i, mp_argv[i]);
     }
 }
 
 void  OptionsBuilder::InitProgramOptions()
 {
     ProgramOptions* p_program_options = ProgramOptions::GetInstance(m_argv.size(), mp_argv);
-    p_program_options->Help();
-    printf("SLEEP TIME PER FRAME (%d)\n", p_program_options->get_sleep_time_per_frame());
+//    p_program_options->Help();
 }
 

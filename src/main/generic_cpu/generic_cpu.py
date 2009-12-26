@@ -6,20 +6,18 @@
 import sys
 import kosim_generic_cpu 
 
-print "=================="
-print len(sys.argv)
-for arg in sys.argv:
-    print "arg(%s)\n" % (arg)
+#print len(sys.argv)
+#for arg in sys.argv:
+#    print "arg(%s)\n" % (arg)
 
 opt_builder = kosim_generic_cpu.OptionsBuilder()
 
-print "------------------"
 for arg in sys.argv:
     opt_builder.SetArgument(arg)
  
 opt_builder.BuildArgv()
 opt_builder.InitProgramOptions()
 kosim_generic_cpu.run_sim()
-print "DONE"
+print "--- Test DONE ---"
 
 

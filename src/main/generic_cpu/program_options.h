@@ -26,10 +26,10 @@ public:
     static ProgramOptions* GetInstance();                       // NOTE: can be called any time after 
     int    get_dbg_level() { return m_dbg_level              ;}
 ///////////  OPTIONS from configuraton file  ////////////////////////////////////
-    std::string& get_driver_type                  () { return m_driver_type         ; }
-    int32_t      get_sleep_time_per_frame         () { return m_sleep_time_per_frame; }
-    int32_t      get_sm_high_speed_time_lowest_value () { return m_sm_high_speed_time_lowest_value ; }
-    int32_t      get_sm_high_speed_time_highest_value() { return m_sm_high_speed_time_highest_value; }
+    std::string& get_test_name                       () { return m_test_name           ; }
+    int32_t      get_addr_width_int_resources        () { return m_addr_width_int_resources; }
+    int32_t      get_mem0_lowest_value               () { return m_mem0_lowest_value ; }
+    int32_t      get_mem0_highest_value              () { return m_mem0_highest_value; }
 
 ///////////  END OPTIONS from configuration file  ////////////////////////////////////
     void Help();
@@ -45,10 +45,10 @@ private:
     ProgramOptions(int ac_, char* p_av_[]);
     int         m_dbg_level                       ; // debug level
 ///////////  OPTIONS from configuraton file  ////////////////////////////////////
-    std::string m_driver_type                     ;
-    int32_t     m_sleep_time_per_frame            ;
-    int32_t     m_sm_high_speed_time_lowest_value ; 
-    int32_t     m_sm_high_speed_time_highest_value; 
+    std::string m_test_name                ;
+    int32_t     m_addr_width_int_resources ;
+    int32_t     m_mem0_lowest_value ; 
+    int32_t     m_mem0_highest_value; 
 ///////////  END OPTIONS from configuration file  ////////////////////////////////////
 ///////////  OPTIONS from command line  ////////////////////////////////////
     int32_t     m_cmd_line_arg1                   ;
