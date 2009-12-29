@@ -18,7 +18,7 @@
 
 using namespace boost::python;
 
-BOOST_PYTHON_MODULE(kosim_doulos_tutorial1)
+BOOST_PYTHON_MODULE(libkosim_doulos_tutorial1)
 {
 
     def("run_sim", run_sim); // entru point in SystemC program                           

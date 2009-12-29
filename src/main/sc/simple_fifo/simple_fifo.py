@@ -4,7 +4,9 @@
 #  Hello World Example from the tutorial
 
 import sys
-import kosim 
+import libkosim_simple_fifo as kosim
+
+#kosim = libkosim
 
 print kosim.greet()
 hi = kosim.hello('California')

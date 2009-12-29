@@ -4,7 +4,7 @@
 #  Hello World Example from the tutorial
 
 import sys
-import kosim_simple_bus 
+import libkosim_simple_bus as kosim_simple_bus 
 
 print "=================="
 kosim_simple_bus.run_sim()

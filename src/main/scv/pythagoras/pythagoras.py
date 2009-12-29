@@ -4,7 +4,7 @@
 #  Hello World Example from the tutorial
 
 import sys
-import kosim_pythagoras 
+import libkosim_pythagoras as kosim_pythagoras
 
 print "=================="
 kosim_pythagoras.run_sim(5)

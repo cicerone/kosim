@@ -4,7 +4,7 @@
 #  Hello World Example from the tutorial
 
 import sys
-import kosim_doulos_tutorial4 
+import libkosim_doulos_tutorial4 as kosim_doulos_tutorial4
 
 print "=================="
 kosim_doulos_tutorial4.run_sim()

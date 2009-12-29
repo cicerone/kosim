@@ -19,7 +19,7 @@
 
 using namespace boost::python;
 
-BOOST_PYTHON_MODULE(kosim)
+BOOST_PYTHON_MODULE(libkosim_simple_fifo)
 {
     def("greet", greet);
 

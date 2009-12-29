@@ -23,8 +23,8 @@ MESSAGE( "Your Unix home directory is $ENV{HOME}." )
 link_directories (/usr/lib/)
 
 # Add shared library called "kosim" that is built from the source files
-add_library (kosim SHARED hello.cpp wrap_simple_fifo.cpp)
+add_library (kosim_simple_fifo SHARED hello.cpp wrap_simple_fifo.cpp)
 
 # Link the executable to the used libraries.
-target_link_libraries (kosim simple_fifo hierarchy_scanner libboost_python.so libscv.so libsystemc.a)
+target_link_libraries (kosim_simple_fifo simple_fifo hierarchy_scanner libboost_python.so libscv.so libsystemc.a)
 

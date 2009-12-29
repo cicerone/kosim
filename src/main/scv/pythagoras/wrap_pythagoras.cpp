@@ -17,7 +17,7 @@
 
 using namespace boost::python;
 
-BOOST_PYTHON_MODULE(kosim_pythagoras)
+BOOST_PYTHON_MODULE(libkosim_pythagoras)
 {
 
     def("run_sim", run_sim); // entru point in SystemC program                           

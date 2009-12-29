@@ -17,7 +17,7 @@
 
 using namespace boost::python;
 
-BOOST_PYTHON_MODULE(kosim_simple_bus)
+BOOST_PYTHON_MODULE(libkosim_simple_bus)
 {
 
     def("run_sim", run_sim); // entru point in SystemC program                           

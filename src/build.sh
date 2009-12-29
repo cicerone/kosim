@@ -14,14 +14,3 @@ make clean
 cmake clean .
 cmake .
 make
-cp ./main/sc/simple_fifo/libkosim.so ./main/sc/simple_fifo/kosim.so
-cp ./main/sc/simple_bus/libkosim_simple_bus.so ./main/sc/simple_bus/kosim_simple_bus.so
-cp ./main/scv/pythagoras/libkosim_pythagoras.so ./main/scv/pythagoras/kosim_pythagoras.so
-cp ./main/generic_cpu/libkosim_generic_cpu.so ./main/generic_cpu/kosim_generic_cpu.so
-cp ./main/tlm/doulos_tutorial1/libkosim_doulos_tutorial1.so ./main/tlm/doulos_tutorial1/kosim_doulos_tutorial1.so
-cp ./main/tlm/doulos_tutorial2/libkosim_doulos_tutorial2.so ./main/tlm/doulos_tutorial2/kosim_doulos_tutorial2.so
-cp ./main/tlm/doulos_tutorial3/libkosim_doulos_tutorial3.so ./main/tlm/doulos_tutorial3/kosim_doulos_tutorial3.so
-cp ./main/tlm/doulos_tutorial4/libkosim_doulos_tutorial4.so ./main/tlm/doulos_tutorial4/kosim_doulos_tutorial4.so
-cp ./main/tlm/doulos_tutorial5/libkosim_doulos_tutorial5.so ./main/tlm/doulos_tutorial5/kosim_doulos_tutorial5.so
-cp ./main/tlm/doulos_tutorial6/libkosim_doulos_tutorial6.so ./main/tlm/doulos_tutorial6/kosim_doulos_tutorial6.so
-cp ./main/tlm/doulos_tutorial7/libkosim_doulos_tutorial7.so ./main/tlm/doulos_tutorial7/kosim_doulos_tutorial7.so
