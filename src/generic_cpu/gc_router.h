@@ -44,12 +44,12 @@ private:
   // BACKWARD path methods 
 
   // Tagged backward DMI method
-  void invalidate_direct_mem_ptr(int id, sc_dt::uint64 start_range_, uint64_t end_range_);
+  void invalidate_direct_mem_ptr(int id, sc_dt::uint64 start_range_, sc_dt::uint64 end_range_);
 
   // Simple fixed address decoding
 
   inline uint32_t decode_address( sc_dt::uint64 address_, sc_dt::uint64* p_masked_address_ );
-  inline sc_dt::uint64 compose_address( uint32_t target_nr_, uint64_t address_);
+  inline sc_dt::uint64 compose_address( uint32_t target_nr_, sc_dt::uint64 address_);
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -147,7 +147,7 @@ uint32_t GCRouter<N_TARGETS>::transport_dbg(tlm::tlm_generic_payload& payload_ )
 // OUT: 
 // RET: 
 template<uint32_t N_TARGETS>
-void GCRouter<N_TARGETS>::invalidate_direct_mem_ptr(int32_t id, uint64_t start_range_, uint64_t end_range_)
+void GCRouter<N_TARGETS>::invalidate_direct_mem_ptr(int32_t id, sc_dt::uint64 start_range_, sc_dt::uint64 end_range_)
 {
     // Reconstruct address range in system memory map
     sc_dt::uint64 bw_start_range_ = compose_address( id, start_range_ );
@@ -160,7 +160,7 @@ void GCRouter<N_TARGETS>::invalidate_direct_mem_ptr(int32_t id, uint64_t start_r
 // OUT: 
 // RET: 
 template<uint32_t N_TARGETS>
-uint32_t GCRouter<N_TARGETS>::decode_address( uint64_t address_, uint64_t* p_masked_address_ )
+uint32_t GCRouter<N_TARGETS>::decode_address( sc_dt::uint64 address_, sc_dt::uint64* p_masked_address_ )
 {
     uint32_t addr_width_int_rsrc = ProgramOptions::GetInstance()->get_addr_width_int_resources();
     uint32_t addr_mask = 0;
@@ -180,7 +180,7 @@ uint32_t GCRouter<N_TARGETS>::decode_address( uint64_t address_, uint64_t* p_mas
 // OUT: 
 // RET: 
 template<uint32_t N_TARGETS>
-sc_dt::uint64 GCRouter<N_TARGETS>::compose_address( uint32_t target_nr_, uint64_t address_)
+sc_dt::uint64 GCRouter<N_TARGETS>::compose_address( uint32_t target_nr_, sc_dt::uint64 address_)
 {
     return (target_nr_ << 8) | (address_ & 0xFF);
 }
