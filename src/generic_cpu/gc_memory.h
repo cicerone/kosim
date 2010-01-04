@@ -10,6 +10,7 @@
 
 #include <stdint.h>
 
+#define SC_INCLUDE_DYNAMIC_PROCESSES
 #include "systemc.h"
 #include "tlm.h"
 #include "tlm_utils/simple_initiator_socket.h"
