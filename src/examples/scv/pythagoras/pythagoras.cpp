@@ -2,6 +2,7 @@
 #include "scv.h"
 #include "scv/scv_constraint.h"
 
+void _scv_pop_constraint() {}
 
 // Simple example to show use of SCV constraint solver to find
 // integer solutions to pythagorean theorem:
