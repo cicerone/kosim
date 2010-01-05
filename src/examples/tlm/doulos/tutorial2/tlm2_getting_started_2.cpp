@@ -346,5 +346,7 @@ void run_sim()
 {
   Top top("top");
   sc_start();
+
+  cout << "PASSED" << endl;
 }
 

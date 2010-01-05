@@ -72,23 +72,19 @@ add_subdirectory (generic_cpu)
 # tests to run 
 # execute "make test" to run the following tests
 enable_testing()
-add_test(test_simple_fifo      python main/generic_cpu/simple_fifo.py     )
-add_test(test_simple_bus       python main/generic_cpu/simple_bus.py      )
-add_test(test_pythagoras       python main/generic_cpu/pythagoras.py      )
-add_test(test_doulos_tutorial1 python main/generic_cpu/doulos_tutorial1.py)
-add_test(test_doulos_tutorial2 python main/generic_cpu/doulos_tutorial2.py)
-add_test(test_doulos_tutorial3 python main/generic_cpu/doulos_tutorial3.py)
-add_test(test_doulos_tutorial4 python main/generic_cpu/doulos_tutorial4.py)
-add_test(test_doulos_tutorial5 python main/generic_cpu/doulos_tutorial5.py)
-add_test(test_doulos_tutorial6 python main/generic_cpu/doulos_tutorial6.py)
-add_test(test_doulos_tutorial7 python main/generic_cpu/doulos_tutorial7.py)
+
+add_test(test_simple_fifo      python main/sc/simple_fifo/simple_fifo.py     )
+add_test(test_simple_bus       python main/sc/simple_bus/simple_bus.py       )
+add_test(test_pythagoras       python main/scv/pythagoras/pythagoras.py      )
+add_test(test_doulos_tutorial1 python main/tlm/doulos_tutorial1/doulos_tutorial1.py)
+add_test(test_doulos_tutorial2 python main/tlm/doulos_tutorial2/doulos_tutorial2.py)
+add_test(test_doulos_tutorial3 python main/tlm/doulos_tutorial3/doulos_tutorial3.py)
+add_test(test_doulos_tutorial4 python main/tlm/doulos_tutorial4/doulos_tutorial4.py)
+add_test(test_doulos_tutorial5 python main/tlm/doulos_tutorial5/doulos_tutorial5.py)
+add_test(test_doulos_tutorial6 python main/tlm/doulos_tutorial6/doulos_tutorial6.py)
+add_test(test_doulos_tutorial7 python main/tlm/doulos_tutorial7/doulos_tutorial7.py)
 add_test(test_generic_cpu      python main/generic_cpu/generic_cpu.py     )
 
-set_tests_properties(test_simple_fifo test_simple_bus test_pythagoras
-test_doulos_tutorial1 test_doulos_tutorial2 test_doulos_tutorial3
-test_doulos_tutorial4 test_doulos_tutorial5 test_doulos_tutorial6
-test_doulos_tutorial7 PROPERTIES PASS_REGULAR_EXPRESSION "^[a-z]PASSED")
-set_tests_properties(test_simple_fifo test_simple_bus test_pythagoras
-test_doulos_tutorial1 test_doulos_tutorial2 test_doulos_tutorial3
-test_doulos_tutorial4 test_doulos_tutorial5 test_doulos_tutorial6
-test_doulos_tutorial7 PROPERTIES FAIL_REGULAR_EXPRESSION "^[a-z]ERROR")
+set_tests_properties(test_simple_fifo test_simple_bus test_pythagoras test_doulos_tutorial1 test_doulos_tutorial2 test_doulos_tutorial3 test_doulos_tutorial4 test_doulos_tutorial5 test_doulos_tutorial6 test_doulos_tutorial7 PROPERTIES PASS_REGULAR_EXPRESSION "PASSED")
+set_tests_properties(test_simple_fifo test_simple_bus test_pythagoras test_doulos_tutorial1 test_doulos_tutorial2 test_doulos_tutorial3 test_doulos_tutorial4 test_doulos_tutorial5 test_doulos_tutorial6 test_doulos_tutorial7 PROPERTIES FAIL_REGULAR_EXPRESSION "ERROR")
+

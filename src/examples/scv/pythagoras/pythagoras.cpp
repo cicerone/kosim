@@ -70,5 +70,6 @@ int run_sim (int cnt_)
     }
   }
 
+  cout << "PASSED" << endl;
   return 0;
 }

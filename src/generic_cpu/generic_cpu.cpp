@@ -178,7 +178,7 @@ GenericCPU::STMain()
         printf("DBG data[0x%x] = 0x%x\n", 0x08, DbgRead32BitWord(0x08));
         printf("DBG data[0x%x] = 0x%x\n", 0x108, DbgRead32BitWord(0x108));
 
-        if (cntr++ > 20) { cout << "PASSED" << endl; exit(0);}
+        if (cntr++ > 20) { cout << "Test PASSED" << endl; exit(0);}
     }
 
 }

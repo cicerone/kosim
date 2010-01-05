@@ -152,6 +152,6 @@ void init_sim()
 void start_sim()
 {
     sc_start();
-    fprintf(stdout, "\nPASSED\n");
+    cout << "PASSED" << endl;
 }
 

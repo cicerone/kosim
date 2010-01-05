@@ -9,7 +9,7 @@ import sys
 import libkosim_pythagoras as kosim_pythagoras
 
 print "=================="
-kosim_pythagoras.run_sim(5)
+kosim_pythagoras.run_sim(1)
 print "DONE"
 
 
