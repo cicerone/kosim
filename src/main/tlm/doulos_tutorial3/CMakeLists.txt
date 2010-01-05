@@ -12,7 +12,7 @@ include_directories (${KOSIM_SOURCE_DIR}/program_options)
 include_directories ($ENV{PYTHON_INCLUDE}/)
 
 #some debugging messages
-MESSAGE( "Your Unix home directory is $ENV{HOME}." )
+#MESSAGE( "Your Unix home directory is $ENV{HOME}." )
 
 #SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-ansi -pedantic -Wall -W -Wconversion -Wshadow -Wcast-qual -Wwrite-strings -Wpadded")
 #SET(CMAKE_CXX_FLAGS_RELEASE        "-ansi -pedantic -Wall -W -Wconversion -Wshadow -Wcast-qual -Wwrite-strings -Wpadded")
