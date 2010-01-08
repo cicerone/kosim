@@ -80,6 +80,7 @@ void run_sim()
     cout << ProgramOptions::GetInstance()->get_test_name() << endl;
     cout << "=======================================================" << endl;
 
+
     Top top("top");
     sc_start();
 }

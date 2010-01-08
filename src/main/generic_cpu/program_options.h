@@ -36,9 +36,8 @@ public:
     int  Dump();
 
     ~ProgramOptions();
-protected:
-    static ProgramOptions* mp_instance;
 private:
+    static ProgramOptions* mp_instance;
     void InitConfiguration();
     void RegisterConfiguration(int ac_, char* p_av_[]);
 

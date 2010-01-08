@@ -68,6 +68,7 @@ add_subdirectory (examples/tlm/doulos/tutorial7)
 add_subdirectory (hierarchy_scanner)
 #add_subdirectory (program_options)
 add_subdirectory (generic_cpu)
+add_subdirectory (memory_map)
 
 # tests to run 
 # execute "make test" to run the following tests
@@ -83,7 +84,7 @@ add_test(test_doulos_tutorial4 python main/tlm/doulos_tutorial4/doulos_tutorial4
 add_test(test_doulos_tutorial5 python main/tlm/doulos_tutorial5/doulos_tutorial5.py)
 add_test(test_doulos_tutorial6 python main/tlm/doulos_tutorial6/doulos_tutorial6.py)
 add_test(test_doulos_tutorial7 python main/tlm/doulos_tutorial7/doulos_tutorial7.py)
-add_test(test_generic_cpu      python main/generic_cpu/generic_cpu.py     )
+add_test(test_generic_cpu      python main/generic_cpu/generic_cpu.py        )
 
 set_tests_properties(test_simple_fifo test_simple_bus test_pythagoras test_doulos_tutorial1 test_doulos_tutorial2 test_doulos_tutorial3 test_doulos_tutorial4 test_doulos_tutorial5 test_doulos_tutorial6 test_doulos_tutorial7 PROPERTIES PASS_REGULAR_EXPRESSION "PASSED")
 set_tests_properties(test_simple_fifo test_simple_bus test_pythagoras test_doulos_tutorial1 test_doulos_tutorial2 test_doulos_tutorial3 test_doulos_tutorial4 test_doulos_tutorial5 test_doulos_tutorial6 test_doulos_tutorial7 PROPERTIES FAIL_REGULAR_EXPRESSION "ERROR")
