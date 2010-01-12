@@ -8,9 +8,9 @@
 #ifndef KOSIM_MM_MEMORY_MAP_H
 #define KOSIM_MM_MEMORY_MAP_H
 
+#include <stdint.h>
 #include <string>
 #include <vector>
-#include <stdint.h>
 
 #include "systemc.h"
 #include <boost/utility.hpp>
@@ -22,22 +22,35 @@ class MemoryMap : boost::noncopyable
 public:
     MemoryMap(const uint32_t id_, const string& name_, const uint32_t offset_);
     ~MemoryMap();
-    uint32_t get_id()     { return m_id;};
-    string*  get_name()   { return &m_name;};
-    uint32_t get_offset() { return m_offset;};
+    uint32_t get_id()         const { return m_id;};
+    const string*  get_name() const { return &m_name;};
+    uint32_t get_offset()     const { return m_offset;};
     void     SetSpaceSize(const uint32_t num_regs_, const uint32_t mem_size_);
+    void     SetRegisterFieldsSize(const uint32_t num_fields_);
     uint32_t get_number_regs() { return m_number_registers;};
     uint32_t get_memory_size() { return m_memory_size;};
-    bool     write(const uint32_t addr_, const uint32_t data_);
-    bool     read (const uint32_t addr_, uint32_t* const p_data_);    
+    void     write(const uint32_t addr_, const uint32_t data_);
+    void     read (const uint32_t addr_, uint32_t* const p_data_);    
+    void     write(const uint32_t addr_, const uint32_t field_, const uint32_t data_);
+    void     read (const uint32_t addr_, const uint32_t field_, uint32_t* const p_data_);    
+    void     set_register_field(const uint32_t field_, const uint32_t msb_, const uint32_t lsb_);
+    void     get_register_field(const uint32_t field_, uint32_t* const p_msb_, uint32_t* const p_lsb_);
     
 private:
+    struct FieldRange
+    {
+        uint32_t msb;
+        uint32_t lsb;
+    };
+
     uint32_t    m_id    ; 
     string      m_name  ; 
     uint32_t    m_offset;           // 4bytes aligned
     uint32_t    m_number_registers; // 4 bytes regs
     uint32_t    m_memory_size;      // 4 bytes per memory location
     vector<sc_uint<32> > m_hw_resource;
+    vector<FieldRange>   m_register_field;
+
 };
 
 #endif // KOSIM_MM_MEMORY_MAP_H
