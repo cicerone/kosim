@@ -21,6 +21,10 @@ MemoryMap::MemoryMap(const uint32_t id_, const string& name_, const uint32_t off
   m_number_registers(0      ),
   m_memory_size     (0      )
 {
+    if (offset_ % sizeof(uint32_t) != 0) {
+        fprintf(stderr, "ERROR! the memory map offset (0x%x) must be multiple of (%d)\n", offset_, sizeof(uint32_t));
+        exit(1);
+    }
 }
 /////////////////////////////////////////////////////////////////////////////////////
 //

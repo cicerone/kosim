@@ -45,7 +45,7 @@ private:
 
     uint32_t    m_id    ; 
     string      m_name  ; 
-    uint32_t    m_offset;           // 4bytes aligned
+    uint32_t    m_offset;           // 4 bytes aligned
     uint32_t    m_number_registers; // 4 bytes regs
     uint32_t    m_memory_size;      // 4 bytes per memory location
     vector<sc_uint<32> > m_hw_resource;

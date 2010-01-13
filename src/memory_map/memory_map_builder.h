@@ -22,6 +22,8 @@ class MemoryMapBuilder : boost::noncopyable
 public:
     static MemoryMapBuilder* GetInstance();     
     void AddBlock(MemoryMap* p_memmap_);
+    uint32_t GetAbsoluteAddress(uint32_t block_id_, uint32_t reg_id_);
+    uint32_t FindTarget(uint32_t addr_);
 
     int  PrintMemoryMap();
     ~MemoryMapBuilder();
