@@ -28,7 +28,9 @@ public:
     void     SetSpaceSize(const uint32_t num_regs_, const uint32_t mem_size_);
     void     SetRegisterFieldsSize(const uint32_t num_fields_);
     uint32_t get_number_regs() { return m_number_registers;};
-    uint32_t get_memory_size() { return m_memory_size;};
+    uint32_t get_number_mem_locations() { return m_memory_size;};
+    // size of memory space in bytes
+    uint32_t get_memory_space() { return (sizeof(uint32_t)*(m_number_registers + m_memory_size));};
     void     write(const uint32_t addr_, const uint32_t data_);
     void     read (const uint32_t addr_, uint32_t* const p_data_);    
     void     write(const uint32_t reg_id_, const uint32_t field_, const uint32_t data_);

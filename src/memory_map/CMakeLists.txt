@@ -10,7 +10,7 @@
 include_directories (${KOSIM_SOURCE_DIR}/)
 
 # The extension is already found. Any number of sources could be listed here.
-add_library (memory_map_builder SHARED memory_map_builder.cpp memory_map.cpp)
+add_library (memory_map SHARED memory_map_builder.cpp memory_map.cpp)
 
 ##Example of HOWTO make an executable in one dir
 #add_executable (memory_map_builder mmb_main.cpp memory_map_builder.cpp)

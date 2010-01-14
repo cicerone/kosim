@@ -16,6 +16,7 @@
 #include "tlm_utils/simple_initiator_socket.h"
 #include "tlm_utils/simple_target_socket.h"
 
+class MemoryMap;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // Target module representing a simple memory
@@ -41,12 +42,9 @@ public:
 
 private:
   void STMain();
-  static const uint32_t SIZE = 256;
   const sc_time DMI_LATENCY;
 
-  int32_t mem[SIZE];
-  static uint32_t mem_nr;
-
+  MemoryMap* mp_memory_map;
   uint32_t m_id;
 };
 
