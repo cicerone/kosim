@@ -86,35 +86,27 @@ void MemoryMap::read (const uint32_t addr_, uint32_t* const p_data_)
     *p_data_ = m_hw_resource[local_addr];
 }
 /////////////////////////////////////////////////////////////////////////////////////
-//
+// This is a backdoor method to write directly the regs only. Probably should not be used.
+// TLM debug transport mechanims probably should be preferred.
 // IN:   addr_  - the address of reg/memory; it is 4 byte aligned 
 //       field_ - the field of the register where data is written
 //       data_  - the value to be written
 // OUT: 
 // RET:  true if the operation was succesfull
-void MemoryMap::write(const uint32_t addr_, const uint32_t field_, const uint32_t data_)
+void MemoryMap::write(const uint32_t reg_id_, const uint32_t field_, const uint32_t data_)
 {
-    uint32_t local_addr = addr_ >> 2;
-    if (local_addr > m_hw_resource.size()) {
-        fprintf(stderr, "ERROR! Block %s has address (0x%x) out of range (0x%x)\n", m_name.c_str(), addr_, m_hw_resource.size()); 
-        exit(1);
-    }
-    m_hw_resource[addr_].range(m_register_field[field_].msb, m_register_field[field_].lsb) = data_;
+    m_hw_resource[reg_id_].range(m_register_field[field_].msb, m_register_field[field_].lsb) = data_;
 }
 /////////////////////////////////////////////////////////////////////////////////////
-//
+// This is a backdoor method to read directly the regs only. Probably should not be used.
+// TLM debug transport mechanims probably should be preferred.
 // IN:  addr_   - the address of reg/memory; it is 4 bytes aligned
 //      field_  - the field the data is read from
 // OUT: p_data_ - reference to data that is read 
 // RET:  true if the operation was succesfull
-void MemoryMap::read (const uint32_t addr_, const uint32_t field_, uint32_t* const p_data_)
+void MemoryMap::read (const uint32_t reg_id_, const uint32_t field_, uint32_t* const p_data_)
 {
-    uint32_t local_addr = addr_ >> 2;
-    if (local_addr > m_hw_resource.size()) {
-        fprintf(stderr, "ERROR! Block %s has address (0x%x) out of range (0x%x)\n", m_name.c_str(), addr_, m_hw_resource.size()); 
-        exit(1);
-    }
-    *p_data_ = m_hw_resource[addr_].range(m_register_field[field_].msb, m_register_field[field_].lsb);
+    *p_data_ = m_hw_resource[reg_id_].range(m_register_field[field_].msb, m_register_field[field_].lsb);
 }
 /////////////////////////////////////////////////////////////////////////////////////
 //

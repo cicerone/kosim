@@ -31,8 +31,8 @@ public:
     uint32_t get_memory_size() { return m_memory_size;};
     void     write(const uint32_t addr_, const uint32_t data_);
     void     read (const uint32_t addr_, uint32_t* const p_data_);    
-    void     write(const uint32_t addr_, const uint32_t field_, const uint32_t data_);
-    void     read (const uint32_t addr_, const uint32_t field_, uint32_t* const p_data_);    
+    void     write(const uint32_t reg_id_, const uint32_t field_, const uint32_t data_);
+    void     read (const uint32_t reg_id_, const uint32_t field_, uint32_t* const p_data_);    
     void     set_register_field(const uint32_t field_, const uint32_t msb_, const uint32_t lsb_);
     void     get_register_field(const uint32_t field_, uint32_t* const p_msb_, uint32_t* const p_lsb_);
     

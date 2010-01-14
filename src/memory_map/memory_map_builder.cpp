@@ -11,7 +11,8 @@
 using namespace std;
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// IN: 
+// IN:  p_mm1, p_mm2 - the MemoryMaps that are compared; the comparison criterion refers to the memory offset;
+//      The MemoryMapBuilder will sort the MemoryMap space in ascending order of the offsets.
 // OUT: 
 // RET: 
 bool MemMapSortCriterion(MemoryMap* p_mm1_, MemoryMap* p_mm2_)
@@ -22,6 +23,42 @@ bool MemMapSortCriterion(MemoryMap* p_mm1_, MemoryMap* p_mm2_)
                      p_mm1_->get_name()->c_str(), p_mm2_->get_name()->c_str(), p_mm1_->get_offset());
     exit(1);
     return false;
+}
+/////////////////////////////////////////////////////////////////////////////////////
+// This function does not alter the hw_resource value, it prepares only the value needed
+// IN:  block_id_ - the block where the register to be modified is located
+//      reg_id_   - the register to be modified
+//      field_id_ - the field to be modified
+//      field_value_ - the new value of the field
+// OUT: 
+// RET: the new value of the entire register (32 bit) 
+uint32_t WriteField(uint32_t block_id_, uint32_t field_id_, uint32_t field_value_)
+{
+    uint32_t msb = 0;
+    uint32_t lsb = 0;
+    MemoryMap* p_mmap = MemoryMapBuilder::GetInstance()->GetMemoryMap(block_id_);
+    p_mmap->get_register_field(field_id_, &msb, &lsb);
+    sc_uint<32> data;
+    data.range(msb, lsb) = field_value_;
+    return data.to_uint();
+}
+/////////////////////////////////////////////////////////////////////////////////////
+// This function does not read the hw_resource value, it extracts the field value out of a already read hardware resource 
+// IN:  block_id_ - the block where the register to be read is located
+//      reg_id_   - the register to be read 
+//      field_id_ - the field to be read 
+//      reg_value_ - the value of the register that has the fiels read
+// OUT:
+// RET: the value of the field 
+uint32_t ReadField(uint32_t block_id_, uint32_t field_id_, uint32_t reg_value_)
+{
+    uint32_t msb = 0;
+    uint32_t lsb = 0;
+    MemoryMap* p_mmap = MemoryMapBuilder::GetInstance()->GetMemoryMap(block_id_);
+    p_mmap->get_register_field(field_id_, &msb, &lsb);
+    sc_uint<32> reg_val = reg_value_;
+    uint32_t field_value =  reg_val.range(msb, lsb);
+    return field_value;
 }
 /////////////////////////////////////////////////////////////////////////////////////
 //
@@ -93,6 +130,15 @@ uint32_t MemoryMapBuilder::FindTarget(uint32_t addr_)
     }
     pos--; // find the start of the range
     return (*pos)->get_id();
+}
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// IN:  block_id_ - the peripheral block id 
+// OUT: 
+// RET: reference to the memory map 
+MemoryMap* MemoryMapBuilder::GetMemoryMap(uint32_t block_id_)
+{
+    return m_memory_map[block_id_];
 }
 /////////////////////////////////////////////////////////////////////////////////////
 //

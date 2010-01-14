@@ -16,6 +16,8 @@
 
 
 bool MemMapSortCriterion(MemoryMap* p_mm1_, MemoryMap* p_mm2_);
+uint32_t WriteField(uint32_t block_id_, uint32_t field_id_, uint32_t field_value_);
+uint32_t ReadField(uint32_t block_id_, uint32_t field_id_, uint32_t reg_value_);
 
 class MemoryMapBuilder : boost::noncopyable
 {
@@ -24,6 +26,7 @@ public:
     void AddBlock(MemoryMap* p_memmap_);
     uint32_t GetAbsoluteAddress(uint32_t block_id_, uint32_t reg_id_);
     uint32_t FindTarget(uint32_t addr_);
+    MemoryMap* GetMemoryMap(uint32_t block_id_);
 
     int  PrintMemoryMap();
     ~MemoryMapBuilder();
