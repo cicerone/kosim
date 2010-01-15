@@ -18,11 +18,7 @@ using namespace std;
 bool MemMapSortCriterion(MemoryMap* p_mm1_, MemoryMap* p_mm2_)
 {
     if (p_mm1_->get_offset() < p_mm2_->get_offset()) return true;
-    if (p_mm1_->get_offset() > p_mm2_->get_offset()) return false;
-    fprintf(stderr, "ERROR! Two blocks (%s) and (%s) have the same offset (0x%x)\n", 
-                     p_mm1_->get_name()->c_str(), p_mm2_->get_name()->c_str(), p_mm1_->get_offset());
-    exit(1);
-    return false;
+    if (p_mm1_->get_offset() >= p_mm2_->get_offset()) return false;
 }
 /////////////////////////////////////////////////////////////////////////////////////
 // This function does not alter the hw_resource value, it prepares only the value needed
@@ -107,19 +103,31 @@ void MemoryMapBuilder::AddBlock(MemoryMap*  p_memmap_)
 /////////////////////////////////////////////////////////////////////////////////////
 //  
 // IN:   block_id_ - the target peripheral
-//       ihw_resource_id_ - the local address of a resource (reg or memory) 
+//       hw_resource_id_ - the local id of a resource (reg or memory) 
 // OUT: 
 // RET:  the address in the absolute memory space of the reource 
-uint32_t MemoryMapBuilder::GetAbsoluteAddress(uint32_t block_id_, uint32_t hw_resource_id_)
+uint64_t MemoryMapBuilder::GetAbsoluteAddress(uint32_t block_id_, uint32_t hw_resource_id_)
 {
     uint32_t addr = m_memory_map[block_id_]->get_offset() + hw_resource_id_ << 2; //  
+    return addr;
+}
+/////////////////////////////////////////////////////////////////////////////////////
+//  
+// IN:   block_id_ - the target peripheral
+//       local_addr_ - the local address of a resource (reg or memory) 
+// OUT: 
+// RET:  the address in the absolute memory space of the reource 
+uint64_t   MemoryMapBuilder::GetAbsoluteAddress(uint32_t block_id_, uint64_t local_addr_)
+{
+    uint32_t addr = m_memory_map[block_id_]->get_offset() + local_addr_; //  
+    return addr;
 }
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// IN:  addr_ - the address of the resource 
-// OUT: 
+// IN:  addr_ - the address of the resource in the global memory space 
+// OUT: p_ local_addr__ - reference to the local address of the target 
 // RET: the ID of the block that contains the adress addr_
-uint32_t MemoryMapBuilder::FindTarget(uint32_t addr_)
+uint32_t MemoryMapBuilder::FindTarget(uint64_t addr_, uint64_t* p_local_addr_)
 {
     vector<MemoryMap*>::iterator pos;
     MemoryMap local_mmap(0, "local", addr_);
@@ -129,6 +137,7 @@ uint32_t MemoryMapBuilder::FindTarget(uint32_t addr_)
         exit(1);
     }
     pos--; // find the start of the range
+    *p_local_addr_ = addr_ - (*pos)->get_offset();
     return (*pos)->get_id();
 }
 /////////////////////////////////////////////////////////////////////////////////////

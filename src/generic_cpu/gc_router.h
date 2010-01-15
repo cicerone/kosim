@@ -14,7 +14,8 @@
 #include "tlm_utils/simple_initiator_socket.h"
 #include "tlm_utils/simple_target_socket.h"
 
-#include "main/generic_cpu/program_options.h"
+#include "program_options.h"
+#include "memory_map_builder.h"
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -46,10 +47,6 @@ private:
   // Tagged backward DMI method
   void invalidate_direct_mem_ptr(int id, sc_dt::uint64 start_range_, sc_dt::uint64 end_range_);
 
-  // Simple fixed address decoding
-
-  inline uint32_t decode_address( sc_dt::uint64 address_, sc_dt::uint64* p_masked_address_ );
-  inline sc_dt::uint64 compose_address( uint32_t target_nr_, sc_dt::uint64 address_);
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -98,7 +95,7 @@ void GCRouter<N_TARGETS>::b_transport( tlm::tlm_generic_payload& payload_, sc_ti
 {
     sc_dt::uint64 address = payload_.get_address();
     sc_dt::uint64 masked_address;
-    uint32_t target_nr = decode_address( address, &masked_address);
+    uint32_t target_nr = MemoryMapBuilder::GetInstance()->FindTarget(address, &masked_address);
 
     // Modify address within transaction
     payload_.set_address( masked_address );
@@ -115,14 +112,16 @@ template<uint32_t N_TARGETS>
 bool GCRouter<N_TARGETS>::get_direct_mem_ptr(tlm::tlm_generic_payload& payload_, tlm::tlm_dmi& dmi_data_)
 {
     sc_dt::uint64 masked_address;
-    uint32_t target_nr = decode_address( payload_.get_address(), &masked_address );
+    uint32_t target_nr = MemoryMapBuilder::GetInstance()->FindTarget(payload_.get_address(), &masked_address);
+
     payload_.set_address( masked_address );
 
     bool status = ( *mp_initiator_socket[target_nr] )->get_direct_mem_ptr( payload_, dmi_data_ );
 
     // Calculate DMI address of target in system address space
-    dmi_data_.set_start_address( compose_address( target_nr, dmi_data_.get_start_address() ));
-    dmi_data_.set_end_address  ( compose_address( target_nr, dmi_data_.get_end_address() ));
+    dmi_data_.set_start_address( MemoryMapBuilder::GetInstance()->GetAbsoluteAddress( target_nr, dmi_data_.get_start_address() ));
+    dmi_data_.set_end_address  ( MemoryMapBuilder::GetInstance()->GetAbsoluteAddress( target_nr, dmi_data_.get_end_address() ));
+    
 
     return status;
 }
@@ -135,7 +134,7 @@ template<uint32_t N_TARGETS>
 uint32_t GCRouter<N_TARGETS>::transport_dbg(tlm::tlm_generic_payload& payload_ )
 {
     sc_dt::uint64 masked_address;
-    uint32_t target_nr = decode_address( payload_.get_address(), &masked_address );
+    uint32_t target_nr = MemoryMapBuilder::GetInstance()->FindTarget(payload_.get_address(), &masked_address);
     payload_.set_address( masked_address );
 
     // Forward debug transaction to appropriate target
@@ -150,40 +149,9 @@ template<uint32_t N_TARGETS>
 void GCRouter<N_TARGETS>::invalidate_direct_mem_ptr(int32_t id, sc_dt::uint64 start_range_, sc_dt::uint64 end_range_)
 {
     // Reconstruct address range in system memory map
-    sc_dt::uint64 bw_start_range_ = compose_address( id, start_range_ );
-    sc_dt::uint64 bw_end_range_   = compose_address( id, end_range_ );
+    sc_dt::uint64 bw_start_range_ = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress( id, start_range_ );
+    sc_dt::uint64 bw_end_range_   = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress( id, end_range_ );
     m_target_socket->invalidate_direct_mem_ptr(bw_start_range_, bw_end_range_);
 }
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// IN: 
-// OUT: 
-// RET: 
-template<uint32_t N_TARGETS>
-uint32_t GCRouter<N_TARGETS>::decode_address( sc_dt::uint64 address_, sc_dt::uint64* p_masked_address_ )
-{
-    uint32_t addr_width_int_rsrc = ProgramOptions::GetInstance()->get_addr_width_int_resources();
-    uint32_t addr_mask = 0;
-    if (addr_width_int_rsrc == 8) {
-        addr_mask = 0xff;
-    }
-    else {
-        cerr << "Error! Unknown addr_mask! " << endl;
-    }
-    uint32_t target_nr = static_cast<uint32_t>( (address_ >> addr_width_int_rsrc) & 0x3 );
-    *p_masked_address_ = address_ & addr_mask;
-    return target_nr;
-}
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// IN: 
-// OUT: 
-// RET: 
-template<uint32_t N_TARGETS>
-sc_dt::uint64 GCRouter<N_TARGETS>::compose_address( uint32_t target_nr_, sc_dt::uint64 address_)
-{
-    return (target_nr_ << 8) | (address_ & 0xFF);
-}
-
 #endif // KOSIM_GC_GC_ROUTER_H
 
