@@ -27,12 +27,13 @@ link_directories (/usr/lib/)
 #MESSAGE( "Your program_options lib is in: $ENV{BOOST_ROOT}/bin.v2/libs/program_options/build/gcc-4.1.2/release/link-static/threading-multi.")
 
 # Add shared library called "kosim" that is built from the source files
-#add_library (kosim_generic_cpu SHARED wrap_generic_cpu.cpp program_options.cpp program_options_base.cpp options_builder.cpp)
+add_library (kosim_generic_cpu SHARED wrap_generic_cpu.cpp program_options.cpp program_options_base.cpp options_builder.cpp)
 # Link the executable to the used libraries.
-#target_link_libraries (kosim_generic_cpu generic_cpu hierarchy_scanner memory_map libboost_program_options.so libboost_python.so libscv.so libsystemc.a)
+target_link_libraries (kosim_generic_cpu generic_cpu hierarchy_scanner memory_map libboost_program_options.so libboost_python.so libscv.so libsystemc.a)
 
 
 #Generate executable
-add_executable (kosim_generic_cpu  program_options.cpp program_options_base.cpp options_builder.cpp)
+#add_executable (kosim_generic_cpu  program_options.cpp program_options_base.cpp options_builder.cpp)
 # Link the executable to the used libraries.
-target_link_libraries (kosim_generic_cpu generic_cpu hierarchy_scanner memory_map libboost_program_options.so libscv.so libsystemc.a)
+#target_link_libraries (kosim_generic_cpu generic_cpu hierarchy_scanner memory_map libboost_program_options.so libscv.so libsystemc.a)
+

@@ -80,12 +80,12 @@ GCMemory::b_transport( tlm::tlm_generic_payload& payload_, sc_time& delay_ )
     uint32_t data = 0;
     // read and write commands
     if ( command == tlm::TLM_READ_COMMAND ) {
-        mp_memory_map->read(mem_address, &data);
+        mp_memory_map->Read(mem_address, &data);
         memcpy(data_ptr, &data, data_length);
     }
     else if ( command == tlm::TLM_WRITE_COMMAND ) {
         memcpy(&data, data_ptr, data_length);
-        mp_memory_map->write(mem_address, data);
+        mp_memory_map->Write(mem_address, data);
     }
 /*
 NOTE: Idealy the memory part must be an array so that memcpy can be used
@@ -145,12 +145,12 @@ GCMemory::transport_dbg(tlm::tlm_generic_payload& payload_)
     uint32_t data = 0;
     // read and write commands
     if ( command == tlm::TLM_READ_COMMAND ) {
-        mp_memory_map->read(mem_address, &data);
+        mp_memory_map->Read(mem_address, &data);
         memcpy(data_ptr, &data, data_length);
     }
     else if ( command == tlm::TLM_WRITE_COMMAND ) {
         memcpy(&data, data_ptr, data_length);
-        mp_memory_map->write(mem_address, data);
+        mp_memory_map->Write(mem_address, data);
     }
 /*
     if ( command == tlm::TLM_READ_COMMAND )
@@ -170,9 +170,9 @@ void GCMemory::STMain()
     while(1)
     {
         uint32_t mem[3];
-        mp_memory_map->read(0, &mem[0]);
-        mp_memory_map->read(4, &mem[1]);
-        mp_memory_map->read(8, &mem[2]);
+        mp_memory_map->Read(0, &mem[0]);
+        mp_memory_map->Read(4, &mem[1]);
+        mp_memory_map->Read(8, &mem[2]);
        
         if ((mem[0] > ProgramOptions::GetInstance()->get_mem0_lowest_value()) &&
             (mem[0] < ProgramOptions::GetInstance()->get_mem0_highest_value()))
@@ -183,7 +183,7 @@ void GCMemory::STMain()
             mem[2] = mem[0] + 2*mem[1];
         }
 
-        mp_memory_map->write(8, mem[2]);
+        mp_memory_map->Write(8, mem[2]);
 
         wait(10, SC_NS);
         if (m_id == MEM2) printf("MEM2 addr(0x%x) data(0x%x) \n", M2_REG0, mem[0]);

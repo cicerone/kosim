@@ -56,11 +56,9 @@ uint32_t ReadField(uint32_t block_id_, uint32_t field_id_, uint32_t reg_value_)
     uint32_t field_value =  reg_val.range(msb, lsb);
     return field_value;
 }
+
+
 /////////////////////////////////////////////////////////////////////////////////////
-//
-// IN: 
-// OUT: 
-// RET: 
 MemoryMapBuilder* MemoryMapBuilder::mp_instance = 0;
 /////////////////////////////////////////////////////////////////////////////////////
 //

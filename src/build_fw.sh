@@ -29,6 +29,7 @@ echo "SCV_LIB         = $SCV_LIB        "
 python main/generic_cpu/build_program_options_links.py
 
 make clean 
-cmake clean CMakeLists.txt 
-cmake CMakeLists.txt 
+cmake clean CMakeLists_fw.txt 
+cmake CMakeLists_fw.txt 
 make
+
