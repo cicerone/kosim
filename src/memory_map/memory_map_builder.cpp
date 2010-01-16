@@ -28,13 +28,13 @@ bool MemMapSortCriterion(MemoryMap* p_mm1_, MemoryMap* p_mm2_)
 //      field_value_ - the new value of the field
 // OUT: 
 // RET: the new value of the entire register (32 bit) 
-uint32_t WriteField(uint32_t block_id_, uint32_t field_id_, uint32_t field_value_)
+uint32_t WriteField(uint32_t block_id_, uint32_t field_id_, uint32_t field_value_, uint32_t reg_value_)
 {
     uint32_t msb = 0;
     uint32_t lsb = 0;
     MemoryMap* p_mmap = MemoryMapBuilder::GetInstance()->GetMemoryMap(block_id_);
     p_mmap->get_register_field(field_id_, &msb, &lsb);
-    sc_uint<32> data;
+    sc_uint<32> data = reg_value_;
     data.range(msb, lsb) = field_value_;
     return data.to_uint();
 }

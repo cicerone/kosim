@@ -228,9 +228,14 @@ void
 GenericCPU::TreatPeripheral2()
 {
 printf("%s\n", __PRETTY_FUNCTION__);
-    uint64_t addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress(MEM2, M2_FIELD0); 
+    
+    uint64_t addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress(MEM2, M2_REG0); 
     printf("addr = (0x%x)\n", addr);
-    Write32BitWord(addr, 5);
+    uint32_t reg_val = 5;
+    Write32BitWord(addr, reg_val);
+    uint32_t new_reg_val = WriteField(MEM2, M2_FIELD0, 1,  reg_val);
+    Write32BitWord(addr, new_reg_val);
+
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // TLM-2 backward DMI method, invalidates dmi access
