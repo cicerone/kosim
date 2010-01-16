@@ -25,7 +25,7 @@ public:
     static     MemoryMapBuilder* GetInstance();     
     void       AddBlock(MemoryMap* p_memmap_);
     uint64_t   GetAbsoluteAddress(uint32_t block_id_, uint32_t hw_resource_id_);
-    uint64_t   GetAbsoluteAddress(uint32_t block_id_, uint64_t local_addr_);
+    uint64_t   GetAbsoluteAddress2(uint32_t block_id_, uint64_t local_addr_);
     uint32_t   FindTarget(uint64_t addr_, uint64_t* p_local_addr_);
     MemoryMap* GetMemoryMap(uint32_t block_id_);
 

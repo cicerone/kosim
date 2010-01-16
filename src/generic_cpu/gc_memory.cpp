@@ -9,6 +9,7 @@
 #include "program_options.h"
 #include "memory_map_builder.h"
 #include "memory_map.h"
+#include "gen_from_sysrdl.h"
 
 using namespace sc_core;
 using namespace sc_dt;
@@ -185,6 +186,7 @@ void GCMemory::STMain()
         mp_memory_map->write(8, mem[2]);
 
         wait(10, SC_NS);
+        if (m_id == MEM2) printf("MEM2 addr(0x%x) data(0x%x) \n", M2_REG0, mem[0]);
         m_irq.write(m_id);
     }
 }

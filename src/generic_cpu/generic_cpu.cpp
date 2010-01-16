@@ -6,6 +6,8 @@
 ===============================================================================================*/
 
 #include "generic_cpu.h"
+#include "memory_map_builder.h"
+#include "gen_from_sysrdl.h"
 
 using namespace std;
 
@@ -167,6 +169,8 @@ GenericCPU::STMain()
             break;
             case 1: TreatPeripheral1();
             break;
+            case 2: TreatPeripheral2();
+            break;
             default:
             break;
         }
@@ -214,6 +218,19 @@ GenericCPU::TreatPeripheral1()
 printf("%s", __PRETTY_FUNCTION__);
     Write32BitWord(0x100, 3);
     Write32BitWord(0x104, 4);
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// IN: 
+// OUT: 
+// RET: 
+void 
+GenericCPU::TreatPeripheral2()
+{
+printf("%s\n", __PRETTY_FUNCTION__);
+    uint64_t addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress(MEM2, M2_FIELD0); 
+    printf("addr = (0x%x)\n", addr);
+    Write32BitWord(addr, 5);
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // TLM-2 backward DMI method, invalidates dmi access

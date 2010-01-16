@@ -108,7 +108,7 @@ void MemoryMapBuilder::AddBlock(MemoryMap*  p_memmap_)
 // RET:  the address in the absolute memory space of the reource 
 uint64_t MemoryMapBuilder::GetAbsoluteAddress(uint32_t block_id_, uint32_t hw_resource_id_)
 {
-    uint32_t addr = m_memory_map[block_id_]->get_offset() + hw_resource_id_ << 2; //  
+    uint64_t addr = m_memory_map[block_id_]->get_offset() + (hw_resource_id_ << 2); //  
     return addr;
 }
 /////////////////////////////////////////////////////////////////////////////////////
@@ -117,7 +117,7 @@ uint64_t MemoryMapBuilder::GetAbsoluteAddress(uint32_t block_id_, uint32_t hw_re
 //       local_addr_ - the local address of a resource (reg or memory) 
 // OUT: 
 // RET:  the address in the absolute memory space of the reource 
-uint64_t   MemoryMapBuilder::GetAbsoluteAddress(uint32_t block_id_, uint64_t local_addr_)
+uint64_t   MemoryMapBuilder::GetAbsoluteAddress2(uint32_t block_id_, uint64_t local_addr_)
 {
     uint32_t addr = m_memory_map[block_id_]->get_offset() + local_addr_; //  
     return addr;

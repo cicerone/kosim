@@ -39,6 +39,7 @@ private:
   void InitSystem();
   void TreatPeripheral0();
   void TreatPeripheral1();
+  void TreatPeripheral2();
 
   // TLM-2 backward DMI method
   void invalidate_direct_mem_ptr(sc_dt::uint64 start_range_, sc_dt::uint64 end_range_);

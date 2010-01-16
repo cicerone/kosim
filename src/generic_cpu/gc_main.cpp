@@ -13,16 +13,9 @@
 #include "gc_interrupt_controller.h"
 #include "memory_map_builder.h"
 #include "memory_map.h"
+#include "gen_from_sysrdl.h"
 
 
-enum BLOCK_ID
-{
-    MEM0 = 0,
-    MEM1    ,
-    MEM2    ,
-    MEM3    ,
-    NUMBER_PERIPHERALS,
-};
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // Top is the class that creates and binds the objects together.
@@ -36,7 +29,6 @@ public:
   
 private:
    void BuildMemoryMap();
-//   static const uint32_t NUMBER_PERIPHERALS = 4;
    GenericCPU* p_gcpu;
    GCRouter<NUMBER_PERIPHERALS>* p_router;
    GCMemory*    p_memory[NUMBER_PERIPHERALS];
@@ -86,27 +78,10 @@ Top::Top(sc_module_name name_) : sc_module(name_)
 // RET: 
 void Top::BuildMemoryMap()
 {
-    MemoryMapBuilder* p_mm_builder = MemoryMapBuilder::GetInstance();
-
-    MemoryMap* p_mm0 = new MemoryMap(MEM0, "MEMORY_MAP_0", 0x000);
-    MemoryMap* p_mm1 = new MemoryMap(MEM1, "MEMORY_MAP_1", 0x100);
-    MemoryMap* p_mm2 = new MemoryMap(MEM2, "MEMORY_MAP_2", 0x200);
-    MemoryMap* p_mm3 = new MemoryMap(MEM3, "MEMORY_MAP_3", 0x300);
-
-    p_mm0->SetSpaceSize(0, 64);
-    p_mm1->SetSpaceSize(0, 64);
-    p_mm2->SetSpaceSize(0, 64);
-    p_mm3->SetSpaceSize(0, 64);
-    
-    p_mm0->SetRegisterFieldsSize(0);
-    p_mm1->SetRegisterFieldsSize(0);
-    p_mm2->SetRegisterFieldsSize(0);
-    p_mm3->SetRegisterFieldsSize(0);
-
-    p_mm_builder->AddBlock(p_mm0);
-    p_mm_builder->AddBlock(p_mm1);
-    p_mm_builder->AddBlock(p_mm2);
-    p_mm_builder->AddBlock(p_mm3);
+    BuildMemoryMap4Mem0();
+    BuildMemoryMap4Mem1();
+    BuildMemoryMap4Mem2();
+    BuildMemoryMap4Mem3();
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // Entry point if the program is run as an executable
