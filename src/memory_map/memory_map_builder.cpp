@@ -15,7 +15,7 @@ using namespace std;
 //      The MemoryMapBuilder will sort the MemoryMap space in ascending order of the offsets.
 // OUT: 
 // RET: 
-bool MemMapSortCriterion(MemoryMap* p_mm1_, MemoryMap* p_mm2_)
+bool MemMapSortCriterion(const MemoryMap* p_mm1_, const MemoryMap* p_mm2_)
 {
     if (p_mm1_->get_offset() < p_mm2_->get_offset()) return true;
     if (p_mm1_->get_offset() >= p_mm2_->get_offset()) return false;
@@ -28,7 +28,7 @@ bool MemMapSortCriterion(MemoryMap* p_mm1_, MemoryMap* p_mm2_)
 //      field_value_ - the new value of the field
 // OUT: 
 // RET: the new value of the entire register (32 bit) 
-uint32_t WriteField(uint32_t block_id_, uint32_t field_id_, uint32_t field_value_, uint32_t reg_value_)
+uint32_t WriteField(const uint32_t block_id_, const uint32_t field_id_, const uint32_t field_value_, const uint32_t reg_value_) // RESOURCES_ON_32_BITS
 {
     uint32_t msb = 0;
     uint32_t lsb = 0;
@@ -45,8 +45,8 @@ uint32_t WriteField(uint32_t block_id_, uint32_t field_id_, uint32_t field_value
 //      field_id_ - the field to be read 
 //      reg_value_ - the value of the register that has the fiels read
 // OUT:
-// RET: the value of the field 
-uint32_t ReadField(uint32_t block_id_, uint32_t field_id_, uint32_t reg_value_)
+// RET: the value of the field  
+uint32_t ReadField(const uint32_t block_id_, const uint32_t field_id_, const uint32_t reg_value_) // RESOURCES_ON_32_BITS
 {
     uint32_t msb = 0;
     uint32_t lsb = 0;
@@ -104,9 +104,9 @@ void MemoryMapBuilder::AddBlock(MemoryMap*  p_memmap_)
 //       hw_resource_id_ - the local id of a resource (reg or memory) 
 // OUT: 
 // RET:  the address in the absolute memory space of the reource 
-uint64_t MemoryMapBuilder::GetAbsoluteAddress(uint32_t block_id_, uint32_t hw_resource_id_)
+uint64_t MemoryMapBuilder::GetAbsoluteAddress(const uint32_t block_id_, const uint32_t hw_resource_id_) const
 {
-    uint64_t addr = m_memory_map[block_id_]->get_offset() + (hw_resource_id_ << 2); //  
+    uint64_t addr = m_memory_map[block_id_]->get_offset() + (hw_resource_id_ << 2); // RESOURCES_ON_32_BITS  
     return addr;
 }
 /////////////////////////////////////////////////////////////////////////////////////
@@ -115,9 +115,9 @@ uint64_t MemoryMapBuilder::GetAbsoluteAddress(uint32_t block_id_, uint32_t hw_re
 //       local_addr_ - the local address of a resource (reg or memory) 
 // OUT: 
 // RET:  the address in the absolute memory space of the reource 
-uint64_t   MemoryMapBuilder::GetAbsoluteAddress2(uint32_t block_id_, uint64_t local_addr_)
+uint64_t   MemoryMapBuilder::GetAbsoluteAddress2(const uint32_t block_id_, const uint64_t local_addr_) const
 {
-    uint32_t addr = m_memory_map[block_id_]->get_offset() + local_addr_; //  
+    uint64_t addr = m_memory_map[block_id_]->get_offset() + local_addr_;   
     return addr;
 }
 /////////////////////////////////////////////////////////////////////////////////////
@@ -125,7 +125,7 @@ uint64_t   MemoryMapBuilder::GetAbsoluteAddress2(uint32_t block_id_, uint64_t lo
 // IN:  addr_ - the address of the resource in the global memory space 
 // OUT: p_ local_addr__ - reference to the local address of the target 
 // RET: the ID of the block that contains the adress addr_
-uint32_t MemoryMapBuilder::FindTarget(uint64_t addr_, uint64_t* p_local_addr_)
+uint32_t MemoryMapBuilder::FindTarget(const uint64_t addr_, uint64_t* const p_local_addr_)  
 {
     vector<MemoryMap*>::iterator pos;
     MemoryMap local_mmap(0, "local", addr_);
@@ -143,7 +143,7 @@ uint32_t MemoryMapBuilder::FindTarget(uint64_t addr_, uint64_t* p_local_addr_)
 // IN:  block_id_ - the peripheral block id 
 // OUT: 
 // RET: reference to the memory map 
-MemoryMap* MemoryMapBuilder::GetMemoryMap(uint32_t block_id_)
+MemoryMap* MemoryMapBuilder::GetMemoryMap(const uint32_t block_id_) const 
 {
     return m_memory_map[block_id_];
 }

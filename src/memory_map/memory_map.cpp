@@ -14,7 +14,7 @@ using namespace std;
 // IN: 
 // OUT: 
 // RET: 
-MemoryMap::MemoryMap(const uint32_t id_, const string& name_, const uint32_t offset_) :
+MemoryMap::MemoryMap(const uint32_t id_, const string& name_, const uint64_t offset_) :
   m_id              (id_    ),
   m_name            (name_  ),
   m_offset          (offset_),
@@ -22,7 +22,7 @@ MemoryMap::MemoryMap(const uint32_t id_, const string& name_, const uint32_t off
   m_memory_size     (0      )
 {
     if (offset_ % sizeof(uint32_t) != 0) {
-        fprintf(stderr, "ERROR! the memory map offset (0x%x) must be multiple of (%d)\n", offset_, sizeof(uint32_t));
+        fprintf(stderr, "ERROR! the memory map offset (0x%x) must be multiple of (%d)\n", offset_, sizeof(uint32_t)); // RESOURCES_ON_32_BITS
         exit(1);
     }
 }
@@ -40,11 +40,11 @@ MemoryMap::~MemoryMap()
 //      mem_size_ - the size of the memory bank
 // OUT: 
 // RET: 
-void MemoryMap::SetSpaceSize(const uint32_t num_regs_, const uint32_t mem_size_)
+void MemoryMap::SetSpaceSize(const uint64_t num_regs_, const uint64_t mem_size_)
 {
     m_number_registers = num_regs_;
     m_memory_size      = mem_size_;
-    uint32_t size = num_regs_ + mem_size_;
+    uint64_t size = num_regs_ + mem_size_;
     m_hw_resource.resize(size, 0);
 }
 /////////////////////////////////////////////////////////////////////////////////////
@@ -52,7 +52,7 @@ void MemoryMap::SetSpaceSize(const uint32_t num_regs_, const uint32_t mem_size_)
 // IN:  num_fields_ - the total number of fields of all registers 
 // OUT: 
 // RET: 
-void MemoryMap::SetRegisterFieldsSize(const uint32_t num_fields_)
+void MemoryMap::SetRegisterFieldsSize(const uint64_t num_fields_)
 {
     m_register_field.resize(num_fields_);
 }
@@ -62,7 +62,7 @@ void MemoryMap::SetRegisterFieldsSize(const uint32_t num_fields_)
 //       data_ - the value to be written
 // OUT: 
 // RET:  true if the operation was succesfull
-void MemoryMap::Write(const uint32_t addr_, const uint32_t data_)
+void MemoryMap::Write(const uint64_t addr_, const uint32_t data_) // RESOURCES_ON_32_BITS
 {
     uint32_t local_addr = addr_ >> 2;
     if (local_addr > m_hw_resource.size()) {
@@ -76,7 +76,7 @@ void MemoryMap::Write(const uint32_t addr_, const uint32_t data_)
 // IN: addr_ - the address of reg/memory; it is 4 bytes aligned
 // OUT: p_data_ - reference to data that is read 
 // RET:  true if the operation was succesfull
-void MemoryMap::Read (const uint32_t addr_, uint32_t* const p_data_)
+void MemoryMap::Read (const uint64_t addr_, uint32_t* const p_data_)  // RESOURCES_ON_32_BITS
 {
     uint32_t local_addr = addr_ >> 2;
     if (local_addr > m_hw_resource.size()) {
@@ -93,7 +93,7 @@ void MemoryMap::Read (const uint32_t addr_, uint32_t* const p_data_)
 //       data_  - the value to be written
 // OUT: 
 // RET:  true if the operation was succesfull
-void MemoryMap::Write(const uint32_t reg_id_, const uint32_t field_, const uint32_t data_)
+void MemoryMap::Write(const uint64_t reg_id_, const uint32_t field_, const uint32_t data_) // RESOURCES_ON_32_BITS
 {
     m_hw_resource[reg_id_].range(m_register_field[field_].msb, m_register_field[field_].lsb) = data_;
 }
@@ -104,7 +104,7 @@ void MemoryMap::Write(const uint32_t reg_id_, const uint32_t field_, const uint3
 //      field_  - the field the data is read from
 // OUT: p_data_ - reference to data that is read 
 // RET:  true if the operation was succesfull
-void MemoryMap::Read (const uint32_t reg_id_, const uint32_t field_, uint32_t* const p_data_)
+void MemoryMap::Read (const uint64_t reg_id_, const uint32_t field_, uint32_t* const p_data_) // RESOURCES_ON_32_BITS
 {
     *p_data_ = m_hw_resource[reg_id_].range(m_register_field[field_].msb, m_register_field[field_].lsb);
 }
@@ -114,7 +114,7 @@ void MemoryMap::Read (const uint32_t reg_id_, const uint32_t field_, uint32_t* c
 //       data_ - the value to be written
 // OUT: 
 // RET:  true if the operation was succesfull
-void MemoryMap::set_register_field(const uint32_t field_, const uint32_t msb_, const uint32_t lsb_)
+void MemoryMap::set_register_field(const uint32_t field_, const uint32_t msb_, const uint32_t lsb_) // RESOURCES_ON_32_BITS
 {
     m_register_field[field_].msb = msb_;
     m_register_field[field_].lsb = lsb_;
@@ -124,7 +124,7 @@ void MemoryMap::set_register_field(const uint32_t field_, const uint32_t msb_, c
 // IN: addr_ - the address of reg/memory; it is 4 bytes aligned
 // OUT: p_data_ - reference to data that is read 
 // RET:  true if the operation was succesfull
-void MemoryMap::get_register_field(const uint32_t field_, uint32_t* const p_msb_, uint32_t* const p_lsb_)
+void MemoryMap::get_register_field(const uint32_t field_, uint32_t* const p_msb_, uint32_t* const p_lsb_) // RESOURCES_ON_32_BITS
 {
     *p_msb_ = m_register_field[field_].msb;
     *p_lsb_ = m_register_field[field_].lsb;

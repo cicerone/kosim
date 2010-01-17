@@ -15,19 +15,19 @@
 #include "memory_map.h"
 
 
-bool MemMapSortCriterion(MemoryMap* p_mm1_, MemoryMap* p_mm2_);
-uint32_t WriteField(uint32_t block_id_, uint32_t field_id_, uint32_t field_value_, uint32_t reg_value_);
-uint32_t ReadField(uint32_t block_id_, uint32_t field_id_, uint32_t reg_value_);
+bool MemMapSortCriterion(const MemoryMap* p_mm1_, const MemoryMap* p_mm2_);
+uint32_t WriteField(const uint32_t block_id_, const uint32_t field_id_, const uint32_t field_value_, const uint32_t reg_value_);
+uint32_t ReadField(const uint32_t block_id_, const uint32_t field_id_, const uint32_t reg_value_);
 
 class MemoryMapBuilder : boost::noncopyable
 {
 public:
     static     MemoryMapBuilder* GetInstance();     
     void       AddBlock(MemoryMap* p_memmap_);
-    uint64_t   GetAbsoluteAddress(uint32_t block_id_, uint32_t hw_resource_id_);
-    uint64_t   GetAbsoluteAddress2(uint32_t block_id_, uint64_t local_addr_);
-    uint32_t   FindTarget(uint64_t addr_, uint64_t* p_local_addr_);
-    MemoryMap* GetMemoryMap(uint32_t block_id_);
+    uint64_t   GetAbsoluteAddress(const uint32_t block_id_, const uint32_t hw_resource_id_) const;
+    uint64_t   GetAbsoluteAddress2(const uint32_t block_id_, const uint64_t local_addr_) const;
+    uint32_t   FindTarget(const uint64_t addr_, uint64_t* const p_local_addr_);
+    MemoryMap* GetMemoryMap(const uint32_t block_id_) const ;
 
     int  PrintMemoryMap();
     ~MemoryMapBuilder();
