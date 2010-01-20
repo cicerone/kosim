@@ -9,6 +9,7 @@
 #define KOSIM_GC_GENERIC_CPU_H
 
 #include <stdint.h>
+#include <vector>
 
 #define SC_INCLUDE_DYNAMIC_PROCESSES
 #include "systemc.h"
@@ -40,6 +41,7 @@ private:
   void TreatPeripheral0();
   void TreatPeripheral1();
   void TreatPeripheral2();
+  void TreatPeripheral3();
 
   // TLM-2 backward DMI method
   void invalidate_direct_mem_ptr(sc_dt::uint64 start_range_, sc_dt::uint64 end_range_);
@@ -50,6 +52,10 @@ private:
   tlm::tlm_generic_payload* mp_payload;
   tlm::tlm_generic_payload* mp_dmi_payload;
   tlm::tlm_generic_payload* mp_dbg_payload;
+  typedef  void (GenericCPU::*MethodPointer)(); 
+  std::vector<MethodPointer> mv_program_peripheral;
+
+  
 };
 
 

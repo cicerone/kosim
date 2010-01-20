@@ -11,7 +11,6 @@
 
 using namespace std;
 
-// GenericCPU module generating generic payload transactions
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -29,7 +28,7 @@ GenericCPU::GenericCPU(sc_module_name name_) :
 
     SC_THREAD(STMain);
 
-    mp_payload = new tlm::tlm_generic_payload;
+    mp_payload     = new tlm::tlm_generic_payload;
     mp_dmi_payload = new tlm::tlm_generic_payload;
     mp_dbg_payload = new tlm::tlm_generic_payload;
     
@@ -164,8 +163,14 @@ GenericCPU::STMain()
     while(1)
     {
         uint32_t peripheral_id = m_irq.read(); //blocking read 
+        if (peripheral_id < 3) {
+            (this->*mv_program_peripheral[peripheral_id])();
+        }
+        /*
         switch(peripheral_id) { 
-            case 0: TreatPeripheral0();
+            case 0: //TreatPeripheral0();
+                    //((*this).*mv_program_peripheral[0])();
+                    (this->*mv_program_peripheral[0])();
             break;
             case 1: TreatPeripheral1();
             break;
@@ -174,6 +179,7 @@ GenericCPU::STMain()
             default:
             break;
         }
+        */
         // read the result
         
         printf("data[0x%x] = 0x%x\n", 0x08, Read32BitWord(0x08));
@@ -194,6 +200,11 @@ GenericCPU::STMain()
 void 
 GenericCPU::InitSystem()
 {
+    mv_program_peripheral.resize(4);
+    mv_program_peripheral[0] = &GenericCPU::TreatPeripheral0;
+    mv_program_peripheral[1] = &GenericCPU::TreatPeripheral1;
+    mv_program_peripheral[2] = &GenericCPU::TreatPeripheral2;
+    mv_program_peripheral[3] = &GenericCPU::TreatPeripheral3;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -236,6 +247,16 @@ printf("%s\n", __PRETTY_FUNCTION__);
     uint32_t new_reg_val = WriteField(MEM2, M2_FIELD0, 1,  reg_val);
     Write32BitWord(addr, new_reg_val);
 
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// IN: 
+// OUT: 
+// RET: 
+void 
+GenericCPU::TreatPeripheral3()
+{
+    printf("%s\n", __PRETTY_FUNCTION__);
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // TLM-2 backward DMI method, invalidates dmi access
