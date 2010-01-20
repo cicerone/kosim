@@ -13,8 +13,8 @@
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
-// GCInterruptController implemtents a generic blocking transport router that connects one initiator with 
-// N_PERIPHERALS
+// GCInterruptController implemtents a many peripherals to one CPU, first come first served priority 
+// controller
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
 template<uint32_t N_PERIPHERALS>

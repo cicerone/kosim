@@ -17,16 +17,15 @@ using namespace std;
 // IN: name_ - the name of the module 
 // OUT: 
 // RET: 
-GenericCPU::GenericCPU(sc_module_name name_) : 
+GenericCPUBase::GenericCPUBase(sc_module_name name_) : 
     sc_module(name_),
     socket("socket"),  // Construct and name socket
-    m_is_dmi_ptr_valid(false),
-    mp_payload(0)
+    m_is_dmi_ptr_valid(false)
 {
     // Register callbacks for incoming interface method calls
-    socket.register_invalidate_direct_mem_ptr(this, &GenericCPU::invalidate_direct_mem_ptr);
+    socket.register_invalidate_direct_mem_ptr(this, &GenericCPUBase::invalidate_direct_mem_ptr);
 
-    SC_THREAD(STMain);
+//    SC_THREAD(STMain);
 
     mp_payload     = new tlm::tlm_generic_payload;
     mp_dmi_payload = new tlm::tlm_generic_payload;
@@ -38,7 +37,7 @@ GenericCPU::GenericCPU(sc_module_name name_) :
 // IN: 
 // OUT: 
 // RET: 
-GenericCPU::~GenericCPU()
+GenericCPUBase::~GenericCPUBase()
 {
     delete mp_payload;
     delete mp_dmi_payload;
@@ -51,7 +50,7 @@ GenericCPU::~GenericCPU()
 // OUT: 
 // RET: 
 void
-GenericCPU::Write32BitWord   (const uint64_t addr_, int32_t data_)
+GenericCPUBase::Write32BitWord   (const uint64_t addr_, int32_t data_)
 {
     CheckAddressAlignment(addr_);
     mp_payload->set_command        ( tlm::TLM_WRITE_COMMAND);
@@ -79,7 +78,7 @@ GenericCPU::Write32BitWord   (const uint64_t addr_, int32_t data_)
 // OUT: 
 // RET:  the read value
 int32_t
-GenericCPU::Read32BitWord    (const uint64_t addr_)
+GenericCPUBase::Read32BitWord    (const uint64_t addr_)
 {
     int32_t read_data = 0;
     CheckAddressAlignment(addr_);
@@ -109,7 +108,7 @@ GenericCPU::Read32BitWord    (const uint64_t addr_)
 // OUT: 
 // RET: 
 void    
-GenericCPU::DbgWrite32BitWord(const uint64_t addr_, int32_t data_)
+GenericCPUBase::DbgWrite32BitWord(const uint64_t addr_, int32_t data_)
 {
     CheckAddressAlignment(addr_);
     uint32_t xfer_size = sizeof(int32_t);
@@ -132,7 +131,7 @@ GenericCPU::DbgWrite32BitWord(const uint64_t addr_, int32_t data_)
 // OUT: 
 // RET: the read value   
 int32_t 
-GenericCPU::DbgRead32BitWord(const uint64_t addr_)
+GenericCPUBase::DbgRead32BitWord(const uint64_t addr_)
 {
     CheckAddressAlignment(addr_);
     uint32_t xfer_size = sizeof(int32_t);
@@ -151,121 +150,13 @@ GenericCPU::DbgRead32BitWord(const uint64_t addr_)
     return read_data;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
-// The main thread
-// IN: 
-// OUT: 
-// RET: 
-void 
-GenericCPU::STMain()
-{
-    InitSystem();
-    int32_t cntr = 0; 
-    while(1)
-    {
-        uint32_t peripheral_id = m_irq.read(); //blocking read 
-        if (peripheral_id < 3) {
-            (this->*mv_program_peripheral[peripheral_id])();
-        }
-        /*
-        switch(peripheral_id) { 
-            case 0: //TreatPeripheral0();
-                    //((*this).*mv_program_peripheral[0])();
-                    (this->*mv_program_peripheral[0])();
-            break;
-            case 1: TreatPeripheral1();
-            break;
-            case 2: TreatPeripheral2();
-            break;
-            default:
-            break;
-        }
-        */
-        // read the result
-        
-        printf("data[0x%x] = 0x%x\n", 0x08, Read32BitWord(0x08));
-        printf("data[0x%x] = 0x%x\n", 0x108, Read32BitWord(0x108));
-        
-        printf("DBG data[0x%x] = 0x%x\n", 0x08, DbgRead32BitWord(0x08));
-        printf("DBG data[0x%x] = 0x%x\n", 0x108, DbgRead32BitWord(0x108));
-
-        if (cntr++ > 20) { cout << "Test PASSED" << endl; exit(0);}
-    }
-
-}
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// IN: 
-// OUT: 
-// RET: 
-void 
-GenericCPU::InitSystem()
-{
-    mv_program_peripheral.resize(4);
-    mv_program_peripheral[0] = &GenericCPU::TreatPeripheral0;
-    mv_program_peripheral[1] = &GenericCPU::TreatPeripheral1;
-    mv_program_peripheral[2] = &GenericCPU::TreatPeripheral2;
-    mv_program_peripheral[3] = &GenericCPU::TreatPeripheral3;
-}
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// IN: 
-// OUT: 
-// RET: 
-void 
-GenericCPU::TreatPeripheral0()
-{
-printf("%s", __PRETTY_FUNCTION__);
-    Write32BitWord(0x00, 1);
-    Write32BitWord(0x04, 2);
-}
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// IN: 
-// OUT: 
-// RET: 
-void 
-GenericCPU::TreatPeripheral1()
-{
-printf("%s", __PRETTY_FUNCTION__);
-    Write32BitWord(0x100, 3);
-    Write32BitWord(0x104, 4);
-}
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// IN: 
-// OUT: 
-// RET: 
-void 
-GenericCPU::TreatPeripheral2()
-{
-printf("%s\n", __PRETTY_FUNCTION__);
-    
-    uint64_t addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress(MEM2, M2_REG0); 
-    printf("addr = (0x%x)\n", addr);
-    uint32_t reg_val = 5;
-    Write32BitWord(addr, reg_val);
-    uint32_t new_reg_val = WriteField(MEM2, M2_FIELD0, 1,  reg_val);
-    Write32BitWord(addr, new_reg_val);
-
-}
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// IN: 
-// OUT: 
-// RET: 
-void 
-GenericCPU::TreatPeripheral3()
-{
-    printf("%s\n", __PRETTY_FUNCTION__);
-}
-/////////////////////////////////////////////////////////////////////////////////////////////////
 // TLM-2 backward DMI method, invalidates dmi access
 // IN:  start_range_ - the start addr of the memory space that is dmi invalidated 
 //      end_range_   - the end addr of the memory space that is dmi invalidated 
 // OUT: 
 // RET: 
 void 
-GenericCPU::invalidate_direct_mem_ptr(sc_dt::uint64 start_range_, sc_dt::uint64 end_range_)
+GenericCPUBase::invalidate_direct_mem_ptr(sc_dt::uint64 start_range_, sc_dt::uint64 end_range_)
 {
     // Ignore range and invalidate all DMI pointers regardless
     m_is_dmi_ptr_valid = false;
@@ -276,7 +167,7 @@ GenericCPU::invalidate_direct_mem_ptr(sc_dt::uint64 start_range_, sc_dt::uint64 
 // OUT: 
 // RET: 
 void
-GenericCPU::CheckAddressAlignment(const uint32_t addr_)
+GenericCPUBase::CheckAddressAlignment(const uint32_t addr_)
 {
     if (addr_ % sizeof(int32_t) != 0) {
         fprintf(stderr, "ERROR! address must be multiple of 4, addr(0x%x)!\n", addr_);

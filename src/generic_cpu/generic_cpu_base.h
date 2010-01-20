@@ -5,8 +5,8 @@
     Support: kosim@kotys.biz 
 ===============================================================================================*/
 
-#ifndef KOSIM_GC_GENERIC_CPU_H
-#define KOSIM_GC_GENERIC_CPU_H
+#ifndef KOSIM_GC_GENERIC_CPU_BASE_H
+#define KOSIM_GC_GENERIC_CPU_BASE_H
 
 #include <stdint.h>
 #include <vector>
@@ -17,31 +17,26 @@
 #include "tlm_utils/simple_initiator_socket.h"
 #include "tlm_utils/simple_target_socket.h"
 
-// GenericCPU module generating generic payload transactions
+// GenericCPUBase module generating generic payload transactions
 
-class GenericCPU : public sc_module
+class GenericCPUBase : public sc_module
 {
 public:
   // TLM-2 socket, defaults to 32-bits wide, base protocol
-  tlm_utils::simple_initiator_socket<GenericCPU> socket;
+  tlm_utils::simple_initiator_socket<GenericCPUBase> socket;
   sc_fifo_in <uint32_t> m_irq ;
 
-  SC_HAS_PROCESS(GenericCPU);
-  GenericCPU(sc_module_name name_);
-  ~GenericCPU();
+  GenericCPUBase(sc_module_name name_);
+  virtual ~GenericCPUBase();
 
   void    Write32BitWord   (const uint64_t addr_, int32_t data_);
   int32_t Read32BitWord    (const uint64_t addr_);
   void    DbgWrite32BitWord(const uint64_t addr_, int32_t data_);
   int32_t DbgRead32BitWord (const uint64_t addr_);
   
+
 private:
-  void STMain();
-  void InitSystem();
-  void TreatPeripheral0();
-  void TreatPeripheral1();
-  void TreatPeripheral2();
-  void TreatPeripheral3();
+  virtual void InitSystem() = 0;
 
   // TLM-2 backward DMI method
   void invalidate_direct_mem_ptr(sc_dt::uint64 start_range_, sc_dt::uint64 end_range_);
@@ -52,12 +47,6 @@ private:
   tlm::tlm_generic_payload* mp_payload;
   tlm::tlm_generic_payload* mp_dmi_payload;
   tlm::tlm_generic_payload* mp_dbg_payload;
-  typedef  void (GenericCPU::*MethodPointer)(); 
-  std::vector<MethodPointer> mv_program_peripheral;
-
-  
 };
-
-
-#endif // KOSIM_GC_GENERIC_CPU_H
+#endif // KOSIM_GC_GENERIC_CPU_BASE_H
 
