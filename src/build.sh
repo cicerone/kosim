@@ -26,7 +26,7 @@ echo "TLM_INCLUDE     = $TLM_INCLUDE    "
 echo "SYSTEMC_LIB     = $SYSTEMC_LIB    "
 echo "SCV_LIB         = $SCV_LIB        "
 
-python main/generic_cpu/build_program_options_links.py
+python main/generic_cpu/test1/build_program_options_links.py
 
 make clean 
 cmake clean .

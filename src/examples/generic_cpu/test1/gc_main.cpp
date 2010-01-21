@@ -14,6 +14,7 @@
 #include "memory_map_builder.h"
 #include "memory_map.h"
 #include "gen_from_sysrdl.h"
+#include "program_options.h"
 
 
 

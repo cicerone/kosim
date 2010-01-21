@@ -9,7 +9,7 @@
 #include dirs
 include_directories (${KOSIM_SOURCE_DIR}/)
 include_directories (${KOSIM_SOURCE_DIR}/memory_map/)
-include_directories (${KOSIM_SOURCE_DIR}/main/generic_cpu/)
+include_directories (${KOSIM_SOURCE_DIR}/main/generic_cpu/test1)
 include_directories (${KOSIM_SOURCE_DIR}/generic_cpu/)
 
 # The extension is already found. Any number of sources could be listed here.

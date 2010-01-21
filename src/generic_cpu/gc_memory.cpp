@@ -6,7 +6,6 @@
 ===============================================================================================*/
 
 #include "gc_memory.h"
-#include "program_options.h"
 #include "memory_map_builder.h"
 #include "memory_map.h"
 
@@ -173,14 +172,7 @@ void GCMemory::STMain()
         mp_memory_map->Read(4, &mem[1]);
         mp_memory_map->Read(8, &mem[2]);
        
-        if ((mem[0] > ProgramOptions::GetInstance()->get_mem0_lowest_value()) &&
-            (mem[0] < ProgramOptions::GetInstance()->get_mem0_highest_value()))
-        {
-            mem[2] = mem[0] + mem[1];
-        }
-        else {
-            mem[2] = mem[0] + 2*mem[1];
-        }
+        mem[2] = mem[0] + mem[1];
 
         mp_memory_map->Write(8, mem[2]);
 
