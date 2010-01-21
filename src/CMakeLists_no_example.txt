@@ -45,6 +45,7 @@ include_directories ($ENV{TLM_INCLUDE}/)
 # the project's entire directory structure.
 
 add_subdirectory (main/generic_cpu)
+add_subdirectory (examples/generic_cpu/test1)
 add_subdirectory (hierarchy_scanner)
 #add_subdirectory (program_options)
 add_subdirectory (generic_cpu)
