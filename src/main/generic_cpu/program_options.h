@@ -13,13 +13,10 @@
 #include <fstream>
 #include <stdint.h>
 
-#include <boost/utility.hpp>
-#include <boost/program_options.hpp>
-
-namespace po = boost::program_options;
+#include "program_options_base.h"
 
 
-class ProgramOptions : boost::noncopyable
+class ProgramOptions : public ProgramOptionsBase
 {
 public:
     static ProgramOptions* GetInstance(int ac_, char* p_av_[]); // NOTE: must be called first time
@@ -32,14 +29,12 @@ public:
     int32_t      get_mem0_highest_value              () { return m_mem0_highest_value; }
 
 ///////////  END OPTIONS from configuration file  ////////////////////////////////////
-    void Help();
     int  Dump();
 
     ~ProgramOptions();
 private:
     static ProgramOptions* mp_instance;
     void InitConfiguration();
-    void RegisterConfiguration(int ac_, char* p_av_[]);
 
     ProgramOptions(int ac_, char* p_av_[]);
     int         m_dbg_level                       ; // debug level
@@ -53,16 +48,6 @@ private:
     int32_t     m_cmd_line_arg1                   ;
 ///////////  END OPTIONS from command line  ////////////////////////////////////
 
-    std::string m_config_file;    // configuration pattern file
-
-    po::options_description* mp_generic_options    ;
-    po::options_description* mp_config_options     ;
-    po::options_description* mp_hidden_options     ;
-    po::options_description* mp_cmdline_options    ;
-    po::options_description* mp_config_file_options;
-    po::options_description* mp_visible_options    ;
-    po::variables_map*       mp_variable_map       ;
-    po::positional_options_description* mp_positional_options;
 };
 
 #endif // KOSIM_PO_PROGRAM_OPTIONS_H

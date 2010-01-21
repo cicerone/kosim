@@ -26,7 +26,7 @@ public:
 
     ProgramOptionsBase();
     ~ProgramOptionsBase();
-    virtual void InitConfiguration() {};
+    virtual void InitConfiguration() = 0;
     void   RegisterConfiguration(int ac_, char* p_av_[]);
 
 protected:
@@ -39,6 +39,7 @@ protected:
     po::options_description* mp_visible_options    ;
     po::variables_map*       mp_variable_map       ;
     po::positional_options_description* mp_positional_options;
+
     std::string m_config_file;    // configuration pattern file
 
 private:
