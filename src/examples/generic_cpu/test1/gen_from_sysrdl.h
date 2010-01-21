@@ -5,8 +5,8 @@
     Support: kosim@kotys.biz 
 ===============================================================================================*/
 
-#ifndef KOSIM_GC_GEN_FROM_SYSRDL_H
-#define KOSIM_GC_GEN_FROM_SYSRDL_H
+#ifndef KOSIM_EX_GC_TEST1_GEN_FROM_SYSRDL_H
+#define KOSIM_EX_GC_TEST1_GEN_FROM_SYSRDL_H
 
 #include <stdint.h>
 
@@ -95,4 +95,4 @@ void BuildMemoryMap4Mem1();
 void BuildMemoryMap4Mem2();
 void BuildMemoryMap4Mem3();
 
-#endif //  KOSIM_GC_GEN_FROM_SYSRDL_H
+#endif //  KOSIM_EX_GC_TEST1_GEN_FROM_SYSRDL_H

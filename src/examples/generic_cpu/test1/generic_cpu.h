@@ -5,8 +5,8 @@
     Support: kosim@kotys.biz 
 ===============================================================================================*/
 
-#ifndef KOSIM_GC_GENERIC_CPU_H
-#define KOSIM_GC_GENERIC_CPU_H
+#ifndef KOSIM_EX_GC_TEST1_GENERIC_CPU_H
+#define KOSIM_EX_GC_TEST1_GENERIC_CPU_H
 
 #include <stdint.h>
 #include <vector>
@@ -41,5 +41,5 @@ private:
 };
 
 
-#endif // KOSIM_GC_GENERIC_CPU_H
+#endif // KOSIM_EX_GC_TEST1_GENERIC_CPU_H
 

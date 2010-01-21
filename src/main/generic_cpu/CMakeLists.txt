@@ -7,6 +7,7 @@
 include_directories ($ENV{BOOST_ROOT}/include)
 include_directories ($ENV{BOOST_ROOT}/boost/thread)
 include_directories (${KOSIM_SOURCE_DIR}/generic_cpu)
+include_directories (${KOSIM_SOURCE_DIR}/examples/generic_cpu/test1)
 include_directories (${KOSIM_SOURCE_DIR}/hierarchy_scanner)
 include_directories (${KOSIM_SOURCE_DIR}/program_options)
 include_directories ($ENV{PYTHON_INCLUDE}/)
@@ -29,7 +30,7 @@ link_directories (/usr/lib/)
 # Add shared library called "kosim" that is built from the source files
 add_library (kosim_generic_cpu SHARED wrap_generic_cpu.cpp program_options.cpp program_options_base.cpp options_builder.cpp)
 # Link the executable to the used libraries.
-target_link_libraries (kosim_generic_cpu generic_cpu hierarchy_scanner memory_map libboost_program_options.so libboost_python.so libscv.so libsystemc.a)
+target_link_libraries (kosim_generic_cpu generic_cpu generic_cpu_test1 hierarchy_scanner memory_map libboost_program_options.so libboost_python.so libscv.so libsystemc.a)
 
 
 #Generate executable

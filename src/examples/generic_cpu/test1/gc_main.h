@@ -5,7 +5,7 @@
     Support: kosim@kotys.biz 
 ===============================================================================================*/
 
-#ifndef KOSIM_GC_GC_MAIN_H
-#define KOSIM_GC_GC_MAIN_H
+#ifndef KOSIM_EX_GC_TEST1_GC_MAIN_H
+#define KOSIM_EX_GC_TEST1_GC_MAIN_H
 void run_sim();
-#endif //  KOSIM_GC_GC_MAIN_H
+#endif //  KOSIM_EX_GC_TEST1_GC_MAIN_H

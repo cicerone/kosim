@@ -5,12 +5,10 @@
     Support: kosim@kotys.biz 
 ===============================================================================================*/
 
-#include "generic_cpu.h"
+#include "generic_cpu_base.h"
 #include "memory_map_builder.h"
-#include "gen_from_sysrdl.h"
 
 using namespace std;
-
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
