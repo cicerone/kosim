@@ -86,7 +86,6 @@ void MemoryMap::Read (const uint64_t addr_, uint32_t* const p_data_)  // RESOURC
     *p_data_ = m_hw_resource[local_addr];
 }
 /////////////////////////////////////////////////////////////////////////////////////
-// This is a backdoor method to write directly the regs only. Probably should not be used.
 // TLM debug transport mechanims probably should be preferred.
 // IN:   addr_  - the address of reg/memory; it is 4 byte aligned 
 //       field_ - the field of the register where data is written
@@ -98,7 +97,6 @@ void MemoryMap::Write(const uint64_t reg_id_, const uint32_t field_, const uint3
     m_hw_resource[reg_id_].range(m_register_field[field_].msb, m_register_field[field_].lsb) = data_;
 }
 /////////////////////////////////////////////////////////////////////////////////////
-// This is a backdoor method to read directly the regs only. Probably should not be used.
 // TLM debug transport mechanims probably should be preferred.
 // IN:  addr_   - the address of reg/memory; it is 4 bytes aligned
 //      field_  - the field the data is read from

@@ -5,9 +5,9 @@
     Support: kosim@kotys.biz 
 ===============================================================================================*/
 
-#include "gc_memory.h"
 #include "memory_map_builder.h"
 #include "memory_map.h"
+#include "gc_target.h"
 
 using namespace sc_core;
 using namespace sc_dt;
@@ -19,21 +19,20 @@ using namespace std;
 // IN: 
 // OUT: 
 // RET: 
-GCMemory::GCMemory(sc_module_name name_, uint32_t id_) : 
+GCTarget::GCTarget(sc_module_name name_, uint32_t id_) : 
     sc_module(name_),
-    socket("gc_memory_socket"), 
+    socket("gc_target_socket"), 
     DMI_LATENCY(10, SC_NS),
     mp_memory_map(0),
     m_id(id_)
 {
     // Register callbacks for incoming interface method calls
-    socket.register_b_transport(       this, &GCMemory::b_transport);
-    socket.register_get_direct_mem_ptr(this, &GCMemory::get_direct_mem_ptr);
-    socket.register_transport_dbg(     this, &GCMemory::transport_dbg);
+    socket.register_b_transport(       this, &GCTarget::b_transport);
+    socket.register_get_direct_mem_ptr(this, &GCTarget::get_direct_mem_ptr);
+    socket.register_transport_dbg(     this, &GCTarget::transport_dbg);
 
     mp_memory_map = MemoryMapBuilder::GetInstance()->GetMemoryMap(m_id);
     
-    SC_THREAD(STMain);
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // TLM-2 blocking transport method
@@ -41,7 +40,7 @@ GCMemory::GCMemory(sc_module_name name_, uint32_t id_) :
 // OUT: 
 // RET: 
 void 
-GCMemory::b_transport( tlm::tlm_generic_payload& payload_, sc_time& delay_ )
+GCTarget::b_transport( tlm::tlm_generic_payload& payload_, sc_time& delay_ )
 {
     tlm::tlm_command command   = payload_.get_command();
 //    uint64_t      mem_address  = payload_.get_address() / sizeof(mem[0]);
@@ -106,7 +105,7 @@ DONOTDELETE
 // OUT: 
 // RET: 
 bool 
-GCMemory::get_direct_mem_ptr(tlm::tlm_generic_payload& payload_, tlm::tlm_dmi& dmi_data_)
+GCTarget::get_direct_mem_ptr(tlm::tlm_generic_payload& payload_, tlm::tlm_dmi& dmi_data_)
 {
 /*
     // Permit read and write access
@@ -128,7 +127,7 @@ GCMemory::get_direct_mem_ptr(tlm::tlm_generic_payload& payload_, tlm::tlm_dmi& d
 // OUT: 
 // RET: 
 unsigned int 
-GCMemory::transport_dbg(tlm::tlm_generic_payload& payload_)
+GCTarget::transport_dbg(tlm::tlm_generic_payload& payload_)
 {
     tlm::tlm_command command = payload_.get_command();
 //    uint64_t      mem_address  = payload_.get_address() / sizeof(mem[0]);
@@ -157,26 +156,4 @@ GCMemory::transport_dbg(tlm::tlm_generic_payload& payload_)
       memcpy(&mem[mem_address], data_ptr, num_bytes);
 */
     return num_bytes;
-}
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// IN: 
-// OUT: 
-// RET: 
-void GCMemory::STMain()
-{
-    while(1)
-    {
-        uint32_t mem[3];
-        mp_memory_map->Read(0, &mem[0]);
-        mp_memory_map->Read(4, &mem[1]);
-        mp_memory_map->Read(8, &mem[2]);
-       
-        mem[2] = mem[0] + mem[1];
-
-        mp_memory_map->Write(8, mem[2]);
-
-        wait(10, SC_NS);
-        m_irq.write(m_id);
-    }
 }

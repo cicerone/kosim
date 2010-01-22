@@ -7,10 +7,6 @@
 
 #define SC_INCLUDE_DYNAMIC_PROCESSES
 
-//#include "generic_cpu.h"
-//#include "gc_memory.h"
-//#include "gc_router.h"
-//#include "gc_interrupt_controller.h"
 #include "gen_from_sysrdl.h"
 #include "memory_map_builder.h"
 #include "memory_map.h"

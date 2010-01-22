@@ -8,7 +8,7 @@
 #define SC_INCLUDE_DYNAMIC_PROCESSES
 
 #include "generic_cpu.h"
-#include "gc_memory.h"
+#include "gc_test_target.h"
 #include "gc_router.h"
 #include "gc_interrupt_controller.h"
 #include "memory_map_builder.h"
@@ -32,7 +32,7 @@ private:
    void BuildMemoryMap();
    GenericCPU* p_gcpu;
    GCRouter<NUMBER_PERIPHERALS>* p_router;
-   GCMemory*    p_memory[NUMBER_PERIPHERALS];
+   GCTestTarget*    p_test_target[NUMBER_PERIPHERALS];
    GCInterruptController<NUMBER_PERIPHERALS>* p_irq_ctrler;
    sc_fifo<uint32_t> cpu_irq;
    sc_fifo<uint32_t> peripheral_irq[NUMBER_PERIPHERALS];
@@ -54,21 +54,21 @@ Top::Top(sc_module_name name_) : sc_module(name_)
      for (int i = 0; i < NUMBER_PERIPHERALS; i++)
      {
        char txt[20];
-       sprintf(txt, "p_memory_%d", i);
-       p_memory[i] = new GCMemory(txt, i);  
+       sprintf(txt, "p_test_target_%d", i);
+       p_test_target[i] = new GCTestTarget(txt, i);  
      }
      
      // Bind sockets
      p_gcpu->socket.bind( p_router->m_target_socket );
      for (int i = 0; i < NUMBER_PERIPHERALS; i++)
-         p_router->mp_initiator_socket[i]->bind( p_memory[i]->socket );
+         p_router->mp_initiator_socket[i]->bind( p_test_target[i]->socket );
      // Bind interrupts
      p_gcpu->m_irq(cpu_irq);
      p_irq_ctrler->m_irq_out(cpu_irq);
      for (int i = 0; i < NUMBER_PERIPHERALS; i++)
      {
          p_irq_ctrler->m_irq_in[i](peripheral_irq[i]);
-         p_memory[i]->m_irq(peripheral_irq[i]);
+         p_test_target[i]->m_irq(peripheral_irq[i]);
      }
 
 }

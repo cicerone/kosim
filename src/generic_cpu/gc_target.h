@@ -5,8 +5,8 @@
     Support: kosim@kotys.biz 
 ===============================================================================================*/
 
-#ifndef KOSIM_GC_GC_MEMORY_H
-#define KOSIM_GC_GC_MEMORY_H
+#ifndef KOSIM_GC_GC_TARGET_H
+#define KOSIM_GC_GC_TARGET_H
 
 #include <stdint.h>
 
@@ -15,21 +15,21 @@
 #include "tlm.h"
 #include "tlm_utils/simple_initiator_socket.h"
 #include "tlm_utils/simple_target_socket.h"
+#include "memory_map.h"
 
-class MemoryMap;
+//class MemoryMap;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // Target module representing a simple memory
 /////////////////////////////////////////////////////////////////////////////////////////////////
-class GCMemory : public sc_module
+class GCTarget : public sc_module
 {
 
 public:
-  SC_HAS_PROCESS(GCMemory);
-  GCMemory(sc_module_name name_, uint32_t id_);
-  ~GCMemory() {};
+  GCTarget(sc_module_name name_, uint32_t id_);
+  ~GCTarget() {};
   // TLM-2 socket, defaults to 32-bits wide, base protocol
-  tlm_utils::simple_target_socket<GCMemory> socket;
+  tlm_utils::simple_target_socket<GCTarget> socket;
   sc_fifo_out<uint32_t> m_irq ;
 
 
@@ -40,14 +40,13 @@ public:
   // TLM-2 debug transaction method
   uint32_t transport_dbg(tlm::tlm_generic_payload& payload_ );
 
-private:
-  void STMain();
+protected:
   const sc_time DMI_LATENCY;
-
   MemoryMap* mp_memory_map;
   uint32_t m_id;
+private:
 };
 
 
-#endif //KOSIM_GC_GC_MEMORY_H
+#endif //KOSIM_GC_GC_TARGET_H
 
