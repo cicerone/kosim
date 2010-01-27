@@ -34,10 +34,10 @@ public:
   void    DbgWrite32BitWord(const uint64_t addr_, int32_t data_);
   int32_t DbgRead32BitWord (const uint64_t addr_);
   
-  void    Write   (const uint64_t addr_, uint32_t* const p_data_, const uint64_t size_ = 4);
-  void    Read    (const uint64_t addr_, uint32_t* const p_data_, const uint64_t size_ = 4);
-  void    DbgWrite(const uint64_t addr_, uint32_t* const p_data_, const uint64_t size_ = 4);
-  void    DbgRead (const uint64_t addr_, uint32_t* const p_data_, const uint64_t size_ = 4);
+  void    Write   (const uint64_t addr_, uint32_t* const p_data_, const uint32_t size_ = 4);
+  void    Read    (const uint64_t addr_, uint32_t* const p_data_, const uint32_t size_ = 4);
+  void    DbgWrite(const uint64_t addr_, uint32_t* const p_data_, const uint32_t size_ = 4);
+  void    DbgRead (const uint64_t addr_, uint32_t* const p_data_, const uint32_t size_ = 4);
 
 private:
   virtual void InitSystem() = 0;
@@ -45,6 +45,7 @@ private:
   // TLM-2 backward DMI method
   void invalidate_direct_mem_ptr(sc_dt::uint64 start_range_, sc_dt::uint64 end_range_);
   void CheckAddressAlignment(const uint32_t addr_);
+  void CheckDataSize(const uint32_t size_);
 
   bool m_is_dmi_ptr_valid;
   tlm::tlm_dmi m_dmi_data;

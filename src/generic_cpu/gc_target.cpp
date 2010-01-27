@@ -74,15 +74,17 @@ GCTarget::b_transport( tlm::tlm_generic_payload& payload_, sc_time& delay_ )
         exit(1);
     }
 
-    uint32_t data = 0;
+//    uint32_t data = 0;
     // read and write commands
     if ( command == tlm::TLM_READ_COMMAND ) {
-        mp_memory_map->Read(mem_address, &data);
-        memcpy(data_ptr, &data, data_length);
+//        mp_memory_map->Read(mem_address, &data);
+//        memcpy(data_ptr, &data, data_length);
+        memcpy(data_ptr, mp_memory_map->GetPhysicalAddress(mem_address), data_length);
     }
     else if ( command == tlm::TLM_WRITE_COMMAND ) {
-        memcpy(&data, data_ptr, data_length);
-        mp_memory_map->Write(mem_address, data);
+         memcpy(mp_memory_map->GetPhysicalAddress(mem_address), data_ptr, data_length);
+//       memcpy(&data, data_ptr, data_length);
+//       mp_memory_map->Write(mem_address, data);
     }
 /*
 NOTE: Idealy the memory part must be an array so that memcpy can be used

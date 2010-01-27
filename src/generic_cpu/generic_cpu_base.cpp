@@ -155,9 +155,10 @@ GenericCPUBase::DbgRead32BitWord(const uint64_t addr_)
 // OUT: 
 // RET:
 void 
-GenericCPUBase::Write   (const uint64_t addr_, uint32_t* const p_data_, const uint64_t size_)
+GenericCPUBase::Write   (const uint64_t addr_, uint32_t* const p_data_, const uint32_t size_)
 {
     CheckAddressAlignment(addr_);
+    CheckDataSize( size_);
     mp_payload->set_command        ( tlm::TLM_WRITE_COMMAND);
     mp_payload->set_address        ( addr_ );
     mp_payload->set_data_ptr       ( reinterpret_cast<uint8_t*>(p_data_) );
@@ -184,9 +185,10 @@ GenericCPUBase::Write   (const uint64_t addr_, uint32_t* const p_data_, const ui
 // OUT: 
 // RET:
 void 
-GenericCPUBase::Read    (const uint64_t addr_,       uint32_t* const p_data_, const uint64_t size_)
+GenericCPUBase::Read    (const uint64_t addr_,       uint32_t* const p_data_, const uint32_t size_)
 {
     CheckAddressAlignment(addr_);
+    CheckDataSize( size_);
     mp_payload->set_command        ( tlm::TLM_READ_COMMAND);
     mp_payload->set_address        ( addr_ );
     mp_payload->set_data_ptr       ( reinterpret_cast<uint8_t*>(p_data_) );
@@ -213,9 +215,10 @@ GenericCPUBase::Read    (const uint64_t addr_,       uint32_t* const p_data_, co
 // OUT: 
 // RET:
 void 
-GenericCPUBase::DbgWrite(const uint64_t addr_, uint32_t* const p_data_, const uint64_t size_)
+GenericCPUBase::DbgWrite(const uint64_t addr_, uint32_t* const p_data_, const uint32_t size_)
 {
     CheckAddressAlignment(addr_);
+    CheckDataSize( size_);
     mp_dbg_payload->set_address(addr_);
     mp_dbg_payload->set_write();
     mp_dbg_payload->set_data_length(size_);
@@ -223,7 +226,7 @@ GenericCPUBase::DbgWrite(const uint64_t addr_, uint32_t* const p_data_, const ui
 //    unsigned char* data = new unsigned char[256];
     mp_dbg_payload->set_data_ptr(reinterpret_cast<uint8_t*>(p_data_));
 
-    uint64_t number_bytes_wr = socket->transport_dbg( *mp_dbg_payload );
+    uint32_t number_bytes_wr = socket->transport_dbg( *mp_dbg_payload );
     if (number_bytes_wr != size_) {
         fprintf(stderr, "%s transaction was not performed properly!\n", __PRETTY_FUNCTION__);
         exit(1);
@@ -237,9 +240,10 @@ GenericCPUBase::DbgWrite(const uint64_t addr_, uint32_t* const p_data_, const ui
 // OUT: 
 // RET:
 void 
-GenericCPUBase::DbgRead (const uint64_t addr_,       uint32_t* const p_data_, const uint64_t size_)
+GenericCPUBase::DbgRead (const uint64_t addr_,       uint32_t* const p_data_, const uint32_t size_)
 {
     CheckAddressAlignment(addr_);
+    CheckDataSize( size_);
     mp_dbg_payload->set_address(addr_);
     mp_dbg_payload->set_read();
     mp_dbg_payload->set_data_length(size_);
@@ -272,9 +276,22 @@ GenericCPUBase::invalidate_direct_mem_ptr(sc_dt::uint64 start_range_, sc_dt::uin
 void
 GenericCPUBase::CheckAddressAlignment(const uint32_t addr_)
 {
-    if (addr_ % sizeof(int32_t) != 0) {
+    if ((addr_ & 0x3) != 0) {
         fprintf(stderr, "ERROR! address must be multiple of 4, addr(0x%x)!\n", addr_);
         exit(1);
     }
 } 
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// IN:  size_  - the data size that must be multiple of 4 bytes (32 bit word) 
+// OUT: 
+// RET: 
+void 
+GenericCPUBase::CheckDataSize(const uint32_t size_)
+{
+    if ((size_ & 0x3) != 0) {
+        fprintf(stderr, "ERROR! size must be multiple of 4, size(0x%x)!\n", size_);
+        exit(1);
+    }
+}
 

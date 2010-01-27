@@ -53,7 +53,7 @@ GenericCPU::InitSystem()
 void 
 GenericCPU::TreatPeripheral0()
 {
-printf("%s", __PRETTY_FUNCTION__);
+printf("%s\n", __PRETTY_FUNCTION__);
     Write32BitWord(0x00, 1);
     Write32BitWord(0x04, 2);
 }
@@ -65,7 +65,7 @@ printf("%s", __PRETTY_FUNCTION__);
 void 
 GenericCPU::TreatPeripheral1()
 {
-printf("%s", __PRETTY_FUNCTION__);
+printf("%s\n", __PRETTY_FUNCTION__);
     Write32BitWord(0x100, 3);
     Write32BitWord(0x104, 4);
 }
@@ -80,7 +80,7 @@ GenericCPU::TreatPeripheral2()
 printf("%s\n", __PRETTY_FUNCTION__);
     
     uint64_t addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress(MEM2, M2_REG0); 
-    printf("addr = (0x%x)\n", addr);
+//    printf("addr = (0x%x)\n", addr);
     uint32_t reg_val = 5;
     Write32BitWord(addr, reg_val);
     uint32_t new_reg_val = WriteField(MEM2, M2_FIELD0, 1,  reg_val);
@@ -96,6 +96,19 @@ void
 GenericCPU::TreatPeripheral3()
 {
     printf("%s\n", __PRETTY_FUNCTION__);
+    printf("data[0x%x] = 0x%x\n",  0x00, Read32BitWord(0x00));
+    printf("data[0x%x] = 0x%x\n",  0x04, Read32BitWord(0x04));
+    printf("data[0x%x] = 0x%x\n",  0x08, Read32BitWord(0x08));
+    printf("data[0x%x] = 0x%x\n", 0x100, Read32BitWord(0x100));
+    printf("data[0x%x] = 0x%x\n", 0x104, Read32BitWord(0x104));
+    printf("data[0x%x] = 0x%x\n", 0x108, Read32BitWord(0x108));
+    printf("data[0x%x] = 0x%x\n", 0x200, Read32BitWord(0x200));
+    printf("data[0x%x] = 0x%x\n", 0x204, Read32BitWord(0x204));
+    printf("data[0x%x] = 0x%x\n", 0x208, Read32BitWord(0x208));
+
+    printf("DBG data[0x%x] = 0x%x\n",  0x08, DbgRead32BitWord(0x08));
+    printf("DBG data[0x%x] = 0x%x\n", 0x108, DbgRead32BitWord(0x108));
+
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // The main thread
@@ -110,18 +123,12 @@ GenericCPU::STMain()
     while(1)
     {
         uint32_t peripheral_id = m_irq.read(); //blocking read 
-        if (peripheral_id < 3) {
+        if (peripheral_id < 4) {
             (this->*mv_program_peripheral[peripheral_id])();
         }
         // read the result
         
-        printf("data[0x%x] = 0x%x\n", 0x08, Read32BitWord(0x08));
-        printf("data[0x%x] = 0x%x\n", 0x108, Read32BitWord(0x108));
-        
-        printf("DBG data[0x%x] = 0x%x\n", 0x08, DbgRead32BitWord(0x08));
-        printf("DBG data[0x%x] = 0x%x\n", 0x108, DbgRead32BitWord(0x108));
 
         if (cntr++ > 20) { cout << "Test PASSED" << endl; exit(0);}
     }
-
 }

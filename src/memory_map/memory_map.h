@@ -37,6 +37,7 @@ public:
     void     Read (const uint64_t reg_id_, const uint32_t field_, uint32_t* const p_data_);    
     void     set_register_field(const uint32_t field_, const uint32_t msb_, const uint32_t lsb_);
     void     get_register_field(const uint32_t field_, uint32_t* const p_msb_, uint32_t* const p_lsb_);
+    uint32_t* GetPhysicalAddress(const uint64_t addr_);
     
 private:
     struct FieldRange
@@ -51,7 +52,8 @@ private:
     uint64_t    m_number_registers; // 4 bytes regs
     uint64_t    m_memory_size;      // 4 bytes per memory location
     
-    vector<sc_uint<32> > m_hw_resource;     //RESOURCES_ON_32_BITS 
+//    vector<sc_uint<32> > m_hw_resource;     //RESOURCES_ON_32_BITS 
+    vector<uint32_t>     m_hw_resource;       //RESOURCES_ON_32_BITS 
     vector<FieldRange>   m_register_field;
 
 };
