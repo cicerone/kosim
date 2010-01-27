@@ -6,7 +6,7 @@
 #==============================================================================================
 
 import sys
-import libkosim_generic_cpu as kosim_generic_cpu
+import libkosim_generic_cpu_test1 as kosim_generic_cpu
 
 #print len(sys.argv)
 #for arg in sys.argv:

@@ -19,7 +19,7 @@
 
 using namespace boost::python;
 
-BOOST_PYTHON_MODULE(libkosim_generic_cpu)
+BOOST_PYTHON_MODULE(libkosim_generic_cpu_test2)
 {
 
     def("run_sim", run_sim); // entru point in SystemC program                           

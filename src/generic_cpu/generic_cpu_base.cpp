@@ -68,7 +68,7 @@ GenericCPUBase::Write32BitWord   (const uint64_t addr_, int32_t data_)
         error += mp_payload->get_response_string();
         SC_REPORT_ERROR("TLM-2", error.c_str());
     }
-    cout << "trans = {  'W' , " << hex << addr_ << " } , data = " << hex << data_ << " at time " << sc_time_stamp() << endl;
+//    cout << "trans = {  'W' , " << hex << addr_ << " } , data = " << hex << data_ << " at time " << sc_time_stamp() << endl;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // Uses TLM2 blocking interface to read 32 bit words
@@ -146,6 +146,111 @@ GenericCPUBase::DbgRead32BitWord(const uint64_t addr_)
         exit(1);
     }
     return read_data;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// IN:  addr_    - address to write data to
+//      p_data_  - reference to chunck of data to be written 
+//      size_    - size of chunk of data in bytes 
+// OUT: 
+// RET:
+void 
+GenericCPUBase::Write   (const uint64_t addr_, uint32_t* const p_data_, const uint64_t size_)
+{
+    CheckAddressAlignment(addr_);
+    mp_payload->set_command        ( tlm::TLM_WRITE_COMMAND);
+    mp_payload->set_address        ( addr_ );
+    mp_payload->set_data_ptr       ( reinterpret_cast<uint8_t*>(p_data_) );
+    mp_payload->set_data_length    ( size_ );
+    mp_payload->set_streaming_width( sizeof(int32_t) ); 
+    mp_payload->set_byte_enable_ptr( 0               ); // 0 indicates unused
+    mp_payload->set_dmi_allowed    ( false           ); // mandatory initial value
+    mp_payload->set_response_status( tlm::TLM_INCOMPLETE_RESPONSE ); // mandatory initial value
+
+    sc_time delay = sc_time(0, SC_NS);
+    socket->b_transport( *mp_payload, delay );  // Blocking transport call
+
+    if ( mp_payload->is_response_error() ) {
+        string error("Error from b_transport, response status = ");
+        error += mp_payload->get_response_string();
+        SC_REPORT_ERROR("TLM-2", error.c_str());
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// IN:  addr_    - address to read data from 
+//      p_data_  - reference to where to store the data 
+//      size_    - size of chunk of data in bytes  
+// OUT: 
+// RET:
+void 
+GenericCPUBase::Read    (const uint64_t addr_,       uint32_t* const p_data_, const uint64_t size_)
+{
+    CheckAddressAlignment(addr_);
+    mp_payload->set_command        ( tlm::TLM_READ_COMMAND);
+    mp_payload->set_address        ( addr_ );
+    mp_payload->set_data_ptr       ( reinterpret_cast<uint8_t*>(p_data_) );
+    mp_payload->set_data_length    ( size_ );
+    mp_payload->set_streaming_width( sizeof(int32_t) );
+    mp_payload->set_byte_enable_ptr( 0               ); // 0 indicates unused
+    mp_payload->set_dmi_allowed    ( false           ); // mandatory initial value
+    mp_payload->set_response_status( tlm::TLM_INCOMPLETE_RESPONSE ); // mandatory initial value
+
+    sc_time delay = sc_time(0, SC_NS);
+    socket->b_transport( *mp_payload, delay );  // Blocking transport call
+
+    if ( mp_payload->is_response_error() ) {
+        string error("Error from b_transport, response status = ");
+        error += mp_payload->get_response_string();
+        SC_REPORT_ERROR("TLM-2", error.c_str());
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// IN:  addr_    - address to write data to
+//      p_data_  - reference to chunck of data to be written 
+//      size_    - size of chunk of data in bytes 
+// OUT: 
+// RET:
+void 
+GenericCPUBase::DbgWrite(const uint64_t addr_, uint32_t* const p_data_, const uint64_t size_)
+{
+    CheckAddressAlignment(addr_);
+    mp_dbg_payload->set_address(addr_);
+    mp_dbg_payload->set_write();
+    mp_dbg_payload->set_data_length(size_);
+
+//    unsigned char* data = new unsigned char[256];
+    mp_dbg_payload->set_data_ptr(reinterpret_cast<uint8_t*>(p_data_));
+
+    uint64_t number_bytes_wr = socket->transport_dbg( *mp_dbg_payload );
+    if (number_bytes_wr != size_) {
+        fprintf(stderr, "%s transaction was not performed properly!\n", __PRETTY_FUNCTION__);
+        exit(1);
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// IN:  addr_    - address to read data from 
+//      p_data_  - reference to where to store the data 
+//      size_    - size of chunk of data in bytes  
+// OUT: 
+// RET:
+void 
+GenericCPUBase::DbgRead (const uint64_t addr_,       uint32_t* const p_data_, const uint64_t size_)
+{
+    CheckAddressAlignment(addr_);
+    mp_dbg_payload->set_address(addr_);
+    mp_dbg_payload->set_read();
+    mp_dbg_payload->set_data_length(size_);
+
+    mp_dbg_payload->set_data_ptr(reinterpret_cast<uint8_t*>(p_data_));
+
+    uint32_t number_bytes_rd = socket->transport_dbg( *mp_dbg_payload );
+    if (number_bytes_rd != size_) {
+        fprintf(stderr, "%s transaction was not performed properly!\n", __PRETTY_FUNCTION__);
+        exit(1);
+    }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // TLM-2 backward DMI method, invalidates dmi access
