@@ -45,7 +45,6 @@ GenericCPU::InitSystem()
    mv_program_peripheral[2] = &GenericCPU::TreatPeripheral2;
    mv_program_peripheral[3] = &GenericCPU::TreatPeripheral3;
 }
-/*
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // IN: 
@@ -53,65 +52,10 @@ GenericCPU::InitSystem()
 // RET: 
 void 
 GenericCPU::TreatPeripheral0()
-{
-printf("%s", __PRETTY_FUNCTION__);
-    Write32BitWord(0x00, 1);
-    Write32BitWord(0x04, 2);
-}
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// IN: 
-// OUT: 
-// RET: 
-void 
-GenericCPU::TreatPeripheral1()
-{
-printf("%s", __PRETTY_FUNCTION__);
-    Write32BitWord(0x100, 3);
-    Write32BitWord(0x104, 4);
-}
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// IN: 
-// OUT: 
-// RET: 
-void 
-GenericCPU::TreatPeripheral2()
 {
 printf("%s\n", __PRETTY_FUNCTION__);
-    
-    uint64_t addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress(MEM2, M2_REG0); 
-    printf("addr = (0x%x)\n", addr);
-    uint32_t reg_val = 5;
-    Write32BitWord(addr, reg_val);
-    uint32_t new_reg_val = WriteField(MEM2, M2_FIELD0, 1,  reg_val);
-    Write32BitWord(addr, new_reg_val);
-
-}
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// IN: 
-// OUT: 
-// RET: 
-void 
-GenericCPU::TreatPeripheral3()
-{
-    printf("%s\n", __PRETTY_FUNCTION__);
-}
-*/
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// IN: 
-// OUT: 
-// RET: 
-void 
-GenericCPU::TreatPeripheral0()
-{
-printf("%s", __PRETTY_FUNCTION__);
-    uint32_t data = 1;
-    Write(0x00, &data);
-    data = 2;
-    Write(0x04, &data);
+    uint32_t data[2] = {1, 2};
+    DbgWrite(0x00, data, 2*sizeof(uint32_t));
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -121,11 +65,9 @@ printf("%s", __PRETTY_FUNCTION__);
 void 
 GenericCPU::TreatPeripheral1()
 {
-printf("%s", __PRETTY_FUNCTION__);
-    uint32_t data = 3;
-    Write(0x100, &data);
-    data = 4;
-    Write(0x104, &data);
+printf("%s\n", __PRETTY_FUNCTION__);
+    uint32_t data[2] = {3, 4};
+    Write(0x100, data, 2*sizeof(uint32_t));
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -154,6 +96,24 @@ void
 GenericCPU::TreatPeripheral3()
 {
     printf("%s\n", __PRETTY_FUNCTION__);
+    uint32_t data = 0; 
+    Read(0x00, &data);
+    printf("data[0x%x] = 0x%x\n",  0x00, data);
+    Read(0x04, &data);
+    printf("data[0x%x] = 0x%x\n",  0x04, data);
+    Read(0x08, &data);
+    printf("data[0x%x] = 0x%x\n",  0x08, data);
+
+    uint32_t a_data[3] = {0, 0, 0};
+    DbgRead(0x100, a_data, 3*sizeof(uint32_t));
+    printf("data[0x%x] = 0x%x\n", 0x100, a_data[0]);
+    printf("data[0x%x] = 0x%x\n", 0x104, a_data[1]);
+    printf("data[0x%x] = 0x%x\n", 0x108, a_data[2]);
+
+    Read(0x200, a_data, 3*sizeof(uint32_t));
+    printf("data[0x%x] = 0x%x\n", 0x200, a_data[0]);
+    printf("data[0x%x] = 0x%x\n", 0x204, a_data[1]);
+    printf("data[0x%x] = 0x%x\n", 0x208, a_data[2]);
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // The main thread
@@ -168,21 +128,10 @@ GenericCPU::STMain()
     while(1)
     {
         uint32_t peripheral_id = m_irq.read(); //blocking read 
-        if (peripheral_id < 3) {
+        if (peripheral_id < NUMBER_PERIPHERALS) {
             (this->*mv_program_peripheral[peripheral_id])();
         }
-        // read the result
-        uint32_t data = 0; 
-        Read(0x08, &data);
-        printf("data[0x%x] = 0x%x\n",  0x08, data);
-        Read(0x108, &data);
-        printf("data[0x%x] = 0x%x\n", 0x108, data);
-        DbgRead(0x08, &data);
-        printf("DBG data[0x%x] = 0x%x\n",  0x08, data);
-        DbgRead(0x108, &data);
-        printf("DBG data[0x%x] = 0x%x\n", 0x108, data);
 
         if (cntr++ > 20) { cout << "Test PASSED" << endl; exit(0);}
     }
-
 }

@@ -123,7 +123,7 @@ GenericCPU::STMain()
     while(1)
     {
         uint32_t peripheral_id = m_irq.read(); //blocking read 
-        if (peripheral_id < 4) {
+        if (peripheral_id < NUMBER_PERIPHERALS) {
             (this->*mv_program_peripheral[peripheral_id])();
         }
         // read the result

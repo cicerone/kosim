@@ -61,40 +61,23 @@ GCTarget::b_transport( tlm::tlm_generic_payload& payload_, sc_time& delay_ )
       payload_.set_response_status( tlm::TLM_BYTE_ENABLE_ERROR_RESPONSE );
       return;
     }
-    if (data_length > sizeof(uint32_t) || stream_width < data_length) {
-      payload_.set_response_status( tlm::TLM_BURST_ERROR_RESPONSE );
-      return;
-    }
+//   if (data_length > sizeof(uint32_t) || stream_width < data_length) {
+//     payload_.set_response_status( tlm::TLM_BURST_ERROR_RESPONSE );
+//     return;
+//   }
 
     wait(delay_);
     delay_ = SC_ZERO_TIME;
 
-    if (data_length != 4) {
-        fprintf(stderr, "ERROR! Only 4 bytes of data can be transported for now!\n");
-        exit(1);
-    }
 
 //    uint32_t data = 0;
     // read and write commands
     if ( command == tlm::TLM_READ_COMMAND ) {
-//        mp_memory_map->Read(mem_address, &data);
-//        memcpy(data_ptr, &data, data_length);
         memcpy(data_ptr, mp_memory_map->GetPhysicalAddress(mem_address), data_length);
     }
     else if ( command == tlm::TLM_WRITE_COMMAND ) {
          memcpy(mp_memory_map->GetPhysicalAddress(mem_address), data_ptr, data_length);
-//       memcpy(&data, data_ptr, data_length);
-//       mp_memory_map->Write(mem_address, data);
     }
-/*
-NOTE: Idealy the memory part must be an array so that memcpy can be used
-DONOTDELETE
-    // read and write commands
-    if ( command == tlm::TLM_READ_COMMAND )
-      memcpy(data_ptr, &mem[mem_address], data_length);
-    else if ( command == tlm::TLM_WRITE_COMMAND )
-      memcpy(&mem[mem_address], data_ptr, data_length);
-*/
     // Set DMI hint to indicated that DMI is supported
     payload_.set_dmi_allowed(true);
 
@@ -144,18 +127,10 @@ GCTarget::transport_dbg(tlm::tlm_generic_payload& payload_)
     uint32_t data = 0;
     // read and write commands
     if ( command == tlm::TLM_READ_COMMAND ) {
-        mp_memory_map->Read(mem_address, &data);
-        memcpy(data_ptr, &data, data_length);
+        memcpy(data_ptr, mp_memory_map->GetPhysicalAddress(mem_address), data_length);
     }
     else if ( command == tlm::TLM_WRITE_COMMAND ) {
-        memcpy(&data, data_ptr, data_length);
-        mp_memory_map->Write(mem_address, data);
+        memcpy(mp_memory_map->GetPhysicalAddress(mem_address), data_ptr, data_length);
     }
-/*
-    if ( command == tlm::TLM_READ_COMMAND )
-      memcpy(data_ptr, &mem[mem_address], num_bytes);
-    else if ( command == tlm::TLM_WRITE_COMMAND )
-      memcpy(&mem[mem_address], data_ptr, num_bytes);
-*/
     return num_bytes;
 }
