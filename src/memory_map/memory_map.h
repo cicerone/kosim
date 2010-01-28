@@ -56,6 +56,7 @@ private:
     vector<uint32_t>     m_hw_resource;       //RESOURCES_ON_32_BITS 
     vector<FieldRange>   m_register_field;
 
+    sc_uint<32> m_field_accessor; // used for field access
 };
 
 #endif // KOSIM_MM_MEMORY_MAP_H

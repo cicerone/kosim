@@ -91,10 +91,9 @@ void MemoryMap::Read (const uint64_t resource_id_, uint32_t* const p_data_)  // 
 // RET:  
 void MemoryMap::Write(const uint64_t reg_id_, const uint32_t field_, const uint32_t data_) // RESOURCES_ON_32_BITS
 {
-    sc_uint<32> resource = m_hw_resource[reg_id_];
-
-    resource.range(m_register_field[field_].msb, m_register_field[field_].lsb) = data_;
-    m_hw_resource[reg_id_] = resource.to_uint();
+    m_field_accessor = m_hw_resource[reg_id_];
+    m_field_accessor.range(m_register_field[field_].msb, m_register_field[field_].lsb) = data_;
+    m_hw_resource[reg_id_] = m_field_accessor.to_uint();
 }
 ///////////////////////////////////////////////////////////////////////////////////// 
 // IN:  reg_id_ - the register ID
@@ -103,9 +102,8 @@ void MemoryMap::Write(const uint64_t reg_id_, const uint32_t field_, const uint3
 // RET:  
 void MemoryMap::Read (const uint64_t reg_id_, const uint32_t field_, uint32_t* const p_data_) // RESOURCES_ON_32_BITS
 {
-    sc_uint<32> resource = m_hw_resource[reg_id_];
-    
-    *p_data_ = resource.range(m_register_field[field_].msb, m_register_field[field_].lsb);
+    m_field_accessor = m_hw_resource[reg_id_];
+    *p_data_ = m_field_accessor.range(m_register_field[field_].msb, m_register_field[field_].lsb);
 }
 /////////////////////////////////////////////////////////////////////////////////////
 //
