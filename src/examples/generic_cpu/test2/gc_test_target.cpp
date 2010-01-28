@@ -33,12 +33,12 @@ void GCTestTarget::STMain()
     {
         uint32_t mem[3];
         mp_memory_map->Read(0, &mem[0]);
-        mp_memory_map->Read(4, &mem[1]);
-        mp_memory_map->Read(8, &mem[2]);
+        mp_memory_map->Read(1, &mem[1]);
+        mp_memory_map->Read(2, &mem[2]);
        
         mem[2] = mem[0] + mem[1];
 
-        mp_memory_map->Write(8, mem[2]);
+        mp_memory_map->Write(2, mem[2]);
 
         wait(10, SC_NS);
         m_irq.write(m_id);

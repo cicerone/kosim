@@ -58,58 +58,54 @@ void MemoryMap::SetRegisterFieldsSize(const uint64_t num_fields_)
 }
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// IN:   addr_ - the address of reg/memory; it is 4 byte aligned 
+// IN:   resource_id_ - the ID of reg/memory
 //       data_ - the value to be written
 // OUT: 
-// RET:  true if the operation was succesfull
-void MemoryMap::Write(const uint64_t addr_, const uint32_t data_) // RESOURCES_ON_32_BITS
+// RET:  
+void MemoryMap::Write(const uint64_t resource_id_, const uint32_t data_) // RESOURCES_ON_32_BITS
 {
-    uint64_t local_addr = addr_ >> 2;
-    if (local_addr > m_hw_resource.size()) {
-        fprintf(stderr, "ERROR! Block %s has address (0x%x) out of range (0x%x)\n", m_name.c_str(), addr_, m_hw_resource.size()); 
+    if (resource_id_ > m_hw_resource.size()) {
+        fprintf(stderr, "ERROR! Block %s has resource ID (0x%x) out of range (0x%x)\n", m_name.c_str(), resource_id_, m_hw_resource.size()); 
         exit(1);
     }
-    m_hw_resource[local_addr] = data_;
+    m_hw_resource[resource_id_] = data_;
 }
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// IN: addr_ - the address of reg/memory; it is 4 bytes aligned
-// OUT: p_data_ - reference to data that is read 
-// RET:  true if the operation was succesfull
-void MemoryMap::Read (const uint64_t addr_, uint32_t* const p_data_)  // RESOURCES_ON_32_BITS
+// IN:  resource_id_ - the ID of reg/memory
+// OUT: p_data_      - reference to data that is read 
+// RET:  
+void MemoryMap::Read (const uint64_t resource_id_, uint32_t* const p_data_)  // RESOURCES_ON_32_BITS
 {
-    uint64_t local_addr = addr_ >> 2;
-    if (local_addr > m_hw_resource.size()) {
-        fprintf(stderr, "ERROR! Block %s has address (0x%x) out of range (0x%x)\n", m_name.c_str(), addr_, m_hw_resource.size()); 
+    if (resource_id_ > m_hw_resource.size()) {
+        fprintf(stderr, "ERROR! Block %s has resource ID (0x%x) out of range (0x%x)\n", m_name.c_str(), resource_id_, m_hw_resource.size()); 
         exit(1);
     }
-    *p_data_ = m_hw_resource[local_addr];
+    *p_data_ = m_hw_resource[resource_id_];
 }
 /////////////////////////////////////////////////////////////////////////////////////
-// TLM debug transport mechanims probably should be preferred.
-// IN:   addr_  - the address of reg/memory; it is 4 byte aligned 
+// IN:   reg_id_ - the register ID
 //       field_ - the field of the register where data is written
 //       data_  - the value to be written
 // OUT: 
-// RET:  true if the operation was succesfull
+// RET:  
 void MemoryMap::Write(const uint64_t reg_id_, const uint32_t field_, const uint32_t data_) // RESOURCES_ON_32_BITS
 {
     sc_uint<32> resource = m_hw_resource[reg_id_];
 
     resource.range(m_register_field[field_].msb, m_register_field[field_].lsb) = data_;
     m_hw_resource[reg_id_] = resource.to_uint();
-//    m_hw_resource[reg_id_].range(m_register_field[field_].msb, m_register_field[field_].lsb) = data_;
-} 
-// IN:  addr_   - the address of reg/memory; it is 4 bytes aligned
+}
+///////////////////////////////////////////////////////////////////////////////////// 
+// IN:  reg_id_ - the register ID
 //      field_  - the field the data is read from
 // OUT: p_data_ - reference to data that is read 
-// RET:  true if the operation was succesfull
+// RET:  
 void MemoryMap::Read (const uint64_t reg_id_, const uint32_t field_, uint32_t* const p_data_) // RESOURCES_ON_32_BITS
 {
     sc_uint<32> resource = m_hw_resource[reg_id_];
     
     *p_data_ = resource.range(m_register_field[field_].msb, m_register_field[field_].lsb);
-//    *p_data_ = m_hw_resource[reg_id_].range(m_register_field[field_].msb, m_register_field[field_].lsb);
 }
 /////////////////////////////////////////////////////////////////////////////////////
 //
