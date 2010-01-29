@@ -9,7 +9,7 @@
 
 #include "generic_cpu.h"
 #include "gc_test_target.h"
-#include "gc_router.h"
+#include "b_router.h"
 #include "gc_interrupt_controller.h"
 #include "memory_map_builder.h"
 #include "memory_map.h"
@@ -31,7 +31,7 @@ public:
 private:
    void BuildMemoryMap();
    GenericCPU* p_gcpu;
-   GCRouter<NUMBER_PERIPHERALS>* p_router;
+   BRouter<NUMBER_PERIPHERALS>* p_router;
    GCTestTarget*    p_test_target[NUMBER_PERIPHERALS];
    GCInterruptController<NUMBER_PERIPHERALS>* p_irq_ctrler;
    sc_fifo<uint32_t> cpu_irq;
@@ -48,7 +48,7 @@ Top::Top(sc_module_name name_) : sc_module(name_)
      BuildMemoryMap();
 
      p_gcpu       = new GenericCPU("gen_cpu");
-     p_router     = new GCRouter<NUMBER_PERIPHERALS>("router");
+     p_router     = new BRouter<NUMBER_PERIPHERALS>("router");
      p_irq_ctrler = new GCInterruptController<NUMBER_PERIPHERALS>("interrupt_controller");
      
      for (int i = 0; i < NUMBER_PERIPHERALS; i++)
