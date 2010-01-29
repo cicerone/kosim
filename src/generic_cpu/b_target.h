@@ -26,7 +26,7 @@ class BTarget : public sc_module
 
 public:
   BTarget(sc_module_name name_, uint32_t id_);
-  ~BTarget() {};
+  virtual ~BTarget() {};
   // TLM-2 socket, defaults to 32-bits wide, base protocol
   tlm_utils::simple_target_socket<BTarget> socket;
 

@@ -27,7 +27,7 @@ class GCTarget : public BTarget
 
 public:
   GCTarget(sc_module_name name_, uint32_t id_);
-  ~GCTarget() {};
+  virtual ~GCTarget() {};
   sc_fifo_out<uint32_t> m_irq ;
 
 
