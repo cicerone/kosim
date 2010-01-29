@@ -48,7 +48,7 @@ GenericCPUBase::~GenericCPUBase()
 // OUT: 
 // RET: 
 void
-GenericCPUBase::Write32BitWord   (const uint64_t addr_, int32_t data_)
+GenericCPUBase::Write   (const uint64_t addr_, uint32_t data_)
 {
     CheckAddressAlignment(addr_);
     mp_payload->set_command        ( tlm::TLM_WRITE_COMMAND);
@@ -75,8 +75,8 @@ GenericCPUBase::Write32BitWord   (const uint64_t addr_, int32_t data_)
 // IN:  addr_ - the address of the word to be read
 // OUT: 
 // RET:  the read value
-int32_t
-GenericCPUBase::Read32BitWord    (const uint64_t addr_)
+uint32_t
+GenericCPUBase::Read    (const uint64_t addr_)
 {
     int32_t read_data = 0;
     CheckAddressAlignment(addr_);
@@ -106,7 +106,7 @@ GenericCPUBase::Read32BitWord    (const uint64_t addr_)
 // OUT: 
 // RET: 
 void    
-GenericCPUBase::DbgWrite32BitWord(const uint64_t addr_, int32_t data_)
+GenericCPUBase::DbgWrite(const uint64_t addr_, uint32_t data_)
 {
     CheckAddressAlignment(addr_);
     uint32_t xfer_size = sizeof(int32_t);
@@ -128,8 +128,8 @@ GenericCPUBase::DbgWrite32BitWord(const uint64_t addr_, int32_t data_)
 // IN:  addr_ - the address of the word to be read
 // OUT: 
 // RET: the read value   
-int32_t 
-GenericCPUBase::DbgRead32BitWord(const uint64_t addr_)
+uint32_t 
+GenericCPUBase::DbgRead(const uint64_t addr_)
 {
     CheckAddressAlignment(addr_);
     uint32_t xfer_size = sizeof(int32_t);

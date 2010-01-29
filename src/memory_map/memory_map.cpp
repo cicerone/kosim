@@ -75,13 +75,13 @@ void MemoryMap::Write(const uint64_t resource_id_, const uint32_t data_) // RESO
 // IN:  resource_id_ - the ID of reg/memory
 // OUT: p_data_      - reference to data that is read 
 // RET:  
-void MemoryMap::Read (const uint64_t resource_id_, uint32_t* const p_data_)  // RESOURCES_ON_32_BITS
+uint32_t MemoryMap::Read (const uint64_t resource_id_)  // RESOURCES_ON_32_BITS
 {
     if (resource_id_ > m_hw_resource.size()) {
         fprintf(stderr, "ERROR! Block %s has resource ID (0x%x) out of range (0x%x)\n", m_name.c_str(), resource_id_, m_hw_resource.size()); 
         exit(1);
     }
-    *p_data_ = m_hw_resource[resource_id_];
+    return m_hw_resource[resource_id_];
 }
 /////////////////////////////////////////////////////////////////////////////////////
 // IN:   reg_id_ - the register ID
@@ -100,10 +100,10 @@ void MemoryMap::Write(const uint64_t reg_id_, const uint32_t field_, const uint3
 //      field_  - the field the data is read from
 // OUT: p_data_ - reference to data that is read 
 // RET:  
-void MemoryMap::Read (const uint64_t reg_id_, const uint32_t field_, uint32_t* const p_data_) // RESOURCES_ON_32_BITS
+uint32_t MemoryMap::Read (const uint64_t reg_id_, const uint32_t field_) // RESOURCES_ON_32_BITS
 {
     m_field_accessor = m_hw_resource[reg_id_];
-    *p_data_ = m_field_accessor.range(m_register_field[field_].msb, m_register_field[field_].lsb);
+    return m_field_accessor.range(m_register_field[field_].msb, m_register_field[field_].lsb);
 }
 /////////////////////////////////////////////////////////////////////////////////////
 //

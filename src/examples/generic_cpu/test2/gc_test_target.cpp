@@ -32,9 +32,9 @@ void GCTestTarget::STMain()
     while(1)
     {
         uint32_t mem[3];
-        mp_memory_map->Read(0, &mem[0]);
-        mp_memory_map->Read(1, &mem[1]);
-        mp_memory_map->Read(2, &mem[2]);
+        mem[0] = mp_memory_map->Read(0);
+        mem[1] = mp_memory_map->Read(1);
+        mem[2] = mp_memory_map->Read(2);
        
         mem[2] = mem[0] + mem[1];
 
