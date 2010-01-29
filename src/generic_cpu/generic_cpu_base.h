@@ -29,10 +29,10 @@ public:
   GenericCPUBase(sc_module_name name_);
   virtual ~GenericCPUBase();
 
-  void    Write   (const uint64_t addr_, uint32_t data_);
-  uint32_t Read   (const uint64_t addr_);
-  void    DbgWrite(const uint64_t addr_, uint32_t data_);
-  uint32_t DbgRead(const uint64_t addr_);
+  void     Write   (const uint64_t addr_, uint32_t data_);
+  uint32_t Read    (const uint64_t addr_);
+  void     DbgWrite(const uint64_t addr_, uint32_t data_);
+  uint32_t DbgRead (const uint64_t addr_);
   
   void    Write   (const uint64_t addr_, uint32_t* const p_data_, const uint32_t size_ = 4);
   void    Read    (const uint64_t addr_, uint32_t* const p_data_, const uint32_t size_ = 4);

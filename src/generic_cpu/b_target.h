@@ -5,8 +5,8 @@
     Support: kosim@kotys.biz 
 ===============================================================================================*/
 
-#ifndef KOSIM_GC_GC_TARGET_H
-#define KOSIM_GC_GC_TARGET_H
+#ifndef KOSIM_GC_B_TARGET_H
+#define KOSIM_GC_B_TARGET_H
 
 #include <stdint.h>
 
@@ -16,25 +16,35 @@
 #include "tlm_utils/simple_initiator_socket.h"
 #include "tlm_utils/simple_target_socket.h"
 #include "memory_map.h"
-#include "b_target.h"
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // Target module representing a simple memory
 /////////////////////////////////////////////////////////////////////////////////////////////////
-class GCTarget : public BTarget 
+class BTarget : public sc_module
 {
 
 public:
-  GCTarget(sc_module_name name_, uint32_t id_);
-  ~GCTarget() {};
-  sc_fifo_out<uint32_t> m_irq ;
+  BTarget(sc_module_name name_, uint32_t id_);
+  ~BTarget() {};
+  // TLM-2 socket, defaults to 32-bits wide, base protocol
+  tlm_utils::simple_target_socket<BTarget> socket;
 
+
+  // TLM-2 blocking transport method
+  void b_transport( tlm::tlm_generic_payload& payload_, sc_time& delay_ );
+  // TLM-2 forward DMI method
+  bool get_direct_mem_ptr(tlm::tlm_generic_payload& payload_ , tlm::tlm_dmi& dmi_data_ );
+  // TLM-2 debug transaction method
+  uint32_t transport_dbg(tlm::tlm_generic_payload& payload_ );
 
 protected:
+  const sc_time DMI_LATENCY;
+  MemoryMap* mp_memory_map;
+  uint32_t m_id;
 private:
 };
 
 
-#endif //KOSIM_GC_GC_TARGET_H
+#endif //KOSIM_GC_B_TARGET_H
 

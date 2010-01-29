@@ -11,7 +11,7 @@ include_directories (${KOSIM_SOURCE_DIR}/)
 include_directories (${KOSIM_SOURCE_DIR}/memory_map/)
 
 # The extension is already found. Any number of sources could be listed here.
-add_library (generic_cpu SHARED gc_target.cpp generic_cpu_base.cpp)
+add_library (generic_cpu SHARED b_target.cpp gc_target.cpp generic_cpu_base.cpp)
 
 ##Example of HOWTO make an executable in one dir
 #add_executable (generic_cpu gc_main.cpp gc_memory.cpp generic_cpu.cpp)
