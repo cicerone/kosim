@@ -24,11 +24,8 @@ SET(CMAKE_BUILD_TYPE Debug)
 #SET(CMAKE_CXX_FLAGS_DEBUG          "-Wall -W -Wconversion -Wshadow -Wcast-qual -Wwrite-strings -Wpadded")
 
 # search for Boost version 1.37
-find_package( Boost 1.37 COMPONENTS program_options)
-
-link_directories      ( ${Boost_LIBRARY_DIRS} )
-include_directories   ( ${Boost_INCLUDE_DIRS} )
-target_link_libraries ( ${Boost_LIBRARIES})
+link_directories      ( $ENV{BOOST_ROOT}/lib )
+include_directories   ( $ENV{BOOST_ROOT}/include/boost-1_37 )
 
 
 #SystemC libs
