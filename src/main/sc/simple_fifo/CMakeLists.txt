@@ -18,7 +18,7 @@ include_directories ($ENV{PYTHON_INCLUDE}/)
 
 # Make sure the linker can find the library once it is built.
 #link_directories (/usr/local/lib/)
-link_directories (/usr/lib/)
+#link_directories (/usr/lib/)
 
 # Add shared library called "kosim" that is built from the source files
 add_library (kosim_simple_fifo SHARED hello.cpp wrap_simple_fifo.cpp)

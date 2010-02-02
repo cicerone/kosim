@@ -18,7 +18,7 @@ include_directories ($ENV{PYTHON_INCLUDE}/)
 
 # Make sure the linker can find the library once it is built.
 #link_directories (/usr/local/lib/)
-link_directories (/usr/lib/)
+#link_directories (/usr/lib/)
 
 #some debugging messages
 #MESSAGE( "Your program_options lib.")

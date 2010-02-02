@@ -4,11 +4,7 @@
 #  Author: Cicerone Mihalache                                     Support: kosim@kotys.biz 
 #==============================================================================================
 
-include_directories (${KOSIM_SOURCE_DIR}/examples/tlm/doulos/tutorial5)
-include_directories (${KOSIM_SOURCE_DIR}/hierarchy_scanner)
-include_directories (${KOSIM_SOURCE_DIR}/program_options)
-include_directories ($ENV{PYTHON_INCLUDE}/)
-
+#include_directories ($ENV{PYTHON_INCLUDE}/)
 
 #some debugging messages
 #MESSAGE( "Your Unix home directory is $ENV{HOME}." )
@@ -22,10 +18,17 @@ include_directories ($ENV{PYTHON_INCLUDE}/)
 #link_directories (/usr/local/lib/)
 #link_directories (/usr/lib/)
 
+#some debugging messages
+#MESSAGE( "Your program_options lib.")
+
 # Add shared library called "kosim" that is built from the source files
-add_library (kosim_doulos_tutorial5 SHARED wrap_doulos_tutorial5.cpp)
-
+#add_library (kosim_generic_cpu_test1 SHARED wrap_generic_cpu.cpp program_options.cpp program_options_base.cpp options_builder.cpp)
 # Link the executable to the used libraries.
-target_link_libraries (kosim_doulos_tutorial5 doulos_tutorial5 hierarchy_scanner libboost_python.so libscv.so libsystemc.a)
+#target_link_libraries (kosim_generic_cpu_test1 generic_cpu generic_cpu_test1 hierarchy_scanner memory_map libboost_program_options.so libboost_python.so libscv.so libsystemc.a)
 
+
+#Generate executable
+add_executable (kosim_trivial_log  main.cpp)
+# Link the executable to the used libraries.
+target_link_libraries (libboost_log.so)
 
