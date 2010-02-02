@@ -23,10 +23,8 @@ SET(CMAKE_BUILD_TYPE Debug)
 #SET(CMAKE_CXX_FLAGS_DEBUG          "-pedantic -Wall -W -Wconversion -Wshadow -Wcast-qual -Wwrite-strings -Wpadded")
 #SET(CMAKE_CXX_FLAGS_DEBUG          "-Wall -W -Wconversion -Wshadow -Wcast-qual -Wwrite-strings -Wpadded")
 
-# search for Boost version 1.37
-link_directories      ( $ENV{BOOST_ROOT}/lib )
-include_directories   ( $ENV{BOOST_ROOT}/include/boost-1_37 )
-
+include_directories   ($ENV{BOOST_INCLUDE}/)
+link_directories      ($ENV{BOOST_LIB}/)
 
 #SystemC libs
 link_directories    ($ENV{SYSTEMC_LIB}/)
@@ -41,17 +39,21 @@ include_directories ($ENV{TLM_INCLUDE}/)
 # cause another cmake executable to run. The same process will walk through
 # the project's entire directory structure.
 
-add_subdirectory (main/generic_cpu)
+add_subdirectory (main/generic_cpu/test1)
+add_subdirectory (main/generic_cpu/test2)
 add_subdirectory (examples/generic_cpu/test1)
+add_subdirectory (examples/generic_cpu/test2)
 add_subdirectory (hierarchy_scanner)
-#add_subdirectory (program_options)
 add_subdirectory (generic_cpu)
 add_subdirectory (memory_map)
+
+
+#add_subdirectory (program_options) NOTE: this dir must never be added, the needed files are symbolically linked where needed
 
 # tests to run 
 # execute "make test" to run the following tests
 enable_testing()
 
-add_test(test_generic_cpu      python main/generic_cpu/generic_cpu.py        )
-
+add_test(test_generic_cpu_test1 python main/generic_cpu/test1/generic_cpu.py        )
+add_test(test_generic_cpu_test2 python main/generic_cpu/test2/generic_cpu.py        )
 

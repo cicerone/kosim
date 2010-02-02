@@ -67,17 +67,6 @@ add_subdirectory (hierarchy_scanner)
 add_subdirectory (generic_cpu)
 add_subdirectory (memory_map)
 
-add_subdirectory (main/boost_log/trivial)
-add_subdirectory (main/boost_log/advanced_usage)
-add_subdirectory (main/boost_log/async_log)
-add_subdirectory (main/boost_log/basic_usage)
-#add_subdirectory (main/boost_log/event_log)
-add_subdirectory (main/boost_log/multiple_files)
-add_subdirectory (main/boost_log/multiple_threads)
-add_subdirectory (main/boost_log/rotating_file)
-add_subdirectory (main/boost_log/settings_file)
-add_subdirectory (main/boost_log/syslog)
-add_subdirectory (main/boost_log/xml_file)
 
 #add_subdirectory (program_options) NOTE: this dir must never be added, the needed files are symbolically linked where needed
 
