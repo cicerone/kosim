@@ -4,8 +4,6 @@
 #  Author: Cicerone Mihalache                                     Support: kosim@kotys.biz 
 #==============================================================================================
 
-include_directories ($ENV{BOOST_ROOT}/include)
-include_directories ($ENV{BOOST_ROOT}/boost/thread)
 include_directories (${KOSIM_SOURCE_DIR}/examples/tlm/doulos/tutorial4)
 include_directories (${KOSIM_SOURCE_DIR}/hierarchy_scanner)
 include_directories (${KOSIM_SOURCE_DIR}/program_options)

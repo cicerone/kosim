@@ -4,8 +4,6 @@
 #  Author: Cicerone Mihalache                                     Support: kosim@kotys.biz 
 #==============================================================================================
 
-include_directories ($ENV{BOOST_ROOT}/include)
-include_directories ($ENV{BOOST_ROOT}/boost/thread)
 include_directories (${KOSIM_SOURCE_DIR}/examples/scv/pythagoras)
 include_directories (${KOSIM_SOURCE_DIR}/hierarchy_scanner)
 include_directories (${KOSIM_SOURCE_DIR}/program_options)
@@ -23,7 +21,7 @@ include_directories ($ENV{PYTHON_INCLUDE}/)
 link_directories (/usr/lib/)
 
 #some debugging messages
-#MESSAGE( "Your program_options lib is in: $ENV{BOOST_ROOT}/bin.v2/libs/program_options/build/gcc-4.1.2/release/link-static/threading-multi.")
+#MESSAGE( "Your program_options lib.")
 
 # Add shared library called "kosim" that is built from the source files
 add_library (kosim_pythagoras SHARED wrap_pythagoras.cpp)
