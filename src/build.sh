@@ -6,14 +6,14 @@ INSTALL_PREFIX="/usr/local"
 SYSTEMC_ROOT="$INSTALL_PREFIX/systemc-2.2.0"
 SCV_ROOT="$INSTALL_PREFIX/scv-1.0p2-sysc2.2"
 TLM_ROOT="$INSTALL_PREFIX/TLM-2009-07-15"
-BOOST_ROOT="INSTALL_PREFIX/boost_1_37_0"
+BOOST_ROOT="INSTALL_PREFIX/boost_1_41_0"
 
 # Include paths:
 export PYTHON_INCLUDE="/usr/include/python`python --version 2>&1 | cut -d ' ' -f2 | cut -d '.' -f1-2`"
 export SYSTEMC_INCLUDE="$SYSTEMC_ROOT/include"
 export SCV_INCLUDE="$SCV_ROOT/include"
 export TLM_INCLUDE="$TLM_ROOT/include/tlm"
-export BOOST_INCLUDE="$BOOST_ROOT/include/boost-1_37"
+export BOOST_INCLUDE="$BOOST_ROOT/include"
 
 # Library paths:
 LIB_DIR="lib-linux"
