@@ -23,8 +23,8 @@ SET(CMAKE_BUILD_TYPE Debug)
 #SET(CMAKE_CXX_FLAGS_DEBUG          "-pedantic -Wall -W -Wconversion -Wshadow -Wcast-qual -Wwrite-strings -Wpadded")
 #SET(CMAKE_CXX_FLAGS_DEBUG          "-Wall -W -Wconversion -Wshadow -Wcast-qual -Wwrite-strings -Wpadded")
 
-link_directories      ($ENV{BOOST_INCLUDE}/)
-include_directories   ($ENV{BOOST_LIB}/)
+include_directories   ($ENV{BOOST_INCLUDE}/)
+link_directories      ($ENV{BOOST_LIB}/)
 
 #SystemC libs
 link_directories    ($ENV{SYSTEMC_LIB}/)
@@ -51,7 +51,6 @@ add_subdirectory (main/tlm/doulos_tutorial6)
 add_subdirectory (main/tlm/doulos_tutorial7)
 add_subdirectory (main/generic_cpu/test1)
 add_subdirectory (main/generic_cpu/test2)
-#add_subdirectory (main/boost_log/trivial)
 add_subdirectory (examples/sc/simple_fifo)
 add_subdirectory (examples/sc/simple_bus)
 add_subdirectory (examples/scv/pythagoras)
@@ -65,9 +64,22 @@ add_subdirectory (examples/tlm/doulos/tutorial7)
 add_subdirectory (examples/generic_cpu/test1)
 add_subdirectory (examples/generic_cpu/test2)
 add_subdirectory (hierarchy_scanner)
-#add_subdirectory (program_options) NOTE: this dir must never be added, the needed files are symbolically linked where needed
 add_subdirectory (generic_cpu)
 add_subdirectory (memory_map)
+
+add_subdirectory (main/boost_log/trivial)
+add_subdirectory (main/boost_log/advanced_usage)
+add_subdirectory (main/boost_log/async_log)
+add_subdirectory (main/boost_log/basic_usage)
+#add_subdirectory (main/boost_log/event_log)
+add_subdirectory (main/boost_log/multiple_files)
+add_subdirectory (main/boost_log/multiple_threads)
+add_subdirectory (main/boost_log/rotating_file)
+add_subdirectory (main/boost_log/settings_file)
+add_subdirectory (main/boost_log/syslog)
+add_subdirectory (main/boost_log/xml_file)
+
+#add_subdirectory (program_options) NOTE: this dir must never be added, the needed files are symbolically linked where needed
 
 # tests to run 
 # execute "make test" to run the following tests

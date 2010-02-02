@@ -8,7 +8,7 @@
 #MESSAGE( "Your Unix home directory is $ENV{HOME}." )
 
 #Generate executable
-add_executable (kosim_trivial_log  main.cpp)
+add_executable (kosim_multiple_threads_log  main.cpp)
 # Link the executable to the used libraries.
-target_link_libraries (kosim_trivial_log libboost_log.so libboost_date_time.so libboost_regex.so libboost_filesystem.so libboost_system.so libboost_thread.so)
+target_link_libraries (kosim_multiple_threads_log libboost_log.so libboost_date_time.so libboost_regex.so libboost_filesystem.so libboost_system.so libboost_thread.so)
 
