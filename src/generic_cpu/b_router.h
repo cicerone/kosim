@@ -92,8 +92,8 @@ BRouter<N_TARGETS>::~BRouter()
 template<uint32_t N_TARGETS>
 void BRouter<N_TARGETS>::b_transport( tlm::tlm_generic_payload& payload_, sc_time& delay_ )
 {
-    sc_dt::uint64 address = payload_.get_address();
-    sc_dt::uint64 masked_address;
+    uint64_t address = payload_.get_address();
+    uint64_t masked_address;
     uint32_t target_nr = MemoryMapBuilder::GetInstance()->FindTarget(address, &masked_address);
 
     // Modify address within transaction
@@ -110,7 +110,7 @@ void BRouter<N_TARGETS>::b_transport( tlm::tlm_generic_payload& payload_, sc_tim
 template<uint32_t N_TARGETS>
 bool BRouter<N_TARGETS>::get_direct_mem_ptr(tlm::tlm_generic_payload& payload_, tlm::tlm_dmi& dmi_data_)
 {
-    sc_dt::uint64 masked_address;
+    uint64_t masked_address;
     uint32_t target_nr = MemoryMapBuilder::GetInstance()->FindTarget(payload_.get_address(), &masked_address);
 
     payload_.set_address( masked_address );
@@ -132,7 +132,7 @@ bool BRouter<N_TARGETS>::get_direct_mem_ptr(tlm::tlm_generic_payload& payload_, 
 template<uint32_t N_TARGETS>
 uint32_t BRouter<N_TARGETS>::transport_dbg(tlm::tlm_generic_payload& payload_ )
 {
-    sc_dt::uint64 masked_address;
+    uint64_t masked_address;
     uint32_t target_nr = MemoryMapBuilder::GetInstance()->FindTarget(payload_.get_address(), &masked_address);
     payload_.set_address( masked_address );
 
