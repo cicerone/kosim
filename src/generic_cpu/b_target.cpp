@@ -5,9 +5,9 @@
     Support: kosim@kotys.biz 
 ===============================================================================================*/
 
+#include "b_target.h"
 #include "memory_map_builder.h"
 #include "memory_map.h"
-#include "b_target.h"
 
 using namespace sc_core;
 using namespace sc_dt;

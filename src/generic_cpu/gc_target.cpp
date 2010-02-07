@@ -5,9 +5,9 @@
     Support: kosim@kotys.biz 
 ===============================================================================================*/
 
+#include "gc_target.h"
 #include "memory_map_builder.h"
 #include "memory_map.h"
-#include "gc_target.h"
 
 using namespace sc_core;
 using namespace sc_dt;
