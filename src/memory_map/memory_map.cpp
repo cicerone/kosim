@@ -9,6 +9,100 @@
 
 using namespace std;
 
+
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// IN: 
+// OUT: 
+// RET: 
+FieldTraits::FieldTraits() : 
+  msb(0),
+  lsb(0),
+  reset_value(0),
+  mask_value (0),
+  is_hw_read     (true), 
+  is_hw_write    (true),
+  is_hw_anded    (false),
+  is_hw_ored     (false),
+  is_hw_xored    (false),
+  is_hw_hwenable (false),
+  is_hw_hwmask   (false),
+  is_sw_read              (true),
+  is_sw_write             (true),
+  is_sw_clear_on_read     (false),
+  is_sw_set_on_read       (false),
+  is_sw_write_one_to_set  (false),
+  is_sw_write_one_to_clear(false)
+{
+};
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// IN: 
+// OUT: 
+// RET: 
+FieldTraits::~FieldTraits()
+{
+};
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// IN:   field_- the field ID
+//       msb - the position of the most significatn bit
+//       lsb - the position of the least significatn bit
+// OUT: 
+// RET: 
+void FieldTraits::SetFieldPosition(const uint32_t msb_, const uint32_t lsb_) // RESOURCES_ON_32_BITS
+{
+    msb = msb_;
+    lsb = lsb_;
+}
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// IN:   field_- the field ID
+//       reset_val_ - the reset value 
+//       mask_val   - the mask value
+// OUT: 
+// RET: 
+void FieldTraits::SetFieldValues(const uint32_t reset_val_, const uint32_t mask_val_)
+{
+    reset_value = reset_val_;
+    mask_value  = mask_val_ ;
+}
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// IN:  field_  - the field ID 
+// OUT: 
+// RET: 
+void  FieldTraits::SetHWAccessProperties(const bool hw_read_, const bool hw_write_, const bool hw_anded_,
+                                         const bool hw_ored_, const bool hw_xored_, const bool hw_hwenable_, const bool hw_hwmask_)
+{
+    is_hw_read     = hw_read_    ;   
+    is_hw_write    = hw_write_   ;
+    is_hw_anded    = hw_anded_   ;
+    is_hw_ored     = hw_ored_    ;
+    is_hw_xored    = hw_xored_   ;
+    is_hw_hwenable = hw_hwenable_;
+    is_hw_hwmask   = hw_hwmask_  ;
+}
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// IN:  field_  - the field ID 
+// OUT: 
+// RET: 
+void FieldTraits::SetSWAccessProperties( const bool sw_read_, const bool sw_write_, const bool sw_clear_on_read_, 
+                                         const bool sw_set_on_read_, const bool sw_write_one_to_set_, const bool sw_write_one_to_clear_)
+{
+    is_sw_read               = sw_read_              ;
+    is_sw_write              = sw_write_             ;
+    is_sw_clear_on_read      = sw_clear_on_read_     ; 
+    is_sw_set_on_read        = sw_set_on_read_       ;  
+    is_sw_write_one_to_set   = sw_write_one_to_set_  ;
+    is_sw_write_one_to_clear = sw_write_one_to_clear_;
+}
+/////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
+//
 /////////////////////////////////////////////////////////////////////////////////////
 //
 // IN: 
@@ -98,33 +192,40 @@ void MemoryMap::Write(const uint64_t reg_id_, const uint32_t field_, const uint3
 ///////////////////////////////////////////////////////////////////////////////////// 
 // IN:  reg_id_ - the register ID
 //      field_  - the field the data is read from
-// OUT: p_data_ - reference to data that is read 
-// RET:  
+// OUT:
+// RET: the field value  
 uint32_t MemoryMap::Read (const uint64_t reg_id_, const uint32_t field_) // RESOURCES_ON_32_BITS
 {
     m_field_accessor = m_hw_resource[reg_id_];
     return m_field_accessor.range(m_register_field[field_].msb, m_register_field[field_].lsb);
 }
 /////////////////////////////////////////////////////////////////////////////////////
-//
-// IN:   addr_ - the address of reg/memory; it is 4 byte aligned 
-//       data_ - the value to be written
+// IN:   reg_id_ - the register ID
+//       field_ - the field of the register where data is written
+//       data_  - the value to be written
 // OUT: 
-// RET:  true if the operation was succesfull
-void MemoryMap::set_register_field(const uint32_t field_, const uint32_t msb_, const uint32_t lsb_) // RESOURCES_ON_32_BITS
+// RET:  
+void MemoryMap::WriteRDL(const uint64_t reg_id_, const uint32_t field_, const uint32_t data_) // RESOURCES_ON_32_BITS
 {
-    m_register_field[field_].msb = msb_;
-    m_register_field[field_].lsb = lsb_;
+    if (m_register_field[field_].is_hw_write == false) return;
+    m_field_accessor = m_hw_resource[reg_id_];
+    uint32_t new_field_value = data_;
+    if      (m_register_field[field_].is_hw_hwenable) /* TODO */ ;
+    else if (m_register_field[field_].is_hw_hwmask)   /* TODO */ ;
+
+    m_field_accessor.range(m_register_field[field_].msb, m_register_field[field_].lsb) = data_;
+    m_hw_resource[reg_id_] = m_field_accessor.to_uint();
 }
-/////////////////////////////////////////////////////////////////////////////////////
-//
-// IN: addr_ - the address of reg/memory; it is 4 bytes aligned
-// OUT: p_data_ - reference to data that is read 
-// RET:  true if the operation was succesfull
-void MemoryMap::get_register_field(const uint32_t field_, uint32_t* const p_msb_, uint32_t* const p_lsb_) // RESOURCES_ON_32_BITS
+///////////////////////////////////////////////////////////////////////////////////// 
+// IN:  reg_id_ - the register ID
+//      field_  - the field the data is read from
+// OUT:  
+// RET: the value of the field  
+uint32_t MemoryMap::ReadRDL (const uint64_t reg_id_, const uint32_t field_) // RESOURCES_ON_32_BITS
 {
-    *p_msb_ = m_register_field[field_].msb;
-    *p_lsb_ = m_register_field[field_].lsb;
+    if (m_register_field[field_].is_hw_read == false) return 0;
+    m_field_accessor = m_hw_resource[reg_id_];
+    return m_field_accessor.range(m_register_field[field_].msb, m_register_field[field_].lsb);
 }
 /////////////////////////////////////////////////////////////////////////////////////
 //
@@ -140,3 +241,14 @@ uint32_t* MemoryMap::GetPhysicalAddress(const uint64_t addr_)   // RESOURCES_ON_
     }
     return &m_hw_resource[local_addr];
 }
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// IN:  field_ - the field ID
+// OUT:
+// RET: reference to the field's traits 
+
+FieldTraits* MemoryMap::GetFieldTraits(const uint32_t field_)
+{
+    return &m_register_field[field_];
+}
+

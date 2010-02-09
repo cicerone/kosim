@@ -9,6 +9,9 @@
 #include "memory_map_builder.h"
 
 using namespace std;
+
+static sc_uint<32> g_reg_val;
+
 /////////////////////////////////////////////////////////////////////////////////////
 //
 // IN:  p_mm1, p_mm2 - the MemoryMaps that are compared; the comparison criterion refers to the memory offset;
@@ -30,33 +33,69 @@ bool MemMapSortCriterion(const MemoryMap* p_mm1_, const MemoryMap* p_mm2_)
 // RET: the new value of the entire register (32 bit) 
 uint32_t WriteField(const uint32_t block_id_, const uint32_t field_id_, const uint32_t field_value_, const uint32_t reg_value_) // RESOURCES_ON_32_BITS
 {
-    uint32_t msb = 0;
-    uint32_t lsb = 0;
     MemoryMap* p_mmap = MemoryMapBuilder::GetInstance()->GetMemoryMap(block_id_);
-    p_mmap->get_register_field(field_id_, &msb, &lsb);
-    sc_uint<32> data = reg_value_;
-    data.range(msb, lsb) = field_value_;
-    return data.to_uint();
+    FieldTraits* p_field = p_mmap->GetFieldTraits(field_id_);
+    g_reg_val = reg_value_;
+    g_reg_val.range(p_field->msb, p_field->lsb) = field_value_;
+    return g_reg_val.to_uint();
 }
 /////////////////////////////////////////////////////////////////////////////////////
 // This function does not read the hw_resource value, it extracts the field value out of a already read hardware resource 
 // IN:  block_id_ - the block where the register to be read is located
 //      reg_id_   - the register to be read 
 //      field_id_ - the field to be read 
-//      reg_value_ - the value of the register that has the fiels read
+//      reg_value_ - the value of the register that has the fields read
 // OUT:
 // RET: the value of the field  
 uint32_t ReadField(const uint32_t block_id_, const uint32_t field_id_, const uint32_t reg_value_) // RESOURCES_ON_32_BITS
 {
-    uint32_t msb = 0;
-    uint32_t lsb = 0;
     MemoryMap* p_mmap = MemoryMapBuilder::GetInstance()->GetMemoryMap(block_id_);
-    p_mmap->get_register_field(field_id_, &msb, &lsb);
-    sc_uint<32> reg_val = reg_value_;
-    uint32_t field_value =  reg_val.range(msb, lsb);
+    FieldTraits* p_field = p_mmap->GetFieldTraits(field_id_);
+    g_reg_val = reg_value_;
+    uint32_t field_value =  g_reg_val.range(p_field->msb, p_field->lsb);
     return field_value;
 }
+/////////////////////////////////////////////////////////////////////////////////////
+// This function does not alter the hw_resource value, it prepares only the value needed
+// IN:  block_id_ - the block where the register to be modified is located
+//      field_id_ - the field to be modified
+//      field_value_ - the new value of the field
+//      reg_value_   - the value of the register before updating the field
+// OUT: 
+// RET: the new value of the entire register (32 bit) 
+uint32_t WriteFieldRDL(const uint32_t block_id_, const uint32_t field_id_, const uint32_t field_value_, const uint32_t reg_value_) // RESOURCES_ON_32_BITS
+{
+    MemoryMap* p_mmap = MemoryMapBuilder::GetInstance()->GetMemoryMap(block_id_);
+    FieldTraits* p_field = p_mmap->GetFieldTraits(field_id_);
+    if (p_field->is_sw_write == false) return reg_value_; 
+    g_reg_val = reg_value_;
+    uint32_t current_field_val = g_reg_val.range(p_field->msb, p_field->lsb);
+    uint32_t new_field_val = 0;
+    if      (p_field->is_sw_write_one_to_set)   new_field_val = current_field_val | field_value_; 
+    else if (p_field->is_sw_write_one_to_clear) new_field_val = current_field_val & ~field_value_; 
+    else                                        new_field_val = field_value_; 
 
+    g_reg_val.range(p_field->msb, p_field->lsb) = new_field_val;
+    return g_reg_val.to_uint();
+}
+/////////////////////////////////////////////////////////////////////////////////////
+// This function does not read the hw_resource value, it extracts the field value out of a already read hardware resource 
+// IN:  block_id_ - the block where the register to be read is located
+//      reg_id_   - the register to be read 
+//      field_id_ - the field to be read 
+//      reg_value_ - the value of the register that has the fields read
+// OUT:
+// RET: the value of the field  
+uint32_t ReadFieldRDL(const uint32_t block_id_, const uint32_t field_id_, const uint32_t reg_value_) // RESOURCES_ON_32_BITS
+{
+    
+    MemoryMap* p_mmap = MemoryMapBuilder::GetInstance()->GetMemoryMap(block_id_);
+    FieldTraits* p_field = p_mmap->GetFieldTraits(field_id_);
+    if (p_field->is_sw_read == false) return 0; // returns 0 for all fields that are not readable 
+    g_reg_val = reg_value_;
+    uint32_t field_value =  g_reg_val.range(p_field->msb, p_field->lsb);
+    return field_value;
+}
 
 /////////////////////////////////////////////////////////////////////////////////////
 MemoryMapBuilder* MemoryMapBuilder::mp_instance = 0;

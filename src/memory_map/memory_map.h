@@ -17,6 +17,51 @@
 
 using namespace std;
 
+class FieldTraits
+{
+public:
+    FieldTraits();
+    ~FieldTraits();
+    void     SetFieldPosition(const uint32_t msb_, const uint32_t lsb_);
+    void     SetFieldValues(const uint32_t reset_val_, const uint32_t mask_val_);
+    void     SetHWAccessProperties(const bool hw_read_, const bool hw_write_, const bool hw_anded_, const bool hw_ored_, 
+                                   const bool hw_xored_, const bool hw_hwenable_, const bool hw_hwmask_);
+    void     SetSWAccessProperties( const bool sw_read_, const bool sw_write_, const bool sw_clear_on_read_, 
+                                    const bool sw_set_on_read_, const bool sw_write_one_to_set_, const bool sw_write_one_to_clear_);
+
+public:
+    uint32_t msb;
+    uint32_t lsb;
+    uint32_t reset_value;
+    uint32_t mask_value;
+    bool is_hw_read;
+    bool is_hw_write;
+    bool is_hw_anded;
+    bool is_hw_ored;
+    bool is_hw_xored;
+    bool is_hw_hwenable;
+    bool is_hw_hwmask;
+//NA    bool is_hw_we;
+//NA    bool is_hw_wel;
+//NA    bool is_hw_fieldwidth;
+//NA    bool is_hw_hwclr;
+//NA    bool is_hw_hwset;
+
+    bool is_sw_read;
+    bool is_sw_write;
+    bool is_sw_clear_on_read;  // NOTE: a read operation triggers a write operation, not implemented for now...
+    bool is_sw_set_on_read;    // NOTE: a read operation triggers a write operation, not implemented for now...
+    bool is_sw_write_one_to_set;
+    bool is_sw_write_one_to_clear;
+//NA    bool is_sw_swwe;
+//NA    bool is_sw_swwel;
+//NA    bool is_sw_swmod;
+//NA    bool is_sw_swacc;
+//NA    bool is_sw_single_pulse;
+    
+};
+
+
 class MemoryMap : boost::noncopyable
 {
 public:
@@ -35,16 +80,13 @@ public:
     uint32_t Read (const uint64_t resource_id_);    
     void     Write(const uint64_t reg_id_, const uint32_t field_, const uint32_t data_);
     uint32_t Read (const uint64_t reg_id_, const uint32_t field_);    
-    void     set_register_field(const uint32_t field_, const uint32_t msb_, const uint32_t lsb_);
-    void     get_register_field(const uint32_t field_, uint32_t* const p_msb_, uint32_t* const p_lsb_);
-    uint32_t* GetPhysicalAddress(const uint64_t addr_);
+    void     WriteRDL(const uint64_t reg_id_, const uint32_t field_, const uint32_t data_);
+    uint32_t ReadRDL (const uint64_t reg_id_, const uint32_t field_);    
+
+    FieldTraits* GetFieldTraits(const uint32_t field_);
+    uint32_t*    GetPhysicalAddress(const uint64_t addr_);
     
 private:
-    struct FieldRange
-    {
-        uint32_t msb;
-        uint32_t lsb;
-    };
 
     uint32_t    m_id    ; 
     string      m_name  ; 
@@ -54,7 +96,7 @@ private:
     
 //    vector<sc_uint<32> > m_hw_resource;     //RESOURCES_ON_32_BITS 
     vector<uint32_t>     m_hw_resource;       //RESOURCES_ON_32_BITS 
-    vector<FieldRange>   m_register_field;
+    vector<FieldTraits>  m_register_field;
 
     sc_uint<32> m_field_accessor; // used for field access
 };

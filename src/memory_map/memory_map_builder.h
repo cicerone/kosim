@@ -18,6 +18,8 @@
 bool MemMapSortCriterion(const MemoryMap* p_mm1_, const MemoryMap* p_mm2_);
 uint32_t WriteField(const uint32_t block_id_, const uint32_t field_id_, const uint32_t field_value_, const uint32_t reg_value_);
 uint32_t ReadField(const uint32_t block_id_, const uint32_t field_id_, const uint32_t reg_value_);
+uint32_t WriteFieldRDL(const uint32_t block_id_, const uint32_t field_id_, const uint32_t field_value_, const uint32_t reg_value_);
+uint32_t ReadFieldRDL(const uint32_t block_id_, const uint32_t field_id_, const uint32_t reg_value_);
 
 class MemoryMapBuilder : boost::noncopyable
 {

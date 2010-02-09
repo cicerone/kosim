@@ -49,11 +49,29 @@ void BuildMemoryMap4Mem2()
     MemoryMap* p_mm2 = new MemoryMap(MEM2, "MEMORY_MAP_2", M2_MEMORY_SPACE_OFFSET);
     p_mm2->SetSpaceSize(M2_NUMBER_REGS, M2_MEMORY_SIZE);
     p_mm2->SetRegisterFieldsSize(M2_NUMBER_FIELDS);
-    p_mm2->set_register_field(M2_FIELD0, 15,  7);
-    p_mm2->set_register_field(M2_FIELD1,  6,  1);
-    p_mm2->set_register_field(M2_FIELD2,  0,  0);
-    p_mm2->set_register_field(M2_FIELD3, 31, 10);
-    p_mm2->set_register_field(M2_FIELD4,  9,  0);
+    
+    FieldTraits* p_field = 0;
+
+    p_field = p_mm2->GetFieldTraits(M2_FIELD0);
+    p_field->SetFieldPosition(15,  7);
+    p_field->SetFieldValues(0,  0);
+    p_field->SetHWAccessProperties(false, false, false, false, false, false, false);
+    p_field->SetSWAccessProperties(false, false, false, false, false, false);
+
+    p_field = p_mm2->GetFieldTraits(M2_FIELD1);
+//    p_field->SetFieldPosition(6,  1);
+    p_field->msb = 6; p_field->lsb = 1; 
+    p_field->reset_value = 0; p_field->mask_value = 0; 
+    p_field->is_hw_read  = false; p_field->is_hw_write = false; p_field->is_hw_anded = false; p_field->is_hw_ored = false; p_field->is_hw_xored = false; p_field->is_hw_hwenable = false; p_field->is_hw_hwmask   = false;
+    p_field->is_sw_read = false; p_field->is_sw_write = false; p_field->is_sw_clear_on_read = false; p_field->is_sw_set_on_read = false;  p_field->is_sw_write_one_to_set = false; p_field->is_sw_write_one_to_clear = false;
+
+    p_field = p_mm2->GetFieldTraits(M2_FIELD2);
+    p_field->SetFieldPosition( 0,  0);
+    p_field = p_mm2->GetFieldTraits(M2_FIELD3);
+    p_field->SetFieldPosition(31, 10);
+    p_field = p_mm2->GetFieldTraits(M2_FIELD4);
+    p_field->SetFieldPosition( 9,  0);
+
     p_mm_builder->AddBlock(p_mm2);
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////

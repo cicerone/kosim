@@ -49,11 +49,20 @@ void BuildMemoryMap4Mem2()
     MemoryMap* p_mm2 = new MemoryMap(MEM2, "MEMORY_MAP_2", M2_MEMORY_SPACE_OFFSET);
     p_mm2->SetSpaceSize(M2_NUMBER_REGS, M2_MEMORY_SIZE);
     p_mm2->SetRegisterFieldsSize(M2_NUMBER_FIELDS);
-    p_mm2->set_register_field(M2_FIELD0, 15,  7);
-    p_mm2->set_register_field(M2_FIELD1,  6,  1);
-    p_mm2->set_register_field(M2_FIELD2,  0,  0);
-    p_mm2->set_register_field(M2_FIELD3, 31, 10);
-    p_mm2->set_register_field(M2_FIELD4,  9,  0);
+
+    FieldTraits* p_field = 0;
+
+    p_field = p_mm2->GetFieldTraits(M2_FIELD0);
+    p_field->SetFieldPosition(15,  7);
+    p_field = p_mm2->GetFieldTraits(M2_FIELD1);
+    p_field->SetFieldPosition(6,  1);
+    p_field = p_mm2->GetFieldTraits(M2_FIELD2);
+    p_field->SetFieldPosition( 0,  0);
+    p_field = p_mm2->GetFieldTraits(M2_FIELD3);
+    p_field->SetFieldPosition(31, 10);
+    p_field = p_mm2->GetFieldTraits(M2_FIELD4);
+    p_field->SetFieldPosition( 9,  0);
+
     p_mm_builder->AddBlock(p_mm2);
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
