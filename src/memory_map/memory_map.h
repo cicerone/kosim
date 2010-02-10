@@ -22,8 +22,8 @@ class FieldTraits
 public:
     FieldTraits();
     ~FieldTraits();
-    void     SetFieldPosition(const uint32_t msb_, const uint32_t lsb_);
-    void     SetFieldValues(const uint32_t reset_val_, const uint32_t mask_val_);
+    void     SetPosition(const uint32_t msb_, const uint32_t lsb_);
+    void     SetValues(const uint32_t reset_val_, const uint32_t mask_val_);
     void     SetHWAccessProperties(const bool hw_read_, const bool hw_write_, const bool hw_anded_, const bool hw_ored_, 
                                    const bool hw_xored_, const bool hw_hwenable_, const bool hw_hwmask_);
     void     SetSWAccessProperties( const bool sw_read_, const bool sw_write_, const bool sw_clear_on_read_, 
@@ -61,6 +61,15 @@ public:
     
 };
 
+class RegisterTraits
+{
+public:
+    RegisterTraits();
+    ~RegisterTraits();
+public:
+    vector<uint32_t>  m_fields;   
+};
+
 
 class MemoryMap : boost::noncopyable
 {
@@ -78,13 +87,16 @@ public:
     uint32_t get_memory_space() { return (sizeof(uint32_t)*(m_number_registers + m_memory_size));};  // RESOURCES_ON_32_BITS
     void     Write(const uint64_t resource_id_, const uint32_t data_);
     uint32_t Read (const uint64_t resource_id_);    
+    void     WriteRDL(const uint64_t resource_id_, const uint32_t data_);
+    uint32_t ReadRDL (const uint64_t resource_id_);    
     void     Write(const uint64_t reg_id_, const uint32_t field_, const uint32_t data_);
     uint32_t Read (const uint64_t reg_id_, const uint32_t field_);    
     void     WriteRDL(const uint64_t reg_id_, const uint32_t field_, const uint32_t data_);
     uint32_t ReadRDL (const uint64_t reg_id_, const uint32_t field_);    
 
-    FieldTraits* GetFieldTraits(const uint32_t field_);
     uint32_t*    GetPhysicalAddress(const uint64_t addr_);
+    FieldTraits* GetFieldTraits(const uint32_t field_);
+    void AddField(const uint64_t reg_id_, const uint32_t field_);
     
 private:
 
@@ -95,10 +107,12 @@ private:
     uint64_t    m_memory_size;      // 4 bytes per memory location
     
 //    vector<sc_uint<32> > m_hw_resource;     //RESOURCES_ON_32_BITS 
-    vector<uint32_t>     m_hw_resource;       //RESOURCES_ON_32_BITS 
-    vector<FieldTraits>  m_register_field;
+    vector<uint32_t>       m_hw_resource;       //RESOURCES_ON_32_BITS 
+    vector<FieldTraits>    m_register_field;
+    vector<RegisterTraits> m_register;
 
     sc_uint<32> m_field_accessor; // used for field access
+    sc_uint<32> m_field_accessor_rdl; // used for field access
 };
 
 #endif // KOSIM_MM_MEMORY_MAP_H

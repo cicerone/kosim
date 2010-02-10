@@ -50,7 +50,7 @@ FieldTraits::~FieldTraits()
 //       lsb - the position of the least significatn bit
 // OUT: 
 // RET: 
-void FieldTraits::SetFieldPosition(const uint32_t msb_, const uint32_t lsb_) // RESOURCES_ON_32_BITS
+void FieldTraits::SetPosition(const uint32_t msb_, const uint32_t lsb_) // RESOURCES_ON_32_BITS
 {
     msb = msb_;
     lsb = lsb_;
@@ -62,7 +62,7 @@ void FieldTraits::SetFieldPosition(const uint32_t msb_, const uint32_t lsb_) // 
 //       mask_val   - the mask value
 // OUT: 
 // RET: 
-void FieldTraits::SetFieldValues(const uint32_t reset_val_, const uint32_t mask_val_)
+void FieldTraits::SetValues(const uint32_t reset_val_, const uint32_t mask_val_)
 {
     reset_value = reset_val_;
     mask_value  = mask_val_ ;
@@ -98,6 +98,26 @@ void FieldTraits::SetSWAccessProperties( const bool sw_read_, const bool sw_writ
     is_sw_write_one_to_set   = sw_write_one_to_set_  ;
     is_sw_write_one_to_clear = sw_write_one_to_clear_;
 }
+/////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// IN: 
+// OUT: 
+// RET: 
+RegisterTraits::RegisterTraits()
+{
+}
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// IN: 
+// OUT: 
+// RET: 
+RegisterTraits::~RegisterTraits()
+{
+}
+
 /////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////
@@ -140,6 +160,7 @@ void MemoryMap::SetSpaceSize(const uint64_t num_regs_, const uint64_t mem_size_)
     m_memory_size      = mem_size_;
     uint64_t size = num_regs_ + mem_size_;
     m_hw_resource.resize(size, 0);
+    m_register.resize(m_number_registers);
 }
 /////////////////////////////////////////////////////////////////////////////////////
 // allocates the memory needed for registers and the memory bank
@@ -176,6 +197,51 @@ uint32_t MemoryMap::Read (const uint64_t resource_id_)  // RESOURCES_ON_32_BITS
         exit(1);
     }
     return m_hw_resource[resource_id_];
+}
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// IN:   resource_id_ - the ID of reg/memory
+//       data_ - the value to be written
+// OUT: 
+// RET:  
+void MemoryMap::WriteRDL(const uint64_t reg_id_, const uint32_t data_) // RESOURCES_ON_32_BITS
+{
+    if (reg_id_ > m_register.size()) {
+        fprintf(stderr, "ERROR! Block %s has resource ID (0x%x) out of range (0x%x)\n", m_name.c_str(), reg_id_, m_register.size()); 
+        exit(1);
+    }
+
+    RegisterTraits reg = m_register[reg_id_];
+    m_field_accessor_rdl = data_;  
+    vector<uint32_t>::iterator pos;
+    for ( pos = reg.m_fields.begin(); pos < reg.m_fields.end(); ++pos )
+    {
+        uint32_t field_val = m_field_accessor_rdl.range(m_register_field[*pos].msb, m_register_field[*pos].lsb);
+        WriteRDL(reg_id_, *pos, field_val); // RESOURCES_ON_32_BITS
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// IN:  resource_id_ - the ID of reg/memory
+// OUT: p_data_      - reference to data that is read 
+// RET:  
+uint32_t MemoryMap::ReadRDL (const uint64_t reg_id_)  // RESOURCES_ON_32_BITS
+{
+    if (reg_id_ > m_hw_resource.size()) {
+        fprintf(stderr, "ERROR! Block %s has resource ID (0x%x) out of range (0x%x)\n", m_name.c_str(), reg_id_, m_hw_resource.size()); 
+        exit(1);
+    }
+
+    RegisterTraits reg = m_register[reg_id_];
+    m_field_accessor_rdl = 0;  
+    vector<uint32_t>::iterator pos;
+    for ( pos = reg.m_fields.begin(); pos < reg.m_fields.end(); ++pos )
+    {
+        uint32_t field_val = ReadRDL (reg_id_, *pos); // RESOURCES_ON_32_BITS
+        m_field_accessor_rdl.range(m_register_field[*pos].msb, m_register_field[*pos].lsb) = field_val;
+    }
+
+    return m_field_accessor_rdl.to_uint();
 }
 /////////////////////////////////////////////////////////////////////////////////////
 // IN:   reg_id_ - the register ID
@@ -251,4 +317,12 @@ FieldTraits* MemoryMap::GetFieldTraits(const uint32_t field_)
 {
     return &m_register_field[field_];
 }
-
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// IN:  field_ - the field ID
+// OUT:
+// RET: reference to the field's traits 
+void MemoryMap::AddField(const uint64_t reg_id_, const uint32_t field_)
+{
+    m_register[reg_id_].m_fields.push_back(field_);
+}

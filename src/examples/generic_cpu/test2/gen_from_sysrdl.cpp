@@ -53,15 +53,15 @@ void BuildMemoryMap4Mem2()
     FieldTraits* p_field = 0;
 
     p_field = p_mm2->GetFieldTraits(M2_FIELD0);
-    p_field->SetFieldPosition(15,  7);
+    p_field->SetPosition(15,  7);
     p_field = p_mm2->GetFieldTraits(M2_FIELD1);
-    p_field->SetFieldPosition(6,  1);
+    p_field->SetPosition(6,  1);
     p_field = p_mm2->GetFieldTraits(M2_FIELD2);
-    p_field->SetFieldPosition( 0,  0);
+    p_field->SetPosition( 0,  0);
     p_field = p_mm2->GetFieldTraits(M2_FIELD3);
-    p_field->SetFieldPosition(31, 10);
+    p_field->SetPosition(31, 10);
     p_field = p_mm2->GetFieldTraits(M2_FIELD4);
-    p_field->SetFieldPosition( 9,  0);
+    p_field->SetPosition( 9,  0);
 
     p_mm_builder->AddBlock(p_mm2);
 }

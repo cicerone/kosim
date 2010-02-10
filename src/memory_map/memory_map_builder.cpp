@@ -31,7 +31,7 @@ bool MemMapSortCriterion(const MemoryMap* p_mm1_, const MemoryMap* p_mm2_)
 //      field_value_ - the new value of the field
 // OUT: 
 // RET: the new value of the entire register (32 bit) 
-uint32_t WriteField(const uint32_t block_id_, const uint32_t field_id_, const uint32_t field_value_, const uint32_t reg_value_) // RESOURCES_ON_32_BITS
+uint32_t SetFieldValue(const uint32_t block_id_, const uint32_t field_id_, const uint32_t field_value_, const uint32_t reg_value_) // RESOURCES_ON_32_BITS
 {
     MemoryMap* p_mmap = MemoryMapBuilder::GetInstance()->GetMemoryMap(block_id_);
     FieldTraits* p_field = p_mmap->GetFieldTraits(field_id_);
@@ -47,7 +47,7 @@ uint32_t WriteField(const uint32_t block_id_, const uint32_t field_id_, const ui
 //      reg_value_ - the value of the register that has the fields read
 // OUT:
 // RET: the value of the field  
-uint32_t ReadField(const uint32_t block_id_, const uint32_t field_id_, const uint32_t reg_value_) // RESOURCES_ON_32_BITS
+uint32_t GetFieldValue(const uint32_t block_id_, const uint32_t field_id_, const uint32_t reg_value_) // RESOURCES_ON_32_BITS
 {
     MemoryMap* p_mmap = MemoryMapBuilder::GetInstance()->GetMemoryMap(block_id_);
     FieldTraits* p_field = p_mmap->GetFieldTraits(field_id_);
@@ -63,7 +63,7 @@ uint32_t ReadField(const uint32_t block_id_, const uint32_t field_id_, const uin
 //      reg_value_   - the value of the register before updating the field
 // OUT: 
 // RET: the new value of the entire register (32 bit) 
-uint32_t WriteFieldRDL(const uint32_t block_id_, const uint32_t field_id_, const uint32_t field_value_, const uint32_t reg_value_) // RESOURCES_ON_32_BITS
+uint32_t SetFieldValueRDL(const uint32_t block_id_, const uint32_t field_id_, const uint32_t field_value_, const uint32_t reg_value_) // RESOURCES_ON_32_BITS
 {
     MemoryMap* p_mmap = MemoryMapBuilder::GetInstance()->GetMemoryMap(block_id_);
     FieldTraits* p_field = p_mmap->GetFieldTraits(field_id_);
@@ -86,7 +86,7 @@ uint32_t WriteFieldRDL(const uint32_t block_id_, const uint32_t field_id_, const
 //      reg_value_ - the value of the register that has the fields read
 // OUT:
 // RET: the value of the field  
-uint32_t ReadFieldRDL(const uint32_t block_id_, const uint32_t field_id_, const uint32_t reg_value_) // RESOURCES_ON_32_BITS
+uint32_t GetFieldValueRDL(const uint32_t block_id_, const uint32_t field_id_, const uint32_t reg_value_) // RESOURCES_ON_32_BITS
 {
     
     MemoryMap* p_mmap = MemoryMapBuilder::GetInstance()->GetMemoryMap(block_id_);

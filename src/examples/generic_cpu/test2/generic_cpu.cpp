@@ -83,7 +83,7 @@ printf("%s\n", __PRETTY_FUNCTION__);
     printf("addr = (0x%x)\n", addr);
     uint32_t reg_val = 5;
     Write(addr, &reg_val);
-    uint32_t new_reg_val = WriteField(MEM2, M2_FIELD0, 1,  reg_val);
+    uint32_t new_reg_val = SetFieldValue(MEM2, M2_FIELD0, 1,  reg_val);
     Write(addr, &new_reg_val);
 
 }
