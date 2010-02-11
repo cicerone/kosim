@@ -97,6 +97,7 @@ public:
     uint32_t*    GetPhysicalAddress(const uint64_t addr_);
     FieldTraits* GetFieldTraits(const uint32_t field_);
     void AddField(const uint64_t reg_id_, const uint32_t field_);
+    RegisterTraits* GetRegisterTraits(const uint32_t reg_id_);
     
 private:
 

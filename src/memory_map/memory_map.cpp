@@ -214,7 +214,7 @@ void MemoryMap::WriteRDL(const uint64_t reg_id_, const uint32_t data_) // RESOUR
     RegisterTraits reg = m_register[reg_id_];
     m_field_accessor_rdl = data_;  
     vector<uint32_t>::iterator pos;
-    for ( pos = reg.m_fields.begin(); pos < reg.m_fields.end(); ++pos )
+    for ( pos = reg.m_fields.begin(); pos != reg.m_fields.end(); ++pos )
     {
         uint32_t field_val = m_field_accessor_rdl.range(m_register_field[*pos].msb, m_register_field[*pos].lsb);
         WriteRDL(reg_id_, *pos, field_val); // RESOURCES_ON_32_BITS
@@ -235,7 +235,7 @@ uint32_t MemoryMap::ReadRDL (const uint64_t reg_id_)  // RESOURCES_ON_32_BITS
     RegisterTraits reg = m_register[reg_id_];
     m_field_accessor_rdl = 0;  
     vector<uint32_t>::iterator pos;
-    for ( pos = reg.m_fields.begin(); pos < reg.m_fields.end(); ++pos )
+    for ( pos = reg.m_fields.begin(); pos != reg.m_fields.end(); ++pos )
     {
         uint32_t field_val = ReadRDL (reg_id_, *pos); // RESOURCES_ON_32_BITS
         m_field_accessor_rdl.range(m_register_field[*pos].msb, m_register_field[*pos].lsb) = field_val;
@@ -326,3 +326,13 @@ void MemoryMap::AddField(const uint64_t reg_id_, const uint32_t field_)
 {
     m_register[reg_id_].m_fields.push_back(field_);
 }
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// IN:  field_ - the field ID
+// OUT:
+// RET: reference to the field's traits 
+RegisterTraits* MemoryMap::GetRegisterTraits(const uint32_t reg_id_)
+{
+    return &m_register[reg_id_];
+}
+

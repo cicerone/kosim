@@ -17,6 +17,7 @@
 #include "tlm_utils/simple_initiator_socket.h"
 #include "tlm_utils/simple_target_socket.h"
 #include "b_initiator.h"
+#include "memory_map_builder.h"
 
 // GenericCPUBase module generating generic payload transactions
 
@@ -28,8 +29,17 @@ public:
   GenericCPUBase(sc_module_name name_);
   virtual ~GenericCPUBase();
 
+  uint32_t SetFieldValue(const uint32_t block_id_, const uint32_t field_id_, const uint32_t field_value_, const uint32_t reg_value_);
+  uint32_t GetFieldValue(const uint32_t block_id_, const uint32_t field_id_, const uint32_t reg_value_);
+  uint32_t SetFieldValueRDL(const uint32_t block_id_, const uint32_t field_id_, const uint32_t field_value_, const uint32_t reg_value_);
+  uint32_t GetFieldValueRDL(const uint32_t block_id_, const uint32_t field_id_, const uint32_t reg_value_);
+
+  void     WriteRDL   (const uint32_t block_id_, const uint32_t reg_id_, uint32_t data_);
+  uint32_t ReadRDL    (const uint32_t block_id_, const uint32_t reg_id_);
+
 private:
 
+  sc_uint<32> m_field_accessor;
 };
 #endif // KOSIM_GC_GENERIC_CPU_BASE_H
 
