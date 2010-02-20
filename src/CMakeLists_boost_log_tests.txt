@@ -41,6 +41,7 @@ include_directories ($ENV{TLM_INCLUDE}/)
 
 
 add_subdirectory (logging)
+add_subdirectory (main/logging/test1)
 add_subdirectory (main/boost_log/trivial)
 add_subdirectory (main/boost_log/advanced_usage)
 add_subdirectory (main/boost_log/async_log)

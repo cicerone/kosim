@@ -8,12 +8,11 @@
 #Create a shared library called "memory_map_builder"
 #include dirs
 include_directories (${KOSIM_SOURCE_DIR}/)
+include_directories (${KOSIM_SOURCE_DIR}/logging/)
 
-# The extension is already found. Any number of sources could be listed here.
-add_library (logging SHARED log_builder.cpp)
 
 ##Example of HOWTO make an executable in one dir
-#add_executable (test_log  log_builder.cpp main.cpp)
+add_executable (test_log  main.cpp)
 ## Link the executable to the used libraries.
-#target_link_libraries (test_log libboost_log.so libboost_date_time.so libboost_regex.so libboost_filesystem.so libboost_system.so libboost_thread.so)
+target_link_libraries (test_log logging libboost_log.so libboost_date_time.so libboost_regex.so libboost_filesystem.so libboost_system.so libboost_thread.so)
  

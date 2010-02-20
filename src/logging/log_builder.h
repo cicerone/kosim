@@ -42,11 +42,14 @@ namespace keywords = boost::log::keywords;
 // Here we define our application severity levels.
 enum severity_level
 {
+    info5,
+    info4,
+    info3,
+    info2,
+    info1,
     normal,
-    notification,
     warning,
-    error,
-    critical
+    error
 };
 
 // The formatting logic for the severity level
@@ -56,11 +59,14 @@ inline std::basic_ostream< CharT, TraitsT >& operator<< (
 {
     static const char* const str[] =
     {
-        "normal",
-        "notification",
-        "warning",
-        "error",
-        "critical"
+        "info5",
+        "info4",
+        "info3",
+        "info2",
+        "info1",
+        "", // normal
+        "WARNING!",
+        "ERROR!"
     };
     if (static_cast< std::size_t >(lvl) < (sizeof(str) / sizeof(*str)))
         strm << str[lvl];
@@ -77,7 +83,7 @@ public:
     static     LogBuilder* GetInstance();     
     ~LogBuilder();
     LogSevChannel& GetLogger(const std::string& name_); 
-    void    EnableLoggers(const std::string& name_, const severity_level severity_);
+    void    EnableLoggers(const severity_level severity_, const std::string& name_ = "" );
     void    EnableLog(const bool enable_log_);
     void    SetLogFile(const std::string& name_);
     
