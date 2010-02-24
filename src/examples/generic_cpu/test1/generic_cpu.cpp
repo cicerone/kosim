@@ -85,7 +85,6 @@ printf("%s\n", __PRETTY_FUNCTION__);
     Write(addr, reg_val);
     uint32_t new_reg_val = SetFieldValue(MEM2, M2_FIELD0, 1,  reg_val);
     Write(addr, new_reg_val);
-
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //

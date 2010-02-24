@@ -68,12 +68,11 @@ BTarget::b_transport( tlm::tlm_generic_payload& payload_, sc_time& delay_ )
 //     payload_.set_response_status( tlm::TLM_BURST_ERROR_RESPONSE );
 //     return;
 //   }
-
     wait(delay_);
     delay_ = SC_ZERO_TIME;
-
-
-//    uint32_t data = 0;
+    
+//#define IGNORE_RDL    
+#ifdef IGNORE_RDL    
     // read and write commands
     if ( command == tlm::TLM_READ_COMMAND ) {
         memcpy(data_ptr, mp_memory_map->GetPhysicalAddress(mem_address), data_length);
@@ -81,6 +80,40 @@ BTarget::b_transport( tlm::tlm_generic_payload& payload_, sc_time& delay_ )
     else if ( command == tlm::TLM_WRITE_COMMAND ) {
          memcpy(mp_memory_map->GetPhysicalAddress(mem_address), data_ptr, data_length);
     }
+#else    
+    uint64_t hw_resource_id = mem_address >> 2;
+    //NOTE: Here is where we "force" registers to be first and no gap between memory and registers
+    if (hw_resource_id < mp_memory_map->get_number_regs()) // the hw_resource_id points to a register
+    {
+        if (data_length != sizeof(uint32_t)) {
+            //NOTE: to not make extra computations of addresses all the registers MUST be accesseed using one word read/write methods
+            fprintf(stderr, "FATAL! Try to use a block read/write of size(%d) bytes to read/write registers!\n", data_length);
+            exit(1);
+        }
+        uint32_t data_val = 0;
+        if ( command == tlm::TLM_READ_COMMAND ) {
+            data_val = mp_memory_map->ReadSwRDL(hw_resource_id);
+            memcpy(data_ptr, &data_val, sizeof(uint32_t));
+        }
+        else if ( command == tlm::TLM_WRITE_COMMAND ) {
+            memcpy(&data_val, data_ptr, data_length);
+            mp_memory_map->WriteSwRDL(hw_resource_id, data_val);
+        }
+    }
+    else
+    {
+    void     WriteSwRDL   (const uint32_t reg_id_, uint32_t data_);
+    uint32_t ReadSwRDL    (const uint32_t reg_id_);
+    
+        if ( command == tlm::TLM_READ_COMMAND ) {
+            memcpy(data_ptr, mp_memory_map->GetPhysicalAddress(mem_address), data_length);
+        }
+        else if ( command == tlm::TLM_WRITE_COMMAND ) {
+            memcpy(mp_memory_map->GetPhysicalAddress(mem_address), data_ptr, data_length);
+        }
+    }
+#endif //  IGNORE_RDL
+  
     // Set DMI hint to indicated that DMI is supported
     payload_.set_dmi_allowed(true);
 
@@ -124,8 +157,8 @@ BTarget::transport_dbg(tlm::tlm_generic_payload& payload_)
     uint32_t     data_length = payload_.get_data_length();
 
     // Calculate the number of bytes to be actually copied
-    uint32_t  length_to_end = mp_memory_map->get_memory_space() - mem_address;
-    uint32_t  num_bytes = data_length < length_to_end ? data_length : length_to_end ;
+    uint64_t  length_to_end = mp_memory_map->get_memory_space() - mem_address;
+    uint64_t  num_bytes = data_length < length_to_end ? data_length : length_to_end ;
 
     uint32_t data = 0;
     // read and write commands

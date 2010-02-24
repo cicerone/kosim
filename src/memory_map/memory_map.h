@@ -24,8 +24,7 @@ public:
     ~FieldTraits();
     void     SetPosition(const uint32_t msb_, const uint32_t lsb_);
     void     SetValues(const uint32_t reset_val_, const uint32_t mask_val_);
-    void     SetHWAccessProperties(const bool hw_read_, const bool hw_write_, const bool hw_anded_, const bool hw_ored_, 
-                                   const bool hw_xored_, const bool hw_hwenable_, const bool hw_hwmask_);
+    void     SetHWAccessProperties(const bool hw_read_, const bool hw_write_, const bool hw_hwenable_, const bool hw_hwmask_);
     void     SetSWAccessProperties( const bool sw_read_, const bool sw_write_, const bool sw_clear_on_read_, 
                                     const bool sw_set_on_read_, const bool sw_write_one_to_set_, const bool sw_write_one_to_clear_);
 
@@ -36,9 +35,9 @@ public:
     uint32_t mask_value;
     bool is_hw_read;
     bool is_hw_write;
-    bool is_hw_anded;
-    bool is_hw_ored;
-    bool is_hw_xored;
+//    bool is_hw_anded;
+//    bool is_hw_ored;
+//    bool is_hw_xored;
     bool is_hw_hwenable;
     bool is_hw_hwmask;
 //NA    bool is_hw_we;
@@ -81,23 +80,28 @@ public:
     uint32_t get_offset()     const { return m_offset;};
     void     SetSpaceSize(const uint64_t num_regs_, const uint64_t mem_size_);
     void     SetRegisterFieldsSize(const uint64_t num_fields_);
-    uint32_t get_number_regs() const  { return m_number_registers;};
-    uint32_t get_memory_size() const { return m_memory_size;};
+    uint64_t get_number_regs() const  { return m_number_registers;};
+    uint64_t get_memory_size() const { return m_memory_size;};
     // size of memory space in bytes
-    uint32_t get_memory_space() { return (sizeof(uint32_t)*(m_number_registers + m_memory_size));};  // RESOURCES_ON_32_BITS
+    uint64_t get_memory_space() { return (sizeof(uint32_t)*(m_number_registers + m_memory_size));};  // RESOURCES_ON_32_BITS
     void     Write(const uint64_t resource_id_, const uint32_t data_);
     uint32_t Read (const uint64_t resource_id_);    
-    void     WriteRDL(const uint64_t resource_id_, const uint32_t data_);
-    uint32_t ReadRDL (const uint64_t resource_id_);    
+    void     WriteHwRDL(const uint64_t resource_id_, const uint32_t data_);
+    uint32_t ReadHwRDL (const uint64_t resource_id_);    
     void     Write(const uint64_t reg_id_, const uint32_t field_, const uint32_t data_);
     uint32_t Read (const uint64_t reg_id_, const uint32_t field_);    
-    void     WriteRDL(const uint64_t reg_id_, const uint32_t field_, const uint32_t data_);
-    uint32_t ReadRDL (const uint64_t reg_id_, const uint32_t field_);    
+    void     WriteHwRDL(const uint64_t reg_id_, const uint32_t field_, const uint32_t data_);
+    uint32_t ReadHwRDL (const uint64_t reg_id_, const uint32_t field_);    
 
     uint32_t*    GetPhysicalAddress(const uint64_t addr_);
     FieldTraits* GetFieldTraits(const uint32_t field_);
     void AddField(const uint64_t reg_id_, const uint32_t field_);
     RegisterTraits* GetRegisterTraits(const uint32_t reg_id_);
+    
+    uint32_t SetFieldValueSwRDL(const uint32_t field_id_, const uint32_t field_value_, const uint32_t reg_value_);
+    uint32_t GetFieldValueSwRDL(const uint32_t field_id_, const uint32_t reg_value_);
+    void     WriteSwRDL   (const uint32_t reg_id_, uint32_t data_);
+    uint32_t ReadSwRDL    (const uint32_t reg_id_);
     
 private:
 
@@ -113,7 +117,9 @@ private:
     vector<RegisterTraits> m_register;
 
     sc_uint<32> m_field_accessor; // used for field access
-    sc_uint<32> m_field_accessor_rdl; // used for field access
+    sc_uint<32> m_field_accessor_reg;   // used for field access in the register methods
+    sc_uint<32> m_field_accessor_field; // used for field access in the field methods
+    
 };
 
 #endif // KOSIM_MM_MEMORY_MAP_H

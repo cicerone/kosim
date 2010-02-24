@@ -49,21 +49,49 @@ void BuildMemoryMap4Mem2()
     MemoryMap* p_mm2 = new MemoryMap(MEM2, "MEMORY_MAP_2", M2_MEMORY_SPACE_OFFSET);
     p_mm2->SetSpaceSize(M2_NUMBER_REGS, M2_MEMORY_SIZE);
     p_mm2->SetRegisterFieldsSize(M2_NUMBER_FIELDS);
-
+    
     FieldTraits* p_field = 0;
 
     p_field = p_mm2->GetFieldTraits(M2_FIELD0);
     p_field->SetPosition(15,  7);
+    p_field->SetValues(0,  0);
+    p_field->SetHWAccessProperties(true, true, false, false);
+    p_field->SetSWAccessProperties(true, true, false, false, false, false);
+
     p_field = p_mm2->GetFieldTraits(M2_FIELD1);
     p_field->SetPosition(6,  1);
+    p_field->SetValues(0,  0);
+    p_field->SetHWAccessProperties(true, true, false, false);
+    p_field->SetSWAccessProperties(true, true, false, false, false, false);
+
     p_field = p_mm2->GetFieldTraits(M2_FIELD2);
     p_field->SetPosition( 0,  0);
+    p_field->SetValues(0,  0);
+    p_field->SetHWAccessProperties(true, true, false, false);
+    p_field->SetSWAccessProperties(true, true, false, false, false, false);
+
+
+    p_mm2->AddField(M2_REG0, M2_FIELD0);
+    p_mm2->AddField(M2_REG0, M2_FIELD1);
+    p_mm2->AddField(M2_REG0, M2_FIELD2);
+
     p_field = p_mm2->GetFieldTraits(M2_FIELD3);
     p_field->SetPosition(31, 10);
+    p_field->SetValues(0,  0);
+    p_field->SetHWAccessProperties(true, true, false, false);
+    p_field->SetSWAccessProperties(true, true, false, false, false, false);
+    
     p_field = p_mm2->GetFieldTraits(M2_FIELD4);
     p_field->SetPosition( 9,  0);
+    p_field->SetValues(0,  0);
+    p_field->SetHWAccessProperties(true, true, false, false);
+    p_field->SetSWAccessProperties(true, true, false, false, false, false);
+
+    p_mm2->AddField(M2_REG1, M2_FIELD3);
+    p_mm2->AddField(M2_REG1, M2_FIELD4);
 
     p_mm_builder->AddBlock(p_mm2);
+    
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //

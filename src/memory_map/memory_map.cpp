@@ -22,9 +22,6 @@ FieldTraits::FieldTraits() :
   mask_value (0),
   is_hw_read     (true), 
   is_hw_write    (true),
-  is_hw_anded    (false),
-  is_hw_ored     (false),
-  is_hw_xored    (false),
   is_hw_hwenable (false),
   is_hw_hwmask   (false),
   is_sw_read              (true),
@@ -72,14 +69,10 @@ void FieldTraits::SetValues(const uint32_t reset_val_, const uint32_t mask_val_)
 // IN:  field_  - the field ID 
 // OUT: 
 // RET: 
-void  FieldTraits::SetHWAccessProperties(const bool hw_read_, const bool hw_write_, const bool hw_anded_,
-                                         const bool hw_ored_, const bool hw_xored_, const bool hw_hwenable_, const bool hw_hwmask_)
+void  FieldTraits::SetHWAccessProperties(const bool hw_read_, const bool hw_write_,  const bool hw_hwenable_, const bool hw_hwmask_)
 {
     is_hw_read     = hw_read_    ;   
     is_hw_write    = hw_write_   ;
-    is_hw_anded    = hw_anded_   ;
-    is_hw_ored     = hw_ored_    ;
-    is_hw_xored    = hw_xored_   ;
     is_hw_hwenable = hw_hwenable_;
     is_hw_hwmask   = hw_hwmask_  ;
 }
@@ -204,7 +197,7 @@ uint32_t MemoryMap::Read (const uint64_t resource_id_)  // RESOURCES_ON_32_BITS
 //       data_ - the value to be written
 // OUT: 
 // RET:  
-void MemoryMap::WriteRDL(const uint64_t reg_id_, const uint32_t data_) // RESOURCES_ON_32_BITS
+void MemoryMap::WriteHwRDL(const uint64_t reg_id_, const uint32_t data_) // RESOURCES_ON_32_BITS
 {
     if (reg_id_ > m_register.size()) {
         fprintf(stderr, "ERROR! Block %s has resource ID (0x%x) out of range (0x%x)\n", m_name.c_str(), reg_id_, m_register.size()); 
@@ -212,12 +205,12 @@ void MemoryMap::WriteRDL(const uint64_t reg_id_, const uint32_t data_) // RESOUR
     }
 
     RegisterTraits reg = m_register[reg_id_];
-    m_field_accessor_rdl = data_;  
+    m_field_accessor_reg = data_;  
     vector<uint32_t>::iterator pos;
     for ( pos = reg.m_fields.begin(); pos != reg.m_fields.end(); ++pos )
     {
-        uint32_t field_val = m_field_accessor_rdl.range(m_register_field[*pos].msb, m_register_field[*pos].lsb);
-        WriteRDL(reg_id_, *pos, field_val); // RESOURCES_ON_32_BITS
+        uint32_t field_val = m_field_accessor_reg.range(m_register_field[*pos].msb, m_register_field[*pos].lsb);
+        WriteHwRDL(reg_id_, *pos, field_val); // RESOURCES_ON_32_BITS
     }
 }
 /////////////////////////////////////////////////////////////////////////////////////
@@ -225,7 +218,7 @@ void MemoryMap::WriteRDL(const uint64_t reg_id_, const uint32_t data_) // RESOUR
 // IN:  resource_id_ - the ID of reg/memory
 // OUT: p_data_      - reference to data that is read 
 // RET:  
-uint32_t MemoryMap::ReadRDL (const uint64_t reg_id_)  // RESOURCES_ON_32_BITS
+uint32_t MemoryMap::ReadHwRDL (const uint64_t reg_id_)  // RESOURCES_ON_32_BITS
 {
     if (reg_id_ > m_hw_resource.size()) {
         fprintf(stderr, "ERROR! Block %s has resource ID (0x%x) out of range (0x%x)\n", m_name.c_str(), reg_id_, m_hw_resource.size()); 
@@ -233,15 +226,15 @@ uint32_t MemoryMap::ReadRDL (const uint64_t reg_id_)  // RESOURCES_ON_32_BITS
     }
 
     RegisterTraits reg = m_register[reg_id_];
-    m_field_accessor_rdl = 0;  
+    m_field_accessor_reg = 0;  
     vector<uint32_t>::iterator pos;
     for ( pos = reg.m_fields.begin(); pos != reg.m_fields.end(); ++pos )
     {
-        uint32_t field_val = ReadRDL (reg_id_, *pos); // RESOURCES_ON_32_BITS
-        m_field_accessor_rdl.range(m_register_field[*pos].msb, m_register_field[*pos].lsb) = field_val;
+        uint32_t field_val = ReadHwRDL (reg_id_, *pos); // RESOURCES_ON_32_BITS
+        m_field_accessor_reg.range(m_register_field[*pos].msb, m_register_field[*pos].lsb) = field_val;
     }
 
-    return m_field_accessor_rdl.to_uint();
+    return m_field_accessor_reg.to_uint();
 }
 /////////////////////////////////////////////////////////////////////////////////////
 // IN:   reg_id_ - the register ID
@@ -271,27 +264,27 @@ uint32_t MemoryMap::Read (const uint64_t reg_id_, const uint32_t field_) // RESO
 //       data_  - the value to be written
 // OUT: 
 // RET:  
-void MemoryMap::WriteRDL(const uint64_t reg_id_, const uint32_t field_, const uint32_t data_) // RESOURCES_ON_32_BITS
+void MemoryMap::WriteHwRDL(const uint64_t reg_id_, const uint32_t field_, const uint32_t data_) // RESOURCES_ON_32_BITS
 {
     if (m_register_field[field_].is_hw_write == false) return;
-    m_field_accessor = m_hw_resource[reg_id_];
+    m_field_accessor_field = m_hw_resource[reg_id_];
     uint32_t new_field_value = data_;
     if      (m_register_field[field_].is_hw_hwenable) /* TODO */ ;
     else if (m_register_field[field_].is_hw_hwmask)   /* TODO */ ;
 
-    m_field_accessor.range(m_register_field[field_].msb, m_register_field[field_].lsb) = data_;
-    m_hw_resource[reg_id_] = m_field_accessor.to_uint();
+    m_field_accessor_field.range(m_register_field[field_].msb, m_register_field[field_].lsb) = data_;
+    m_hw_resource[reg_id_] = m_field_accessor_field.to_uint();
 }
 ///////////////////////////////////////////////////////////////////////////////////// 
 // IN:  reg_id_ - the register ID
 //      field_  - the field the data is read from
 // OUT:  
 // RET: the value of the field  
-uint32_t MemoryMap::ReadRDL (const uint64_t reg_id_, const uint32_t field_) // RESOURCES_ON_32_BITS
+uint32_t MemoryMap::ReadHwRDL (const uint64_t reg_id_, const uint32_t field_) // RESOURCES_ON_32_BITS
 {
     if (m_register_field[field_].is_hw_read == false) return 0;
-    m_field_accessor = m_hw_resource[reg_id_];
-    return m_field_accessor.range(m_register_field[field_].msb, m_register_field[field_].lsb);
+    m_field_accessor_field = m_hw_resource[reg_id_];
+    return m_field_accessor_field.range(m_register_field[field_].msb, m_register_field[field_].lsb);
 }
 /////////////////////////////////////////////////////////////////////////////////////
 //
@@ -335,4 +328,91 @@ RegisterTraits* MemoryMap::GetRegisterTraits(const uint32_t reg_id_)
 {
     return &m_register[reg_id_];
 }
+/////////////////////////////////////////////////////////////////////////////////////
+// This function does not alter the hw_resource value, it prepares only the value needed
+// IN:  field_id_ - the field to be modified
+//      field_value_ - the new value of the field
+//      reg_value_   - the value of the register before updating the field
+// OUT: 
+// RET: the new value of the entire register (32 bit) 
+uint32_t 
+MemoryMap::SetFieldValueSwRDL(const uint32_t field_id_, const uint32_t field_value_, const uint32_t reg_value_) // RESOURCES_ON_32_BITS
+{
+    FieldTraits* p_field = this->GetFieldTraits(field_id_);
+    if (p_field->is_sw_write == false) return reg_value_; 
+    m_field_accessor_field = reg_value_;
+    uint32_t current_field_val = m_field_accessor_field.range(p_field->msb, p_field->lsb);
+    uint32_t new_field_val = 0;
+    if      (p_field->is_sw_write_one_to_set)   new_field_val = current_field_val | field_value_; 
+    else if (p_field->is_sw_write_one_to_clear) new_field_val = current_field_val & ~field_value_; 
+    else                                        new_field_val = field_value_; 
+
+    m_field_accessor_field.range(p_field->msb, p_field->lsb) = new_field_val;
+    return m_field_accessor_field.to_uint();
+}
+/////////////////////////////////////////////////////////////////////////////////////
+// This function does not read the hw_resource value, it extracts the field value out of a already read hardware resource 
+// IN:  reg_id_   - the register to be read 
+//      field_id_ - the field to be read 
+//      reg_value_ - the value of the register that has the fields read
+// OUT:
+// RET: the value of the field  
+uint32_t 
+MemoryMap::GetFieldValueSwRDL(const uint32_t field_id_, const uint32_t reg_value_) // RESOURCES_ON_32_BITS
+{
+    FieldTraits* p_field = this->GetFieldTraits(field_id_);
+    if (p_field->is_sw_read == false) return 0; // returns 0 for all fields that are not readable 
+    m_field_accessor_field = reg_value_;
+    uint32_t field_value =  m_field_accessor_field.range(p_field->msb, p_field->lsb);
+    return field_value;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+// This function does not read the hw_resource value, it extracts the field value out of a already read hardware resource 
+// IN:  reg_id_   - the register to be read 
+//      data_     - the new value of the register
+// OUT:
+// RET:
+void  
+MemoryMap::WriteSwRDL   (const uint32_t reg_id_, uint32_t data_)
+{
+    RegisterTraits* p_reg = this->GetRegisterTraits(reg_id_);
+    m_field_accessor_reg = data_;  
+    vector<uint32_t>::iterator pos;
+    uint32_t new_reg_val = 0;
+    for ( pos = p_reg->m_fields.begin(); pos != p_reg->m_fields.end(); ++pos )
+    {
+        FieldTraits* p_field = this->GetFieldTraits(*pos);
+        uint32_t field_val = m_field_accessor_reg.range(p_field->msb, p_field->lsb);
+        new_reg_val = SetFieldValueSwRDL(*pos, field_val, new_reg_val); // RESOURCES_ON_32_BITS
+    }
+    Write(reg_id_, new_reg_val);
+}
+/////////////////////////////////////////////////////////////////////////////////////
+// This function does not read the hw_resource value, it extracts the field value out of a already read hardware resource 
+// IN:  reg_id_   - the register to be read 
+//      field_id_ - the field to be read 
+//      reg_value_ - the value of the register that has the fields read
+// OUT:
+// RET: the value of the register
+uint32_t 
+MemoryMap::ReadSwRDL    (const uint32_t reg_id_)
+{
+    uint32_t reg_value = Read(reg_id_);
+
+    RegisterTraits* p_reg = this->GetRegisterTraits(reg_id_);
+
+    m_field_accessor_reg = 0;  
+    vector<uint32_t>::iterator pos;
+    for ( pos = p_reg->m_fields.begin(); pos != p_reg->m_fields.end(); ++pos )
+    {
+        uint32_t field_val = GetFieldValueSwRDL(*pos, reg_value); // RESOURCES_ON_32_BITS
+        FieldTraits* p_field = this->GetFieldTraits(*pos);
+        m_field_accessor_reg.range(p_field->msb, p_field->lsb) = field_val;
+    }
+
+    return m_field_accessor_reg.to_uint();
+}
+
+
 

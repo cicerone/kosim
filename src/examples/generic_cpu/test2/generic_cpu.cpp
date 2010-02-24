@@ -96,24 +96,26 @@ void
 GenericCPU::TreatPeripheral3()
 {
     printf("%s\n", __PRETTY_FUNCTION__);
-    uint32_t data = 0; 
-    Read(0x00, &data);
-    printf("data[0x%x] = 0x%x\n",  0x00, data);
-    Read(0x04, &data);
-    printf("data[0x%x] = 0x%x\n",  0x04, data);
-    Read(0x08, &data);
-    printf("data[0x%x] = 0x%x\n",  0x08, data);
-
     uint32_t a_data[3] = {0, 0, 0};
+    Read(0x00, a_data, 3*sizeof(uint32_t));
+    printf("data[0x%x] = 0x%x\n", 0x00, a_data[0]);
+    printf("data[0x%x] = 0x%x\n", 0x04, a_data[1]);
+    printf("data[0x%x] = 0x%x\n", 0x08, a_data[2]);
+
+
     DbgRead(0x100, a_data, 3*sizeof(uint32_t));
     printf("data[0x%x] = 0x%x\n", 0x100, a_data[0]);
     printf("data[0x%x] = 0x%x\n", 0x104, a_data[1]);
     printf("data[0x%x] = 0x%x\n", 0x108, a_data[2]);
 
-    Read(0x200, a_data, 3*sizeof(uint32_t));
-    printf("data[0x%x] = 0x%x\n", 0x200, a_data[0]);
-    printf("data[0x%x] = 0x%x\n", 0x204, a_data[1]);
-    printf("data[0x%x] = 0x%x\n", 0x208, a_data[2]);
+    uint32_t data = 0; 
+    Read(0x200, &data);
+    printf("data[0x%x] = 0x%x\n",  0x200, data);
+    Read(0x204, &data);
+    printf("data[0x%x] = 0x%x\n",  0x204, data);
+    Read(0x208, &data);
+    printf("data[0x%x] = 0x%x\n",  0x208, data);
+    
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // The main thread
