@@ -311,13 +311,14 @@ FieldTraits* MemoryMap::GetFieldTraits(const uint32_t field_)
     return &m_register_field[field_];
 }
 /////////////////////////////////////////////////////////////////////////////////////
-//
+// Add the field to the register traits and resets the value of the field. 
 // IN:  field_ - the field ID
 // OUT:
 // RET: reference to the field's traits 
 void MemoryMap::AddField(const uint64_t reg_id_, const uint32_t field_)
 {
     m_register[reg_id_].m_fields.push_back(field_);
+    Write(reg_id_, field_, m_register_field[field_].reset_value); // reset the field
 }
 /////////////////////////////////////////////////////////////////////////////////////
 //
