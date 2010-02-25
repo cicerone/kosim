@@ -43,6 +43,11 @@ void BuildMemoryMap4Mem1()
 // IN: 
 // OUT: 
 // RET: 
+// FIELD0  FIELD1  FIELD2   FIELD3  FIELD4  FIELD5  FIELD6  FIELD7 
+// 31  28  27  24  23  20   19  16  15  13  12   8  7    4  3    0
+// 
+// FIELD8  FIELD9  FIELD10  FIELD11  FIELD12  FIELD13  FIELD14  FIELD15 
+// 31  28  27  24  23   20  19   16  15   13  12    8  7     4  3     0
 void BuildMemoryMap4Mem2()
 {
     MemoryMapBuilder* p_mm_builder = MemoryMapBuilder::GetInstance();
@@ -53,42 +58,118 @@ void BuildMemoryMap4Mem2()
     FieldTraits* p_field = 0;
 
     p_field = p_mm2->GetFieldTraits(M2_FIELD0);
-    p_field->SetPosition(15,  7);
-    p_field->SetValues(0,  0);
+    p_field->SetPosition(31,  28);
+    p_field->SetValues(0x7,  0);
     p_field->SetHWAccessProperties(true, true, false, false);
-    p_field->SetSWAccessProperties(true, true, false, false, false, false);
+    p_field->SetSWAccessProperties(true, true, false, false, false, true);
 
     p_field = p_mm2->GetFieldTraits(M2_FIELD1);
-    p_field->SetPosition(6,  1);
-    p_field->SetValues(0,  0);
+    p_field->SetPosition(27,  24);
+    p_field->SetValues(0xf,  0);
     p_field->SetHWAccessProperties(true, true, false, false);
-    p_field->SetSWAccessProperties(true, true, false, false, false, false);
+    p_field->SetSWAccessProperties(true, false, false, false, false, false);
 
     p_field = p_mm2->GetFieldTraits(M2_FIELD2);
-    p_field->SetPosition( 0,  0);
-    p_field->SetValues(0,  0);
+    p_field->SetPosition(23, 20);
+    p_field->SetValues(0xf, 0);
+    p_field->SetHWAccessProperties(true, true, false, false);
+    p_field->SetSWAccessProperties(false, true, false, false, false, false);
+
+    p_field = p_mm2->GetFieldTraits(M2_FIELD3);
+    p_field->SetPosition(19, 16);
+    p_field->SetValues(0x1, 0);
+    p_field->SetHWAccessProperties(true, true, false, false);
+    p_field->SetSWAccessProperties(true, true, false, false, true, false);
+
+    p_field = p_mm2->GetFieldTraits(M2_FIELD4);
+    p_field->SetPosition(15, 12);
+    p_field->SetValues(0xf, 0);
     p_field->SetHWAccessProperties(true, true, false, false);
     p_field->SetSWAccessProperties(true, true, false, false, false, false);
 
+    p_field = p_mm2->GetFieldTraits(M2_FIELD5);
+    p_field->SetPosition(11, 8);
+    p_field->SetValues(0xf, 0);
+    p_field->SetHWAccessProperties(true, true, false, false);
+    p_field->SetSWAccessProperties(true, true, false, false, false, false);
+
+    p_field = p_mm2->GetFieldTraits(M2_FIELD6);
+    p_field->SetPosition(7, 4);
+    p_field->SetValues(0xf, 0);
+    p_field->SetHWAccessProperties(true, true, false, false);
+    p_field->SetSWAccessProperties(true, true, false, false, false, false);
+
+    p_field = p_mm2->GetFieldTraits(M2_FIELD7);
+    p_field->SetPosition(3, 0);
+    p_field->SetValues(0xf, 0);
+    p_field->SetHWAccessProperties(true, true, false, false);
+    p_field->SetSWAccessProperties(true, true, false, false, false, false);
 
     p_mm2->AddField(M2_REG0, M2_FIELD0);
     p_mm2->AddField(M2_REG0, M2_FIELD1);
     p_mm2->AddField(M2_REG0, M2_FIELD2);
+    p_mm2->AddField(M2_REG0, M2_FIELD3);
+    p_mm2->AddField(M2_REG0, M2_FIELD4);
+    p_mm2->AddField(M2_REG0, M2_FIELD5);
+    p_mm2->AddField(M2_REG0, M2_FIELD6);
+    p_mm2->AddField(M2_REG0, M2_FIELD7);
 
-    p_field = p_mm2->GetFieldTraits(M2_FIELD3);
-    p_field->SetPosition(31, 10);
-    p_field->SetValues(0,  0);
+    p_field = p_mm2->GetFieldTraits(M2_FIELD8);
+    p_field->SetPosition(31,  28);
+    p_field->SetValues(0xf,  0);
     p_field->SetHWAccessProperties(true, true, false, false);
     p_field->SetSWAccessProperties(true, true, false, false, false, false);
-    
-    p_field = p_mm2->GetFieldTraits(M2_FIELD4);
-    p_field->SetPosition( 9,  0);
-    p_field->SetValues(0,  0);
+
+    p_field = p_mm2->GetFieldTraits(M2_FIELD9);
+    p_field->SetPosition(27,  24);
+    p_field->SetValues(0xf,  0);
     p_field->SetHWAccessProperties(true, true, false, false);
     p_field->SetSWAccessProperties(true, true, false, false, false, false);
 
-    p_mm2->AddField(M2_REG1, M2_FIELD3);
-    p_mm2->AddField(M2_REG1, M2_FIELD4);
+    p_field = p_mm2->GetFieldTraits(M2_FIELD10);
+    p_field->SetPosition(23, 20);
+    p_field->SetValues(0xf, 0);
+    p_field->SetHWAccessProperties(true, true, false, false);
+    p_field->SetSWAccessProperties(true, true, false, false, false, false);
+
+    p_field = p_mm2->GetFieldTraits(M2_FIELD11);
+    p_field->SetPosition(19, 16);
+    p_field->SetValues(0xf, 0);
+    p_field->SetHWAccessProperties(true, true, false, false);
+    p_field->SetSWAccessProperties(true, true, false, false, false, false);
+
+    p_field = p_mm2->GetFieldTraits(M2_FIELD12);
+    p_field->SetPosition(15, 12);
+    p_field->SetValues(0xf, 0);
+    p_field->SetHWAccessProperties(true, true, false, false);
+    p_field->SetSWAccessProperties(true, true, false, false, false, false);
+
+    p_field = p_mm2->GetFieldTraits(M2_FIELD13);
+    p_field->SetPosition(11, 8);
+    p_field->SetValues(0xf, 0);
+    p_field->SetHWAccessProperties(true, true, false, false);
+    p_field->SetSWAccessProperties(true, true, false, false, false, false);
+
+    p_field = p_mm2->GetFieldTraits(M2_FIELD14);
+    p_field->SetPosition(7, 4);
+    p_field->SetValues(0xf, 0);
+    p_field->SetHWAccessProperties(true, true, false, false);
+    p_field->SetSWAccessProperties(true, true, false, false, false, false);
+
+    p_field = p_mm2->GetFieldTraits(M2_FIELD15);
+    p_field->SetPosition(3, 0);
+    p_field->SetValues(0xf, 0);
+    p_field->SetHWAccessProperties(true, true, false, false);
+    p_field->SetSWAccessProperties(true, true, false, false, false, false);
+
+    p_mm2->AddField(M2_REG1, M2_FIELD8);
+    p_mm2->AddField(M2_REG1, M2_FIELD9);
+    p_mm2->AddField(M2_REG1, M2_FIELD10);
+    p_mm2->AddField(M2_REG1, M2_FIELD11);
+    p_mm2->AddField(M2_REG1, M2_FIELD12);
+    p_mm2->AddField(M2_REG1, M2_FIELD13);
+    p_mm2->AddField(M2_REG1, M2_FIELD14);
+    p_mm2->AddField(M2_REG1, M2_FIELD15);
 
     p_mm_builder->AddBlock(p_mm2);
     

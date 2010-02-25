@@ -33,6 +33,7 @@ echo "BOOST_LIB       = $BOOST_LIB      "
 
 python main/generic_cpu/test1/build_program_options_links.py
 python main/generic_cpu/test2/build_program_options_links.py
+python main/generic_cpu/test3/build_program_options_links.py
 
 make clean 
 cmake clean .

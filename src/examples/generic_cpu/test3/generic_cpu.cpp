@@ -79,13 +79,17 @@ GenericCPU::TreatPeripheral2()
 {
 printf("%s\n", __PRETTY_FUNCTION__);
     
-    uint64_t addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress(MEM2, M2_REG0); 
-    printf("addr = (0x%x)\n", addr);
-    uint32_t reg_val = 5;
-    Write(addr, &reg_val);
-    uint32_t new_reg_val = SetFieldValue(MEM2, M2_FIELD0, 1,  reg_val);
-    Write(addr, &new_reg_val);
-
+   uint64_t addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress(MEM2, M2_REG0); 
+//   printf("addr = (0x%x)\n", addr);
+   uint32_t reg_val = Read(addr);
+   reg_val = SetFieldValue(MEM2, M2_FIELD0, 0x3,  reg_val);
+   Write(addr, &reg_val);
+   reg_val = SetFieldValue(MEM2, M2_FIELD1, 0,  reg_val);
+   Write(addr, &reg_val);
+   reg_val = SetFieldValue(MEM2, M2_FIELD3, 0x7,  reg_val);
+   Write(addr, &reg_val);
+   reg_val = SetFieldValue(MEM2, M2_FIELD4, 0x8,  reg_val);
+   Write(addr, &reg_val);
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -134,6 +138,6 @@ GenericCPU::STMain()
             (this->*mv_program_peripheral[peripheral_id])();
         }
 
-        if (cntr++ > 20) { cout << "Test PASSED" << endl; exit(0);}
+        if (cntr++ > 4) { cout << "Test PASSED" << endl; exit(0);}
     }
 }

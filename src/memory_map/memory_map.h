@@ -98,12 +98,12 @@ public:
     void AddField(const uint64_t reg_id_, const uint32_t field_);
     RegisterTraits* GetRegisterTraits(const uint32_t reg_id_);
     
-    uint32_t SetFieldValueSwRDL(const uint32_t field_id_, const uint32_t field_value_, const uint32_t reg_value_);
-    uint32_t GetFieldValueSwRDL(const uint32_t field_id_, const uint32_t reg_value_);
     void     WriteSwRDL   (const uint32_t reg_id_, uint32_t data_);
     uint32_t ReadSwRDL    (const uint32_t reg_id_);
     
 private:
+    uint32_t SetFieldValueSwRDL(const uint32_t field_id_, const uint32_t field_value_, const uint32_t reg_value_);
+    uint32_t GetFieldValueSwRDL(const uint32_t field_id_, const uint32_t reg_value_);
 
     uint32_t    m_id    ; 
     string      m_name  ; 
@@ -111,7 +111,6 @@ private:
     uint64_t    m_number_registers; // 4 bytes regs
     uint64_t    m_memory_size;      // 4 bytes per memory location
     
-//    vector<sc_uint<32> > m_hw_resource;     //RESOURCES_ON_32_BITS 
     vector<uint32_t>       m_hw_resource;       //RESOURCES_ON_32_BITS 
     vector<FieldTraits>    m_register_field;
     vector<RegisterTraits> m_register;

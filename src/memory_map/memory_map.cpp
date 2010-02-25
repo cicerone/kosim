@@ -317,7 +317,7 @@ FieldTraits* MemoryMap::GetFieldTraits(const uint32_t field_)
 // RET: reference to the field's traits 
 void MemoryMap::AddField(const uint64_t reg_id_, const uint32_t field_)
 {
-    m_register[reg_id_].m_fields.push_back(field_);
+    m_register[reg_id_].m_fields.push_back(field_);  
     Write(reg_id_, field_, m_register_field[field_].reset_value); // reset the field
 }
 /////////////////////////////////////////////////////////////////////////////////////
@@ -339,13 +339,14 @@ RegisterTraits* MemoryMap::GetRegisterTraits(const uint32_t reg_id_)
 uint32_t 
 MemoryMap::SetFieldValueSwRDL(const uint32_t field_id_, const uint32_t field_value_, const uint32_t reg_value_) // RESOURCES_ON_32_BITS
 {
-    FieldTraits* p_field = this->GetFieldTraits(field_id_);
-    if (p_field->is_sw_write == false) return reg_value_; 
+    FieldTraits* p_field = this->GetFieldTraits(field_id_);   
+    if (p_field->is_sw_write == false) return reg_value_;     
     m_field_accessor_field = reg_value_;
     uint32_t current_field_val = m_field_accessor_field.range(p_field->msb, p_field->lsb);
     uint32_t new_field_val = 0;
     if      (p_field->is_sw_write_one_to_set)   new_field_val = current_field_val | field_value_; 
-    else if (p_field->is_sw_write_one_to_clear) new_field_val = current_field_val & ~field_value_; 
+    else if (p_field->is_sw_write_one_to_clear) { new_field_val = current_field_val & (~field_value_); 
+            fprintf(stderr, "zzz0 field_id_(0x%x), current_field_val(0x%x), field_value_\(0x%x), new_field_val(0x%x)\n", field_id_, current_field_val, field_value_, new_field_val);}
     else                                        new_field_val = field_value_; 
 
     m_field_accessor_field.range(p_field->msb, p_field->lsb) = new_field_val;
@@ -380,7 +381,7 @@ MemoryMap::WriteSwRDL   (const uint32_t reg_id_, uint32_t data_)
     RegisterTraits* p_reg = this->GetRegisterTraits(reg_id_);
     m_field_accessor_reg = data_;  
     vector<uint32_t>::iterator pos;
-    uint32_t new_reg_val = 0;
+    uint32_t new_reg_val = m_hw_resource[reg_id_];
     for ( pos = p_reg->m_fields.begin(); pos != p_reg->m_fields.end(); ++pos )
     {
         FieldTraits* p_field = this->GetFieldTraits(*pos);

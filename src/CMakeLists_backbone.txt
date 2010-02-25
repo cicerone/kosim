@@ -41,8 +41,10 @@ include_directories ($ENV{TLM_INCLUDE}/)
 
 add_subdirectory (main/generic_cpu/test1)
 add_subdirectory (main/generic_cpu/test2)
+add_subdirectory (main/generic_cpu/test3)
 add_subdirectory (examples/generic_cpu/test1)
 add_subdirectory (examples/generic_cpu/test2)
+add_subdirectory (examples/generic_cpu/test3)
 add_subdirectory (hierarchy_scanner)
 add_subdirectory (generic_cpu)
 add_subdirectory (memory_map)
@@ -56,4 +58,5 @@ enable_testing()
 
 add_test(test_generic_cpu_test1 python main/generic_cpu/test1/generic_cpu.py        )
 add_test(test_generic_cpu_test2 python main/generic_cpu/test2/generic_cpu.py        )
+add_test(test_generic_cpu_test3 python main/generic_cpu/test2/generic_cpu.py        )
 

@@ -6,6 +6,7 @@
 ===============================================================================================*/
 
 #include "gc_test_target.h"
+#include "gen_from_sysrdl.h"
 
 using namespace sc_core;
 using namespace sc_dt;
@@ -32,6 +33,9 @@ void GCTestTarget::STMain()
     while(1)
     {
         wait(10, SC_NS);
+        if (m_id == MEM2) {
+//            mp_memory_map->Write(M2_REG0, M2_FIELD4, 0x5); // update continuosly this field to test is_sw_write_one_to_clear  
+        }
         m_irq.write(m_id);
     }
 }

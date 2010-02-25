@@ -66,11 +66,22 @@ enum MEM2_REGS
 
 enum MEM2_FIELDS
 {
-    M2_FIELD0 = 0, // M3_REG0
-    M2_FIELD1,     // M3_REG0
-    M2_FIELD2,     // M3_REG0
-    M2_FIELD3,     // M3_REG1 
-    M2_FIELD4,     // M3_REG1
+    M2_FIELD0 = 0,  // M3_REG0
+    M2_FIELD1,      // M3_REG0
+    M2_FIELD2,      // M3_REG0
+    M2_FIELD3,      // M3_REG0 
+    M2_FIELD4,      // M3_REG0
+    M2_FIELD5,      // M3_REG0
+    M2_FIELD6,      // M3_REG0
+    M2_FIELD7,      // M3_REG0
+    M2_FIELD8,      // M3_REG1
+    M2_FIELD9,      // M3_REG1
+    M2_FIELD10,     // M3_REG1
+    M2_FIELD11,     // M3_REG1
+    M2_FIELD12,     // M3_REG1
+    M2_FIELD13,     // M3_REG1
+    M2_FIELD14,     // M3_REG1
+    M2_FIELD15,     // M3_REG1
     M2_NUMBER_FIELDS 
 };
 
