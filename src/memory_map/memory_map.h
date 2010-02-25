@@ -102,8 +102,8 @@ public:
     uint32_t ReadSwRDL    (const uint32_t reg_id_);
     
 private:
-    uint32_t SetFieldValueSwRDL(const uint32_t field_id_, const uint32_t field_value_, const uint32_t reg_value_);
-    uint32_t GetFieldValueSwRDL(const uint32_t field_id_, const uint32_t reg_value_);
+    void     WriteSwRDL(const uint64_t reg_id_, const uint32_t field_id_, const uint32_t field_value_);
+    uint32_t ReadSwRDL(const uint64_t reg_id_, const uint32_t field_id_);
 
     uint32_t    m_id    ; 
     string      m_name  ; 
