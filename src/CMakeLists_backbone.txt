@@ -58,5 +58,5 @@ enable_testing()
 
 add_test(test_generic_cpu_test1 python main/generic_cpu/test1/generic_cpu.py        )
 add_test(test_generic_cpu_test2 python main/generic_cpu/test2/generic_cpu.py        )
-add_test(test_generic_cpu_test3 python main/generic_cpu/test2/generic_cpu.py        )
+add_test(test_generic_cpu_test3 python main/generic_cpu/test3/generic_cpu.py        )
 
