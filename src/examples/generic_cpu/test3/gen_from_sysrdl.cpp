@@ -71,7 +71,7 @@ void BuildMemoryMap4Mem2()
 
     p_field = p_mm2->GetFieldTraits(M2_FIELD2);
     p_field->SetPosition(23, 20);
-    p_field->SetValues(0xf, 0);
+    p_field->SetValues(0xb, 0);
     p_field->SetHWAccessProperties(true, true, false, false);
     p_field->SetSWAccessProperties(false, true, false, false, false, false);
 
@@ -91,17 +91,17 @@ void BuildMemoryMap4Mem2()
     p_field->SetPosition(11, 8);
     p_field->SetValues(0xf, 0);
     p_field->SetHWAccessProperties(true, true, false, false);
-    p_field->SetSWAccessProperties(true, true, false, false, false, false);
+    p_field->SetSWAccessProperties(true, true, true, false, false, false);
 
     p_field = p_mm2->GetFieldTraits(M2_FIELD6);
     p_field->SetPosition(7, 4);
-    p_field->SetValues(0xf, 0);
+    p_field->SetValues(0x5, 0);
     p_field->SetHWAccessProperties(true, true, false, false);
-    p_field->SetSWAccessProperties(true, true, false, false, false, false);
+    p_field->SetSWAccessProperties(true, true, false, true, false, false);
 
     p_field = p_mm2->GetFieldTraits(M2_FIELD7);
     p_field->SetPosition(3, 0);
-    p_field->SetValues(0xf, 0);
+    p_field->SetValues(0xa, 0);
     p_field->SetHWAccessProperties(true, true, false, false);
     p_field->SetSWAccessProperties(true, true, false, false, false, false);
 
@@ -117,13 +117,13 @@ void BuildMemoryMap4Mem2()
     p_field = p_mm2->GetFieldTraits(M2_FIELD8);
     p_field->SetPosition(31,  28);
     p_field->SetValues(0xf,  0);
-    p_field->SetHWAccessProperties(true, true, false, false);
+    p_field->SetHWAccessProperties(false, true, false, false);
     p_field->SetSWAccessProperties(true, true, false, false, false, false);
 
     p_field = p_mm2->GetFieldTraits(M2_FIELD9);
     p_field->SetPosition(27,  24);
     p_field->SetValues(0xf,  0);
-    p_field->SetHWAccessProperties(true, true, false, false);
+    p_field->SetHWAccessProperties(true, false, false, false);
     p_field->SetSWAccessProperties(true, true, false, false, false, false);
 
     p_field = p_mm2->GetFieldTraits(M2_FIELD10);
@@ -134,14 +134,14 @@ void BuildMemoryMap4Mem2()
 
     p_field = p_mm2->GetFieldTraits(M2_FIELD11);
     p_field->SetPosition(19, 16);
-    p_field->SetValues(0xf, 0);
-    p_field->SetHWAccessProperties(true, true, false, false);
+    p_field->SetValues(0x0, 7);
+    p_field->SetHWAccessProperties(true, true, true, false);
     p_field->SetSWAccessProperties(true, true, false, false, false, false);
 
     p_field = p_mm2->GetFieldTraits(M2_FIELD12);
     p_field->SetPosition(15, 12);
-    p_field->SetValues(0xf, 0);
-    p_field->SetHWAccessProperties(true, true, false, false);
+    p_field->SetValues(0x0, 0x5);
+    p_field->SetHWAccessProperties(true, true, false, true);
     p_field->SetSWAccessProperties(true, true, false, false, false, false);
 
     p_field = p_mm2->GetFieldTraits(M2_FIELD13);

@@ -48,8 +48,8 @@ public:
 
     bool is_sw_read;
     bool is_sw_write;
-    bool is_sw_clear_on_read;  // NOTE: a read operation triggers a write operation, not implemented for now...
-    bool is_sw_set_on_read;    // NOTE: a read operation triggers a write operation, not implemented for now...
+    bool is_sw_clear_on_read; 
+    bool is_sw_set_on_read;   
     bool is_sw_write_one_to_set;
     bool is_sw_write_one_to_clear;
 //NA    bool is_sw_swwe;

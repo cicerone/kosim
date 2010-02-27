@@ -53,9 +53,7 @@ BTarget::b_transport( tlm::tlm_generic_payload& payload_, sc_time& delay_ )
     uint8_t*      byte_enable  = payload_.get_byte_enable_ptr();
     uint32_t      stream_width = payload_.get_streaming_width();
 
-
     // Generate the appropriate error response
-
     if (mem_address >= mp_memory_map->get_memory_space()) {
       payload_.set_response_status( tlm::TLM_ADDRESS_ERROR_RESPONSE );
       return;
@@ -73,7 +71,6 @@ BTarget::b_transport( tlm::tlm_generic_payload& payload_, sc_time& delay_ )
     
 //#define IGNORE_RDL    
 #ifdef IGNORE_RDL    
-    // read and write commands
     if ( command == tlm::TLM_READ_COMMAND ) {
         memcpy(data_ptr, mp_memory_map->GetPhysicalAddress(mem_address), data_length);
     }
@@ -101,10 +98,7 @@ BTarget::b_transport( tlm::tlm_generic_payload& payload_, sc_time& delay_ )
         }
     }
     else
-    {
-    void     WriteSwRDL   (const uint32_t reg_id_, uint32_t data_);
-    uint32_t ReadSwRDL    (const uint32_t reg_id_);
-    
+    {  
         if ( command == tlm::TLM_READ_COMMAND ) {
             memcpy(data_ptr, mp_memory_map->GetPhysicalAddress(mem_address), data_length);
         }
@@ -151,7 +145,6 @@ unsigned int
 BTarget::transport_dbg(tlm::tlm_generic_payload& payload_)
 {
     tlm::tlm_command command = payload_.get_command();
-//    uint64_t      mem_address  = payload_.get_address() / sizeof(mem[0]);
     uint64_t     mem_address = payload_.get_address();
     uint8_t*     data_ptr    = payload_.get_data_ptr();
     uint32_t     data_length = payload_.get_data_length();
@@ -159,9 +152,6 @@ BTarget::transport_dbg(tlm::tlm_generic_payload& payload_)
     // Calculate the number of bytes to be actually copied
     uint64_t  length_to_end = mp_memory_map->get_memory_space() - mem_address;
     uint64_t  num_bytes = data_length < length_to_end ? data_length : length_to_end ;
-
-    uint32_t data = 0;
-    // read and write commands
     if ( command == tlm::TLM_READ_COMMAND ) {
         memcpy(data_ptr, mp_memory_map->GetPhysicalAddress(mem_address), data_length);
     }

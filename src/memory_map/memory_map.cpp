@@ -246,7 +246,7 @@ void MemoryMap::Write(const uint64_t reg_id_, const uint32_t field_, const uint3
 {
     m_field_accessor = m_hw_resource[reg_id_];
     m_field_accessor.range(m_register_field[field_].msb, m_register_field[field_].lsb) = data_;
-    m_hw_resource[reg_id_] = m_field_accessor.to_uint();
+    m_hw_resource[reg_id_] = m_field_accessor.to_uint();   
 }
 ///////////////////////////////////////////////////////////////////////////////////// 
 // IN:  reg_id_ - the register ID
@@ -264,15 +264,34 @@ uint32_t MemoryMap::Read (const uint64_t reg_id_, const uint32_t field_) // RESO
 //       data_  - the value to be written
 // OUT: 
 // RET:  
-void MemoryMap::WriteHwRDL(const uint64_t reg_id_, const uint32_t field_, const uint32_t data_) // RESOURCES_ON_32_BITS
+void MemoryMap::WriteHwRDL(const uint64_t reg_id_, const uint32_t field_id_, const uint32_t data_) // RESOURCES_ON_32_BITS
 {
-    if (m_register_field[field_].is_hw_write == false) return;
+    if (m_register_field[field_id_].is_hw_write == false) return;
+    FieldTraits field = m_register_field[field_id_];
+    
     m_field_accessor_field = m_hw_resource[reg_id_];
     uint32_t new_field_value = data_;
-    if      (m_register_field[field_].is_hw_hwenable) /* TODO */ ;
-    else if (m_register_field[field_].is_hw_hwmask)   /* TODO */ ;
-
-    m_field_accessor_field.range(m_register_field[field_].msb, m_register_field[field_].lsb) = data_;
+    if      (field.is_hw_hwenable) 
+    {
+        sc_uint<32> aligned_data = data_ << field.lsb;
+        sc_uint<32> aligned_mask = field.mask_value << field.lsb;
+        for (uint32_t i = field.lsb; i <= field.msb; i++) {
+            if (aligned_mask[i] == 1)  m_field_accessor_field[i] = aligned_data[i];   
+        }        
+    }
+    else if (field.is_hw_hwmask)
+    {
+        sc_uint<32> aligned_data = data_ << field.lsb;
+        sc_uint<32> aligned_mask = field.mask_value << field.lsb;
+        
+        for (uint32_t i = field.lsb; i <= field.msb; i++) {
+            if (aligned_mask[i] == 0)  m_field_accessor_field[i] = aligned_data[i];
+        }    
+    }
+    else {
+        m_field_accessor_field.range(field.msb, field.lsb) = data_;
+    }
+    
     m_hw_resource[reg_id_] = m_field_accessor_field.to_uint();
 }
 ///////////////////////////////////////////////////////////////////////////////////// 
@@ -362,9 +381,19 @@ MemoryMap::WriteSwRDL(const uint64_t reg_id_, const uint32_t field_id_, const ui
 uint32_t 
 MemoryMap::ReadSwRDL(const uint64_t reg_id_, const uint32_t field_id_) // RESOURCES_ON_32_BITS
 {
-    if ( m_register_field[field_id_].is_sw_read == false) return 0; // returns 0 for all fields that are not readable 
+    FieldTraits field = m_register_field[field_id_];
+    if ( field.is_sw_read == false) return 0; // returns 0 for all fields that are not readable 
     m_field_accessor_field = m_hw_resource[reg_id_];
-    uint32_t field_value =  m_field_accessor_field.range(m_register_field[field_id_].msb, m_register_field[field_id_].lsb);
+    uint32_t field_value =  m_field_accessor_field.range(field.msb, field.lsb);
+     
+    if( field.is_sw_clear_on_read) {
+        m_field_accessor_field.range(field.msb, field.lsb) = 0;
+        m_hw_resource[reg_id_] = m_field_accessor_field;
+    }; 
+    if( field.is_sw_set_on_read) {
+        m_field_accessor_field.range(field.msb, field.lsb) = 0xffffffff;
+        m_hw_resource[reg_id_] = m_field_accessor_field;
+    };   
     return field_value;
 }
 /////////////////////////////////////////////////////////////////////////////////////
