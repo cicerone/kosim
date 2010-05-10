@@ -48,7 +48,7 @@ Top::Top(sc_module_name name_) : sc_module(name_)
      BuildMemoryMap();
 
      p_gcpu       = new GenericCPU("gen_cpu");
-     p_router     = new BRouter<NUMBER_PERIPHERALS>("router");
+     p_router     = new BRouter<1, NUMBER_PERIPHERALS>("router");
      p_irq_ctrler = new GCInterruptController<NUMBER_PERIPHERALS>("interrupt_controller");
      
      for (int i = 0; i < NUMBER_PERIPHERALS; i++)
@@ -59,7 +59,7 @@ Top::Top(sc_module_name name_) : sc_module(name_)
      }
      
      // Bind sockets
-     p_gcpu->socket.bind( p_router->m_target_socket );
+     p_gcpu->socket.bind( *(p_router->mp_target_socket[0]) );
      for (int i = 0; i < NUMBER_PERIPHERALS; i++)
          p_router->mp_initiator_socket[i]->bind( p_test_target[i]->socket );
      // Bind interrupts

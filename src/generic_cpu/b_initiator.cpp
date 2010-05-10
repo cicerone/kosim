@@ -261,7 +261,7 @@ BInitiator::DbgRead (const uint64_t addr_,       uint32_t* const p_data_, const 
 // OUT: 
 // RET: 
 void 
-BInitiator::invalidate_direct_mem_ptr(sc_dt::uint64 start_range_, sc_dt::uint64 end_range_)
+BInitiator::invalidate_direct_mem_ptr(uint64_t start_range_, uint64_t end_range_)
 {
     // Ignore range and invalidate all DMI pointers regardless
     m_is_dmi_ptr_valid = false;

@@ -42,7 +42,7 @@ private:
   virtual void InitSystem() = 0;
 
   // TLM-2 backward DMI method
-  void invalidate_direct_mem_ptr(sc_dt::uint64 start_range_, sc_dt::uint64 end_range_);
+  void invalidate_direct_mem_ptr(uint64_t start_range_, uint64_t end_range_);
   void CheckAddressAlignment(const uint32_t addr_);
   void CheckDataSize(const uint32_t size_);
 
