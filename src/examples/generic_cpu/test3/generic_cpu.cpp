@@ -17,8 +17,8 @@ using namespace std;
 // IN: name_ - the name of the module 
 // OUT: 
 // RET: 
-GenericCPU::GenericCPU(sc_module_name name_) : 
-    GenericCPUBase(name_)
+GenericCPU::GenericCPU(sc_module_name name_, uint32_t id_) : 
+    GenericCPUBase(name_, id_)
 {
     SC_THREAD(STMain);
 }

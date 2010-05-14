@@ -27,7 +27,7 @@ class GCTestTarget : public GCTarget
 
 public:
   SC_HAS_PROCESS(GCTestTarget);
-  GCTestTarget(sc_module_name name_, uint32_t id_);
+  GCTestTarget(sc_module_name name_, uint32_t id_, uint32_t no_irq_ = 1);
   ~GCTestTarget() {};
 
 private:

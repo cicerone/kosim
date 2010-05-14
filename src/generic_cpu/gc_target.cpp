@@ -19,7 +19,24 @@ using namespace std;
 // IN: 
 // OUT: 
 // RET: 
-GCTarget::GCTarget(sc_module_name name_, uint32_t id_) : 
-    BTarget(name_, id_)
+GCTarget::GCTarget(sc_module_name name_, uint32_t id_, uint32_t no_irq_) : 
+    BTarget(name_, id_),
+    m_no_irq(no_irq_)
 {
+    for (uint32_t i = 0; i < no_irq_; i++)
+    {
+        sc_fifo_out<uint32_t>* p_irq = new sc_fifo_out<uint32_t>;
+        mv_irq.push_back(p_irq);
+    }
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// IN: 
+// OUT: 
+// RET: 
+GCTarget::~GCTarget()
+{
+    mv_irq.clear();
+}
+

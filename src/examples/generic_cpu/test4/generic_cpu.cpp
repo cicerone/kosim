@@ -43,7 +43,11 @@ GenericCPU::InitSystem()
    mv_program_peripheral[0] = &GenericCPU::TreatPeripheral0;
    mv_program_peripheral[1] = &GenericCPU::TreatPeripheral1;
    mv_program_peripheral[2] = &GenericCPU::TreatPeripheral2;
-   mv_program_peripheral[3] = &GenericCPU::TreatPeripheral3;
+
+   TreatPeripheral0(); 
+   TreatPeripheral1();
+   TreatPeripheral2();
+
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -53,9 +57,12 @@ GenericCPU::InitSystem()
 void 
 GenericCPU::TreatPeripheral0()
 {
-printf("%s\n", __PRETTY_FUNCTION__);
-    uint32_t data[2] = {1, 2};
-    DbgWrite(0x00, data, 2*sizeof(uint32_t));
+    if (m_id == 0)
+    {
+        cout <<__PRETTY_FUNCTION__  << ": time = " << sc_time_stamp() << endl;
+        Write(0x00, 1);
+        Write(0x04, 2);
+    }   
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -65,9 +72,18 @@ printf("%s\n", __PRETTY_FUNCTION__);
 void 
 GenericCPU::TreatPeripheral1()
 {
-printf("%s\n", __PRETTY_FUNCTION__);
-    uint32_t data[2] = {3, 4};
-    Write(0x100, data, 2*sizeof(uint32_t));
+    if (m_id == 0)
+    {
+        cout <<__PRETTY_FUNCTION__  << ": time = " << sc_time_stamp() << endl;
+        Write(0x100, 3);
+        Write(0x104, 4);
+    }
+    else if (m_id == 1)
+    {
+        cout <<__PRETTY_FUNCTION__  << ": time = " << sc_time_stamp() << endl;
+        Write(0x108, 5);
+        Write(0x10c, 6);
+    }    
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -77,45 +93,12 @@ printf("%s\n", __PRETTY_FUNCTION__);
 void 
 GenericCPU::TreatPeripheral2()
 {
-printf("%s\n", __PRETTY_FUNCTION__);
-    
-    uint64_t addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress(MEM2, M2_REG0); 
-    printf("addr = (0x%x)\n", addr);
-    uint32_t reg_val = 5;
-    Write(addr, &reg_val);
-    uint32_t new_reg_val = SetFieldValue(MEM2, M2_FIELD0, 1,  reg_val);
-    Write(addr, &new_reg_val);
-
-}
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// IN: 
-// OUT: 
-// RET: 
-void 
-GenericCPU::TreatPeripheral3()
-{
-    printf("%s\n", __PRETTY_FUNCTION__);
-    uint32_t a_data[3] = {0, 0, 0};
-    Read(0x00, a_data, 3*sizeof(uint32_t));
-    printf("data[0x%x] = 0x%x\n", 0x00, a_data[0]);
-    printf("data[0x%x] = 0x%x\n", 0x04, a_data[1]);
-    printf("data[0x%x] = 0x%x\n", 0x08, a_data[2]);
-
-
-    DbgRead(0x100, a_data, 3*sizeof(uint32_t));
-    printf("data[0x%x] = 0x%x\n", 0x100, a_data[0]);
-    printf("data[0x%x] = 0x%x\n", 0x104, a_data[1]);
-    printf("data[0x%x] = 0x%x\n", 0x108, a_data[2]);
-
-    uint32_t data = 0; 
-    Read(0x200, &data);
-    printf("data[0x%x] = 0x%x\n",  0x200, data);
-    Read(0x204, &data);
-    printf("data[0x%x] = 0x%x\n",  0x204, data);
-    Read(0x208, &data);
-    printf("data[0x%x] = 0x%x\n",  0x208, data);
-    
+    if (m_id == 1)
+    {
+        cout <<__PRETTY_FUNCTION__  << ": time = " << sc_time_stamp() << endl;
+        Write(0x200, 7);
+        Write(0x204, 8);
+    }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // The main thread
@@ -133,7 +116,8 @@ GenericCPU::STMain()
         if (peripheral_id < NUMBER_PERIPHERALS) {
             (this->*mv_program_peripheral[peripheral_id])();
         }
+        // read the result
 
-        if (cntr++ > 20) { cout << "Test PASSED" << endl; exit(0);}
+        if (cntr++ > 100000) { cout << "Test PASSED" << endl; exit(0);}
     }
 }

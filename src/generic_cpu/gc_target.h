@@ -9,6 +9,7 @@
 #define KOSIM_GC_GC_TARGET_H
 
 #include <stdint.h>
+#include <vector>
 
 #define SC_INCLUDE_DYNAMIC_PROCESSES
 #include "systemc.h"
@@ -26,13 +27,14 @@ class GCTarget : public BTarget
 {
 
 public:
-  GCTarget(sc_module_name name_, uint32_t id_);
-  virtual ~GCTarget() {};
-  sc_fifo_out<uint32_t> m_irq ;
+  GCTarget(sc_module_name name_, uint32_t id_, uint32_t no_irq_);
+  virtual ~GCTarget();
+  std::vector<sc_fifo_out<uint32_t>*> mv_irq ;
 
 
 protected:
 private:
+  uint32_t m_no_irq;
 };
 
 

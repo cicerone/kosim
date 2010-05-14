@@ -5,8 +5,8 @@
     Support: kosim@kotys.biz 
 ===============================================================================================*/
 
-#ifndef KOSIM_GC_GENERIC_CPU_BASE_H
-#define KOSIM_GC_GENERIC_CPU_BASE_H
+#ifndef KOSIM_EX_GC_TEST4_GENERIC_CPU_H
+#define KOSIM_EX_GC_TEST4_GENERIC_CPU_H
 
 #include <stdint.h>
 #include <vector>
@@ -16,26 +16,29 @@
 #include "tlm.h"
 #include "tlm_utils/simple_initiator_socket.h"
 #include "tlm_utils/simple_target_socket.h"
-#include "b_initiator.h"
-#include "memory_map_builder.h"
+#include "generic_cpu_base.h"
 
-// GenericCPUBase module generating generic payload transactions
+// GenericCPU module generating generic payload transactions
 
-class GenericCPUBase : public BInitiator 
+class GenericCPU : public GenericCPUBase
 {
 public:
-  sc_fifo_in <uint32_t> m_irq ;
 
-  GenericCPUBase(sc_module_name name_, uint32_t id_);
-  virtual ~GenericCPUBase();
-
-  uint32_t SetFieldValue(const uint32_t block_id_, const uint32_t field_id_, const uint32_t field_value_, const uint32_t reg_value_);
-  uint32_t GetFieldValue(const uint32_t block_id_, const uint32_t field_id_, const uint32_t reg_value_);
-protected:
-  uint32_t m_id;
-
+  GenericCPU(sc_module_name name_, uint32_t id_ = 0);
+  ~GenericCPU();
+  SC_HAS_PROCESS(GenericCPU);
+  
 private:
-  sc_uint<32> m_field_accessor;
+  void STMain();
+  virtual void InitSystem();
+  void TreatPeripheral0();
+  void TreatPeripheral1();
+  void TreatPeripheral2();
+  
+  typedef  void (GenericCPU::*MethodPointer)(); 
+  std::vector<MethodPointer> mv_program_peripheral;
 };
-#endif // KOSIM_GC_GENERIC_CPU_BASE_H
+
+
+#endif // KOSIM_EX_GC_TEST4_GENERIC_CPU_H
 

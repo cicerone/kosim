@@ -15,8 +15,9 @@ using namespace std;
 // IN: name_ - the name of the module 
 // OUT: 
 // RET: 
-GenericCPUBase::GenericCPUBase(sc_module_name name_) : 
-    BInitiator(name_)
+GenericCPUBase::GenericCPUBase(sc_module_name name_, uint32_t id_) : 
+    BInitiator(name_),
+    m_id(id_)
 {
 
     

@@ -31,7 +31,7 @@ public:
 private:
    void BuildMemoryMap();
    GenericCPU* p_gcpu;
-   BRouter<NUMBER_PERIPHERALS>* p_router;
+   BRouter<1, NUMBER_PERIPHERALS>* p_router;
    GCTestTarget*    p_test_target[NUMBER_PERIPHERALS];
    GCInterruptController<NUMBER_PERIPHERALS>* p_irq_ctrler;
    sc_fifo<uint32_t> cpu_irq;
@@ -68,7 +68,7 @@ Top::Top(sc_module_name name_) : sc_module(name_)
      for (int i = 0; i < NUMBER_PERIPHERALS; i++)
      {
          p_irq_ctrler->m_irq_in[i](peripheral_irq[i]);
-         p_test_target[i]->m_irq(peripheral_irq[i]);
+         (*p_test_target[i]->mv_irq[0])(peripheral_irq[i]);
      }
 
 }

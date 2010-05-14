@@ -68,7 +68,7 @@ Top::Top(sc_module_name name_) : sc_module(name_)
      for (int i = 0; i < NUMBER_PERIPHERALS; i++)
      {
          p_irq_ctrler->m_irq_in[i](peripheral_irq[i]);
-         p_test_target[i]->m_irq(peripheral_irq[i]);
+         (*p_test_target[i]->mv_irq[0])(peripheral_irq[i]);
      }
 
 }

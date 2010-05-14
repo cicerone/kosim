@@ -24,7 +24,7 @@ class GenericCPU : public GenericCPUBase
 {
 public:
 
-  GenericCPU(sc_module_name name_);
+  GenericCPU(sc_module_name name_, uint32_t id_ = 0);
   ~GenericCPU();
   SC_HAS_PROCESS(GenericCPU);
   

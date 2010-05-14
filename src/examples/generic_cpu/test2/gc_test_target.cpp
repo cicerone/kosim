@@ -17,8 +17,8 @@ using namespace std;
 // IN: 
 // OUT: 
 // RET: 
-GCTestTarget::GCTestTarget(sc_module_name name_, uint32_t id_) : 
-    GCTarget(name_, id_)
+GCTestTarget::GCTestTarget(sc_module_name name_, uint32_t id_, uint32_t no_irq_) : 
+    GCTarget(name_, id_, no_irq_)
 {
     SC_THREAD(STMain);
 }
@@ -41,7 +41,7 @@ void GCTestTarget::STMain()
         mp_memory_map->Write(2, mem[2]);
 
         wait(10, SC_NS);
-        m_irq.write(m_id);
+        mv_irq[0]->write(m_id);
     }
 }
 
