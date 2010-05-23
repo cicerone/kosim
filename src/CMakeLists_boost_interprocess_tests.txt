@@ -45,5 +45,7 @@ add_subdirectory (main/boost_interprocess/sm_named_pool)
 add_subdirectory (main/boost_interprocess/sm_mapped_region)
 add_subdirectory (main/boost_interprocess/sm_scoped_lock_1)
 add_subdirectory (main/boost_interprocess/sm_scoped_lock_2)
+add_subdirectory (main/boost_interprocess/sm_anonym_cond_1)
+add_subdirectory (main/boost_interprocess/sm_anonym_cond_2)
 
 
