@@ -66,8 +66,6 @@ BTarget::b_transport( tlm::tlm_generic_payload& payload_, sc_time& delay_ )
 //     payload_.set_response_status( tlm::TLM_BURST_ERROR_RESPONSE );
 //     return;
 //   }
-    wait(delay_);
-    delay_ = SC_ZERO_TIME;
     
 //#define IGNORE_RDL    
 #ifdef IGNORE_RDL    
@@ -113,6 +111,11 @@ BTarget::b_transport( tlm::tlm_generic_payload& payload_, sc_time& delay_ )
 
     // Obliged to set response status to indicate successful completion
     payload_.set_response_status( tlm::TLM_OK_RESPONSE );
+    
+    m_io_event.notify();
+    wait(delay_);
+    delay_ = SC_ZERO_TIME;
+
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // TLM-2 forward DMI method

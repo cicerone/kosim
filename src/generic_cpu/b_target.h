@@ -42,7 +42,9 @@ protected:
   const sc_time DMI_LATENCY;
   MemoryMap* mp_memory_map;
   uint32_t m_id;
+  sc_event m_io_event;
 private:
+  
 };
 
 

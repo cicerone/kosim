@@ -44,6 +44,11 @@ GenericCPU::InitSystem()
    mv_program_peripheral[1] = &GenericCPU::TreatPeripheral1;
    mv_program_peripheral[2] = &GenericCPU::TreatPeripheral2;
    mv_program_peripheral[3] = &GenericCPU::TreatPeripheral3;
+   
+   TreatPeripheral0();
+   TreatPeripheral1();
+   TreatPeripheral2();
+   TreatPeripheral3();         
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -107,6 +112,7 @@ GenericCPU::TreatPeripheral3()
 
     printf("DBG data[0x%x] = 0x%x\n",  0x08, DbgRead(0x08));
     printf("DBG data[0x%x] = 0x%x\n", 0x108, DbgRead(0x108));
+    Write(0x300, 3); // just to trigger the interrupt...
 
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////

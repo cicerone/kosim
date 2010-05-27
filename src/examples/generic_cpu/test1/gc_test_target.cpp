@@ -32,6 +32,8 @@ void GCTestTarget::STMain()
 {
     while(1)
     {
+        wait(m_io_event);
+        fprintf(stdout, "%s_(%d)\n", __PRETTY_FUNCTION__, m_id);
         uint32_t mem[3];
         mem[0] = mp_memory_map->Read(0);
         mem[1] = mp_memory_map->Read(1);
