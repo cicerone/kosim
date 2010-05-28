@@ -23,12 +23,18 @@ public:
     static ProgramOptions* GetInstance();                       // NOTE: can be called any time after 
     int    get_dbg_level() { return m_dbg_level              ;}
 ///////////  OPTIONS from configuraton file  ////////////////////////////////////
-    std::string& get_test_name                       () { return m_test_name           ; }
-    int32_t      get_addr_width_int_resources        () { return m_addr_width_int_resources; }
-    int32_t      get_mem0_lowest_value               () { return m_mem0_lowest_value ; }
-    int32_t      get_mem0_highest_value              () { return m_mem0_highest_value; }
+    std::string& get_test_name                       () { return m_test_name      ; }
+    uint32_t     get_transfer_size                   () { return m_transfer_size  ; }
+    uint32_t     get_memory_size                     () { return m_memory_size    ; }
+    uint32_t     get_nr_ops_per_xfer                 () { return m_nr_ops_per_xfer; }
+    uint32_t     get_nr_xfers                        () { return m_nr_xfers       ; }
+
+    int32_t      get_mem_lowest_value               () { return m_mem_lowest_value ; }
+    int32_t      get_mem_highest_value              () { return m_mem_highest_value; }
 
 ///////////  END OPTIONS from configuration file  ////////////////////////////////////
+    int32_t     get_cmd_line_arg1                    () { return m_cmd_line_arg1     ;}                ;
+
     int  Dump();
 
     ~ProgramOptions();
@@ -40,12 +46,15 @@ private:
     int         m_dbg_level                       ; // debug level
 ///////////  OPTIONS from configuraton file  ////////////////////////////////////
     std::string m_test_name                ;
-    int32_t     m_addr_width_int_resources ;
-    int32_t     m_mem0_lowest_value ; 
-    int32_t     m_mem0_highest_value; 
+    uint32_t     m_transfer_size ;
+    uint32_t     m_memory_size   ;
+    uint32_t     m_nr_ops_per_xfer ;
+    uint32_t     m_nr_xfers      ;
+    int32_t      m_mem_lowest_value ; 
+    int32_t      m_mem_highest_value; 
 ///////////  END OPTIONS from configuration file  ////////////////////////////////////
 ///////////  OPTIONS from command line  ////////////////////////////////////
-    int32_t     m_cmd_line_arg1                   ;
+    int32_t      m_cmd_line_arg1                   ;
 ///////////  END OPTIONS from command line  ////////////////////////////////////
 
 };

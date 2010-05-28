@@ -112,7 +112,7 @@ BTarget::b_transport( tlm::tlm_generic_payload& payload_, sc_time& delay_ )
     // Obliged to set response status to indicate successful completion
     payload_.set_response_status( tlm::TLM_OK_RESPONSE );
     
-    m_io_event.notify();
+    m_io_event.notify(SC_ZERO_TIME);
     wait(delay_);
     delay_ = SC_ZERO_TIME;
 

@@ -25,9 +25,12 @@ ProgramOptions::ProgramOptions(int ac_, char* p_av_[]) :
     m_dbg_level                 (0                   ),
 // options from configuration file
     m_test_name                 ("NOT_INITIALIZED!"  ),
-    m_addr_width_int_resources  (8                   ),
-    m_mem0_lowest_value         (0                   ),
-    m_mem0_highest_value        (0                   ),
+    m_transfer_size             (8                   ),
+    m_memory_size               (8                   ),
+    m_nr_ops_per_xfer           (8                   ),
+    m_nr_xfers                  (8                   ),
+    m_mem_lowest_value          (0                   ),
+    m_mem_highest_value         (0                   ),
     m_cmd_line_arg1             (77                  )
 // END options from configuration file
 {
@@ -58,9 +61,12 @@ void ProgramOptions::InitConfiguration()
     mp_config_options->add_options()
 ///////////  OPTIONS from configuraton file  ////////////////////////////////////
         ("TestName"        , po::value<std::string>(&m_test_name)->default_value("test_x"), "test_name")
-        ("AddressWidthInternalResources" , po::value<int32_t>(&m_addr_width_int_resources)->default_value(8), "address width for the internal resources of a peripheral [bits]")
-        ("Mem0.LowestValue", po::value<int32_t>(&m_mem0_lowest_value)->default_value  (0 ), "Lowest value of the address 0 value")
-        ("Mem0.HighestValue", po::value<int32_t>(&m_mem0_highest_value)->default_value(0 ), "Highest value of the address 0 value")
+        ("TransferSize" , po::value<uint32_t>(&m_transfer_size)->default_value(8), "the TLM transfer size in 32 bit words from CPU to periferic and back")
+        ("MemorySize" , po::value<uint32_t>(&m_memory_size)->default_value(8), "the memory size of the peripheric in 32 bit words")
+        ("NumberOpsPerTransfer" , po::value<uint32_t>(&m_nr_ops_per_xfer)->default_value(8), "the number of operations per data xfer")
+        ("NumberTransfers" , po::value<uint32_t>(&m_nr_xfers)->default_value(8), "the number of data xfers")
+        ("Mem.LowestValue", po::value<int32_t>(&m_mem_lowest_value)->default_value  (0 ), "Lowest value of  the memory data")
+        ("Mem.HighestValue", po::value<int32_t>(&m_mem_highest_value)->default_value(0 ), "Highest value of the memory data")
         ;
 
     mp_cmdline_options->add_options()

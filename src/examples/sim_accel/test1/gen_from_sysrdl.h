@@ -59,19 +59,12 @@ enum MEM2_MEMORY_MAP
 
 enum MEM2_REGS
 {
-    M2_REG0 = 0,
-    M2_REG1    , 
-    M2_NUMBER_REGS
+    M2_NUMBER_REGS = 0
 };
 
 enum MEM2_FIELDS
 {
-    M2_FIELD0 = 0, // M2_REG0
-    M2_FIELD1,     // M2_REG0
-    M2_FIELD2,     // M2_REG0
-    M2_FIELD3,     // M2_REG1 
-    M2_FIELD4,     // M2_REG1
-    M2_NUMBER_FIELDS 
+    M2_NUMBER_FIELDS = 0
 };
 
 enum MEM3_MEMORY_MAP

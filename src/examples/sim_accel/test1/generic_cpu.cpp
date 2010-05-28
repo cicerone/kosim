@@ -8,6 +8,7 @@
 #include "generic_cpu.h"
 #include "memory_map_builder.h"
 #include "gen_from_sysrdl.h"
+#include "program_options.h"
 
 using namespace std;
 
@@ -20,6 +21,7 @@ using namespace std;
 GenericCPU::GenericCPU(sc_module_name name_, uint32_t id_) : 
     GenericCPUBase(name_, id_)
 {
+    m_data.resize(ProgramOptions::GetInstance()->get_transfer_size() , 5);
     SC_THREAD(STMain);
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -58,9 +60,10 @@ GenericCPU::InitSystem()
 void 
 GenericCPU::TreatPeripheral0()
 {
-printf("%s\n", __PRETTY_FUNCTION__);
-    Write(0x00, 1);
-    Write(0x04, 2);
+    printf("%s\n", __PRETTY_FUNCTION__);
+    uint64_t addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress2(MEM0, 0); 
+    Write(addr, &m_data[0], m_data.size() * sizeof(uint32_t));
+//    printf("zzz size(%d)\n", m_data.size());
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -70,9 +73,9 @@ printf("%s\n", __PRETTY_FUNCTION__);
 void 
 GenericCPU::TreatPeripheral1()
 {
-printf("%s\n", __PRETTY_FUNCTION__);
-    Write(0x100, 3);
-    Write(0x104, 4);
+    printf("%s\n", __PRETTY_FUNCTION__);
+    uint64_t addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress2(MEM1, 0); 
+    Write(addr, &m_data[0], m_data.size() * sizeof(uint32_t));
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -82,14 +85,9 @@ printf("%s\n", __PRETTY_FUNCTION__);
 void 
 GenericCPU::TreatPeripheral2()
 {
-printf("%s\n", __PRETTY_FUNCTION__);
-    
-    uint64_t addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress(MEM2, M2_REG0); 
-//    printf("addr = (0x%x)\n", addr);
-    uint32_t reg_val = 5;
-    Write(addr, reg_val);
-    uint32_t new_reg_val = SetFieldValue(MEM2, M2_FIELD0, 1,  reg_val);
-    Write(addr, new_reg_val);
+    printf("%s\n", __PRETTY_FUNCTION__);
+    uint64_t addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress2(MEM2, 0); 
+    Write(addr, &m_data[0], m_data.size() * sizeof(uint32_t));
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -100,19 +98,8 @@ void
 GenericCPU::TreatPeripheral3()
 {
     printf("%s\n", __PRETTY_FUNCTION__);
-    printf("data[0x%x] = 0x%x\n",  0x00, Read(0x00));
-    printf("data[0x%x] = 0x%x\n",  0x04, Read(0x04));
-    printf("data[0x%x] = 0x%x\n",  0x08, Read(0x08));
-    printf("data[0x%x] = 0x%x\n", 0x100, Read(0x100));
-    printf("data[0x%x] = 0x%x\n", 0x104, Read(0x104));
-    printf("data[0x%x] = 0x%x\n", 0x108, Read(0x108));
-    printf("data[0x%x] = 0x%x\n", 0x200, Read(0x200));
-    printf("data[0x%x] = 0x%x\n", 0x204, Read(0x204));
-    printf("data[0x%x] = 0x%x\n", 0x208, Read(0x208));
-
-    printf("DBG data[0x%x] = 0x%x\n",  0x08, DbgRead(0x08));
-    printf("DBG data[0x%x] = 0x%x\n", 0x108, DbgRead(0x108));
-    Write(0x300, 3); // just to trigger the interrupt...
+    uint64_t addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress2(MEM3, 0); 
+    Write(addr, &m_data[0], m_data.size() * sizeof(uint32_t));
 
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -132,8 +119,11 @@ GenericCPU::STMain()
             (this->*mv_program_peripheral[peripheral_id])();
         }
         // read the result
-        
 
-        if (cntr++ > 20) { cout << "Test PASSED" << endl; exit(0);}
+        if (cntr++ > ProgramOptions::GetInstance()->get_nr_xfers()) 
+        { 
+            cout << "Test PASSED" << endl; 
+            exit(0);
+        }
     }
 }

@@ -10,6 +10,7 @@
 #include "gen_from_sysrdl.h"
 #include "memory_map_builder.h"
 #include "memory_map.h"
+#include "program_options.h"
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -19,9 +20,11 @@
 // RET: 
 void BuildMemoryMap4Mem0()
 {
+    uint64_t m0_memory_space_offset = 0;
+    uint64_t m0_memory_size = ProgramOptions::GetInstance()->get_memory_size();
     MemoryMapBuilder* p_mm_builder = MemoryMapBuilder::GetInstance();
-    MemoryMap* p_mm0 = new MemoryMap(MEM0, "MEMORY_MAP_0", M0_MEMORY_SPACE_OFFSET);
-    p_mm0->SetSpaceSize(M0_NUMBER_REGS, M0_MEMORY_SIZE);
+    MemoryMap* p_mm0 = new MemoryMap(MEM0, "MEMORY_MAP_0", m0_memory_space_offset);
+    p_mm0->SetSpaceSize(M0_NUMBER_REGS, m0_memory_size);
     p_mm0->SetRegisterFieldsSize(M0_NUMBER_FIELDS);
     p_mm_builder->AddBlock(p_mm0);
 }
@@ -32,9 +35,11 @@ void BuildMemoryMap4Mem0()
 // RET: 
 void BuildMemoryMap4Mem1()
 {
+    uint64_t m1_memory_space_offset = ProgramOptions::GetInstance()->get_memory_size();
+    uint64_t m1_memory_size = ProgramOptions::GetInstance()->get_memory_size();
     MemoryMapBuilder* p_mm_builder = MemoryMapBuilder::GetInstance();
-    MemoryMap* p_mm1 = new MemoryMap(MEM1, "MEMORY_MAP_1", M1_MEMORY_SPACE_OFFSET);
-    p_mm1->SetSpaceSize(M1_NUMBER_REGS, M1_MEMORY_SIZE);
+    MemoryMap* p_mm1 = new MemoryMap(MEM1, "MEMORY_MAP_1", m1_memory_space_offset);
+    p_mm1->SetSpaceSize(M1_NUMBER_REGS, m1_memory_size);
     p_mm1->SetRegisterFieldsSize(M1_NUMBER_FIELDS);
     p_mm_builder->AddBlock(p_mm1);
 }
@@ -45,51 +50,12 @@ void BuildMemoryMap4Mem1()
 // RET: 
 void BuildMemoryMap4Mem2()
 {
+    uint64_t m2_memory_space_offset = 2*ProgramOptions::GetInstance()->get_memory_size();
+    uint64_t m2_memory_size = ProgramOptions::GetInstance()->get_memory_size();
     MemoryMapBuilder* p_mm_builder = MemoryMapBuilder::GetInstance();
-    MemoryMap* p_mm2 = new MemoryMap(MEM2, "MEMORY_MAP_2", M2_MEMORY_SPACE_OFFSET);
-    p_mm2->SetSpaceSize(M2_NUMBER_REGS, M2_MEMORY_SIZE);
+    MemoryMap* p_mm2 = new MemoryMap(MEM2, "MEMORY_MAP_2", m2_memory_space_offset);
+    p_mm2->SetSpaceSize(M2_NUMBER_REGS, m2_memory_size);
     p_mm2->SetRegisterFieldsSize(M2_NUMBER_FIELDS);
-    
-    FieldTraits* p_field = 0;
-
-    p_field = p_mm2->GetFieldTraits(M2_FIELD0);
-    p_field->SetPosition(15,  7);
-    p_field->SetValues(0,  0);
-    p_field->SetHWAccessProperties(true, true, false, false);
-    p_field->SetSWAccessProperties(true, true, false, false, false, false);
-
-    p_field = p_mm2->GetFieldTraits(M2_FIELD1);
-    p_field->SetPosition(6,  1);
-    p_field->SetValues(0,  0);
-    p_field->SetHWAccessProperties(true, true, false, false);
-    p_field->SetSWAccessProperties(true, true, false, false, false, false);
-
-    p_field = p_mm2->GetFieldTraits(M2_FIELD2);
-    p_field->SetPosition( 0,  0);
-    p_field->SetValues(0,  0);
-    p_field->SetHWAccessProperties(true, true, false, false);
-    p_field->SetSWAccessProperties(true, true, false, false, false, false);
-
-
-    p_mm2->AddField(M2_REG0, M2_FIELD0);
-    p_mm2->AddField(M2_REG0, M2_FIELD1);
-    p_mm2->AddField(M2_REG0, M2_FIELD2);
-
-    p_field = p_mm2->GetFieldTraits(M2_FIELD3);
-    p_field->SetPosition(31, 10);
-    p_field->SetValues(0,  0);
-    p_field->SetHWAccessProperties(true, true, false, false);
-    p_field->SetSWAccessProperties(true, true, false, false, false, false);
-    
-    p_field = p_mm2->GetFieldTraits(M2_FIELD4);
-    p_field->SetPosition( 9,  0);
-    p_field->SetValues(0,  0);
-    p_field->SetHWAccessProperties(true, true, false, false);
-    p_field->SetSWAccessProperties(true, true, false, false, false, false);
-
-    p_mm2->AddField(M2_REG1, M2_FIELD3);
-    p_mm2->AddField(M2_REG1, M2_FIELD4);
-
     p_mm_builder->AddBlock(p_mm2);
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -99,9 +65,11 @@ void BuildMemoryMap4Mem2()
 // RET: 
 void BuildMemoryMap4Mem3()
 {
+    uint64_t m3_memory_space_offset = 3*ProgramOptions::GetInstance()->get_memory_size();
+    uint64_t m3_memory_size = ProgramOptions::GetInstance()->get_memory_size();
     MemoryMapBuilder* p_mm_builder = MemoryMapBuilder::GetInstance();
-    MemoryMap* p_mm3 = new MemoryMap(MEM3, "MEMORY_MAP_3", M3_MEMORY_SPACE_OFFSET);
-    p_mm3->SetSpaceSize(M3_NUMBER_REGS, M3_MEMORY_SIZE);
+    MemoryMap* p_mm3 = new MemoryMap(MEM3, "MEMORY_MAP_3", m3_memory_space_offset);
+    p_mm3->SetSpaceSize(M3_NUMBER_REGS, m3_memory_size);
     p_mm3->SetRegisterFieldsSize(M3_NUMBER_FIELDS);
     p_mm_builder->AddBlock(p_mm3);
 }

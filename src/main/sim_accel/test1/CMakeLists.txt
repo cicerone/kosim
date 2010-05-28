@@ -26,13 +26,13 @@ include_directories ($ENV{PYTHON_INCLUDE}/)
 #MESSAGE( "Your program_options lib.")
 
 # Add shared library called "kosim" that is built from the source files
-add_library (kosim_sim_accel_test1 SHARED wrap_sim_accel.cpp program_options.cpp program_options_base.cpp options_builder.cpp)
+#add_library (kosim_sim_accel_test1 SHARED wrap_sim_accel.cpp program_options.cpp program_options_base.cpp options_builder.cpp)
 # Link the executable to the used libraries.
-target_link_libraries (kosim_sim_accel_test1 generic_cpu sim_accel_test1 hierarchy_scanner memory_map libboost_program_options.so libboost_python.so libscv.so libsystemc.a)
+#target_link_libraries (kosim_sim_accel_test1 generic_cpu sim_accel_test1 hierarchy_scanner memory_map libboost_program_options.so libboost_python.so libscv.so libsystemc.a)
 
 
 #Generate executable
-#add_executable (kosim_sim_accel  program_options.cpp program_options_base.cpp options_builder.cpp)
+add_executable (kosim_sim_accel_test1  program_options.cpp program_options_base.cpp options_builder.cpp)
 # Link the executable to the used libraries.
-#target_link_libraries (kosim_sim_accel_test1 generic_cpu hierarchy_scanner memory_map libboost_program_options.so libscv.so libsystemc.a)
+target_link_libraries (kosim_sim_accel_test1 generic_cpu sim_accel_test1 hierarchy_scanner memory_map libboost_program_options.so libscv.so libsystemc.a)
 
