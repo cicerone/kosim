@@ -42,7 +42,7 @@ void GCTestTarget::STMain()
     while(1)
     {
         wait(m_io_event);
-        fprintf(stdout, "%s_(%d)\n", __PRETTY_FUNCTION__, m_id);
+//        fprintf(stdout, "%s_(%d)\n", __PRETTY_FUNCTION__, m_id);
         for (uint32_t i = 0; i < ProgramOptions::GetInstance()->get_nr_ops_per_xfer(); i++)
         {
             uint32_t data =  mp_memory_map->Read(k);

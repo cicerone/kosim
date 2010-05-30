@@ -97,11 +97,11 @@ int sc_main(int argc, char* argv[])
 
     cout << "=======================================================" << endl;
     cout << ProgramOptions::GetInstance()->get_test_name      () << endl;
-    cout << ProgramOptions::GetInstance()->get_transfer_size  () << endl;
-    cout << ProgramOptions::GetInstance()->get_memory_size    () << endl;
-    cout << ProgramOptions::GetInstance()->get_nr_ops_per_xfer() << endl;
-    cout << ProgramOptions::GetInstance()->get_nr_xfers       () << endl;
-    cout << ProgramOptions::GetInstance()->get_cmd_line_arg1  () << endl;
+    cout << "Transfer Size   = " << ProgramOptions::GetInstance()->get_transfer_size  () << endl;
+    cout << "Memory Size     = " << ProgramOptions::GetInstance()->get_memory_size    () << endl;
+    cout << "Nr Ops Per Xfer = " << ProgramOptions::GetInstance()->get_nr_ops_per_xfer() << endl;
+    cout << "Nr Xfers        = " << ProgramOptions::GetInstance()->get_nr_xfers       () << endl;
+//    cout << ProgramOptions::GetInstance()->get_cmd_line_arg1  () << endl;
     cout << "=======================================================" << endl;
 
     Top top("top");
