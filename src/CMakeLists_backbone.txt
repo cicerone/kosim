@@ -50,6 +50,7 @@ add_subdirectory (examples/generic_cpu/test4)
 add_subdirectory (hierarchy_scanner)
 add_subdirectory (generic_cpu)
 add_subdirectory (memory_map)
+add_subdirectory (ipc_adapter)
 
 
 #add_subdirectory (program_options) NOTE: this dir must never be added, the needed files are symbolically linked where needed

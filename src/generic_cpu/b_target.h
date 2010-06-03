@@ -43,6 +43,7 @@ protected:
   MemoryMap* mp_memory_map;
   uint32_t m_id;
   sc_event m_io_event;
+  tlm::tlm_generic_payload* mp_last_tlm_payload;
 private:
   
 };

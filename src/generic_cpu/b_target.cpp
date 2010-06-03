@@ -27,7 +27,8 @@ BTarget::BTarget(sc_module_name name_, uint32_t id_) :
     socket("gc_target_socket"), 
     DMI_LATENCY(10, SC_NS),
     mp_memory_map(0),
-    m_id(id_)
+    m_id(id_),
+    mp_last_tlm_payload(0)
 {
     // Register callbacks for incoming interface method calls
     socket.register_b_transport(       this, &BTarget::b_transport);
@@ -105,6 +106,7 @@ BTarget::b_transport( tlm::tlm_generic_payload& payload_, sc_time& delay_ )
         }
     }
 #endif //  IGNORE_RDL
+    mp_last_tlm_payload = &payload_;
   
     // Set DMI hint to indicated that DMI is supported
     payload_.set_dmi_allowed(true);
