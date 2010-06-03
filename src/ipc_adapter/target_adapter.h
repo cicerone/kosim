@@ -12,11 +12,11 @@
 
 #define SC_INCLUDE_DYNAMIC_PROCESSES
 #include "systemc.h"
-#include "gc_target.h"
+#include "gc_ipc_target.h"
 
 #include "target_sm.h"
 
-class TargetAdapter : public GCTarget 
+class TargetAdapter : public GCIPCTarget 
 {
 public:
 

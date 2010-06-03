@@ -25,7 +25,7 @@ using namespace boost::interprocess;
 // OUT: 
 // RET: 
 TargetAdapter::TargetAdapter(sc_module_name name_, uint32_t id_, uint32_t no_irq_) : 
-    GCTarget(name_, id_, no_irq_),
+    GCIPCTarget(name_, id_, no_irq_),
     m_shared_mem(create_only, "ipc_adapter_shared_memory", read_write),
     mp_target_sm(0)
 {

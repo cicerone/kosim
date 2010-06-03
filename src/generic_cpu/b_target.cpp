@@ -106,7 +106,6 @@ BTarget::b_transport( tlm::tlm_generic_payload& payload_, sc_time& delay_ )
         }
     }
 #endif //  IGNORE_RDL
-    mp_last_tlm_payload = &payload_;
   
     // Set DMI hint to indicated that DMI is supported
     payload_.set_dmi_allowed(true);
