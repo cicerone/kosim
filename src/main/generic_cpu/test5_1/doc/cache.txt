@@ -1,0 +1,17 @@
+Cache config:
+getconf -a /sys/devices/system/cpu/cpu0
+
+LEVEL1_ICACHE_SIZE                 32768
+LEVEL1_ICACHE_ASSOC                8
+LEVEL1_ICACHE_LINESIZE             64
+LEVEL1_DCACHE_SIZE                 32768
+LEVEL1_DCACHE_ASSOC                8
+LEVEL1_DCACHE_LINESIZE             64
+LEVEL2_CACHE_SIZE                  1048576
+LEVEL2_CACHE_ASSOC                 8
+LEVEL2_CACHE_LINESIZE              64
+
+
+Cache activity:
+valgrind --tool=cachegrind ./kosim_sim_accel_test1 --cfg sim_accel.cfg
+

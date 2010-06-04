@@ -24,7 +24,7 @@ using namespace boost::interprocess;
 // IN: 
 // OUT: 
 // RET: 
-InitiatorAdapter::InitiatorAdapter(sc_module_name name_, uint32_t id_, uint32_t no_irq_) : 
+InitiatorAdapter::InitiatorAdapter(sc_module_name name_, uint32_t id_) : 
     GenericCPUBase(name_, id_),
     m_shared_mem(open_only, "ipc_adapter_shared_memory", read_write),
     mp_target_sm(0)

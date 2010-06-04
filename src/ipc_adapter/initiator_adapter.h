@@ -21,7 +21,7 @@ class InitiatorAdapter : public GenericCPUBase
 public:
 
     SC_HAS_PROCESS(InitiatorAdapter);
-    InitiatorAdapter(sc_module_name name_, uint32_t id_, uint32_t no_irq_ = 1);
+    InitiatorAdapter(sc_module_name name_, uint32_t id_);
     ~InitiatorAdapter();
 
 private: 
