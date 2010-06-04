@@ -34,5 +34,5 @@ include_directories ($ENV{PYTHON_INCLUDE}/)
 #Generate executable
 add_executable (kosim_generic_cpu_test5_2  program_options.cpp program_options_base.cpp options_builder.cpp)
 # Link the executable to the used libraries.
-target_link_libraries (kosim_generic_cpu_test5_2 generic_cpu generic_cpu_test5_2 hierarchy_scanner memory_map libboost_program_options.so libscv.so libsystemc.a)
+target_link_libraries (kosim_generic_cpu_test5_2 ipc_adapter generic_cpu generic_cpu_test5_2 hierarchy_scanner memory_map libboost_program_options.so libscv.so libsystemc.a)
 

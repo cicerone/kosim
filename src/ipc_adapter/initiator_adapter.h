@@ -23,8 +23,10 @@ public:
     SC_HAS_PROCESS(InitiatorAdapter);
     InitiatorAdapter(sc_module_name name_, uint32_t id_);
     ~InitiatorAdapter();
+    
 
-private: 
+private:
+    virtual void InitSystem(); 
     void IRQThread();
     void DataThread();
 

@@ -36,6 +36,8 @@ python main/generic_cpu/test2/build_program_options_links.py
 python main/generic_cpu/test3/build_program_options_links.py
 python main/generic_cpu/test4/build_program_options_links.py
 python main/generic_cpu/test5/build_program_options_links.py
+python main/generic_cpu/test5_1/build_program_options_links.py
+python main/generic_cpu/test5_2/build_program_options_links.py
 
 python main/sim_accel/test1/build_program_options_links.py
 

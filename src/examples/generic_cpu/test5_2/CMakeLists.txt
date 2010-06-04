@@ -8,6 +8,7 @@
 #Create a shared library called "sim_accel_test1"
 #include dirs
 include_directories (${KOSIM_SOURCE_DIR}/)
+include_directories (${KOSIM_SOURCE_DIR}/ipc_adapter)
 include_directories (${KOSIM_SOURCE_DIR}/memory_map/)
 include_directories (${KOSIM_SOURCE_DIR}/main/generic_cpu/test5_2)
 include_directories (${KOSIM_SOURCE_DIR}/generic_cpu/)

@@ -16,6 +16,7 @@
 #include "gen_from_sysrdl.h"
 #include "program_options.h"
 
+#include "target_adapter.h"
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -65,7 +66,7 @@ Top::Top(sc_module_name name_) : sc_module(name_)
      for (int i = 0; i < NUMBER_PERIPHERALS - 1; i++)  // rcm IPC
          p_router->mp_initiator_socket[i]->bind( p_test_target[i]->socket );
          
-     p_router->mp_initiator_socket[i]->bind( p_target_adapter->socket ); // rcm IPC    
+     p_router->mp_initiator_socket[1]->bind( p_target_adapter->socket ); // rcm IPC    
      // Bind interrupts
      p_gcpu->m_irq(cpu_irq);
      p_irq_ctrler->m_irq_out(cpu_irq);
