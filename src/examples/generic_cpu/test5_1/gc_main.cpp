@@ -76,7 +76,7 @@ Top::Top(sc_module_name name_) : sc_module(name_)
 //         (*p_test_target[i]->mv_irq[0])(peripheral_irq[i]); // rcm IPC
      }
      (*p_test_target[0]->mv_irq[0])(peripheral_irq[0]); // rcm IPC
-     (*p_target_adapter->mv_irq[0])(peripheral_irq[0]); // rcm IPC
+     (*p_target_adapter->mv_irq[0])(peripheral_irq[1]); // rcm IPC
      
 
 }
