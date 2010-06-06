@@ -30,7 +30,8 @@ private:
     void IRQThread();
     void DataThread();
 
-    boost::interprocess::shared_memory_object m_shared_mem;
+    boost::interprocess::shared_memory_object* mp_shared_mem;
+    boost::interprocess::mapped_region* mp_mapped_region;
     TargetSharedMemory* mp_target_sm;
 
     const sc_time IRQ_RESOLUTION;

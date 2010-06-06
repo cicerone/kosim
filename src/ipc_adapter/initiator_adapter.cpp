@@ -18,6 +18,7 @@
 using namespace sc_core;
 using namespace sc_dt;
 using namespace std;
+
 using namespace boost::interprocess;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -26,20 +27,23 @@ using namespace boost::interprocess;
 // RET: 
 InitiatorAdapter::InitiatorAdapter(sc_module_name name_, uint32_t id_) : 
     GenericCPUBase(name_, id_),
-    m_shared_mem(open_only, "ipc_adapter_shared_memory", read_write),
+    mp_shared_mem(0),
+    mp_mapped_region(0),
     mp_target_sm(0)
 {
     SC_THREAD(IRQThread);
     SC_THREAD(DataThread);
 
-    shared_memory_object::remove("ipc_adapter_shared_memory");
- 
+
     try
     {
+//        shared_memory_object::remove("ipc_adapter_shared_memory");
+        mp_shared_mem = new shared_memory_object(open_only, "ipc_adapter_shared_memory", read_write);
+
         //Map the whole shared memory in this process
-        mapped_region region ( m_shared_mem, read_write);
+        mp_mapped_region = new mapped_region( *mp_shared_mem, read_write);
         //Get the address of the mapped region
-        void* addr = region.get_address();
+        void* addr = mp_mapped_region->get_address();
         //Construct the shared structure in memory
         mp_target_sm = static_cast< TargetSharedMemory* > (addr) ;
     }
@@ -55,6 +59,7 @@ InitiatorAdapter::InitiatorAdapter(sc_module_name name_, uint32_t id_) :
 // RET: 
 InitiatorAdapter::~InitiatorAdapter()
 {
+    delete mp_shared_mem;
     shared_memory_object::remove("ipc_adapter_shared_memory");
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -100,6 +105,7 @@ void InitiatorAdapter::DataThread()
                       mp_target_sm->tlm_payload_wr.get_data_length());
 
                 mp_target_sm->is_buff_wr_full = false;
+                mp_target_sm->tlm_payload_wr.update_original_from(*mp_payload, false);
                 mp_target_sm->cond_buff_wr_empty.notify_one();
             }
         }

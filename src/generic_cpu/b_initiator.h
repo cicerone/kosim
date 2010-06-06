@@ -38,6 +38,9 @@ public:
   void    DbgWrite(const uint64_t addr_, uint32_t* const p_data_, const uint32_t size_ = 4);
   void    DbgRead (const uint64_t addr_, uint32_t* const p_data_, const uint32_t size_ = 4);
 
+protected:
+  tlm::tlm_generic_payload* mp_payload;
+
 private:
   virtual void InitSystem() = 0;
 
@@ -48,7 +51,6 @@ private:
 
   bool m_is_dmi_ptr_valid;
   tlm::tlm_dmi m_dmi_data;
-  tlm::tlm_generic_payload* mp_payload;
   tlm::tlm_generic_payload* mp_dmi_payload;
   tlm::tlm_generic_payload* mp_dbg_payload;
 };

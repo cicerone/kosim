@@ -26,22 +26,25 @@ using namespace boost::interprocess;
 // RET: 
 TargetAdapter::TargetAdapter(sc_module_name name_, uint32_t id_, uint32_t no_irq_) : 
     GCIPCTarget(name_, id_, no_irq_),
-    m_shared_mem(create_only, "ipc_adapter_shared_memory", read_write),
+    mp_shared_mem(0),
+    mp_mapped_region(0),
     mp_target_sm(0)
 {
     SC_THREAD(IRQThread);
     SC_THREAD(DataThread);
 
-    shared_memory_object::remove("ipc_adapter_shared_memory");
 
+    
     try
     {
+        shared_memory_object::remove("ipc_adapter_shared_memory");
+        mp_shared_mem = new shared_memory_object(create_only, "ipc_adapter_shared_memory", read_write);
         //Set size
-        m_shared_mem.truncate(sizeof(TargetSharedMemory));
+        mp_shared_mem->truncate(sizeof(TargetSharedMemory));
         //Map the whole shared memory in this process
-        mapped_region region ( m_shared_mem, read_write);
+        mp_mapped_region = new mapped_region( *mp_shared_mem, read_write);
         //Get the address of the mapped region
-        void* addr = region.get_address();
+        void* addr = mp_mapped_region->get_address();
         //Construct the shared structure in memory
         mp_target_sm = new (addr) TargetSharedMemory;
     }
@@ -58,6 +61,8 @@ TargetAdapter::TargetAdapter(sc_module_name name_, uint32_t id_, uint32_t no_irq
 TargetAdapter::~TargetAdapter()
 {
     delete mp_target_sm; // probably not necessary ???
+    delete mp_mapped_region;
+    delete mp_shared_mem;
     shared_memory_object::remove("ipc_adapter_shared_memory");
 }
 
@@ -91,12 +96,14 @@ void TargetAdapter::DataThread()
         if ( mp_last_tlm_payload->get_command() == tlm::TLM_WRITE_COMMAND)
         {
             scoped_lock<interprocess_mutex> lock(mp_target_sm->mutex_wr);
-            if (mp_target_sm->is_buff_wr_full) {
-                mp_target_sm->cond_buff_wr_empty.wait(lock);
-            }
             assert(TargetSharedMemory::BUFF_SIZE >= (mp_last_tlm_payload->get_data_length() >> 2));
             mp_target_sm->tlm_payload_wr.deep_copy_from(*mp_last_tlm_payload);
             mp_target_sm->is_buff_wr_full = true;
+            if (mp_target_sm->is_buff_wr_full) {
+                mp_target_sm->cond_buff_wr_empty.wait(lock);
+            }
+            mp_last_tlm_payload->update_original_from(mp_target_sm->tlm_payload_wr, false);
+
         }
         else if ( mp_last_tlm_payload->get_command() == tlm::TLM_READ_COMMAND)
         {
