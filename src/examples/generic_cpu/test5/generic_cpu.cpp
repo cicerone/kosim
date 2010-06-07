@@ -91,16 +91,7 @@ GenericCPU::STMain()
     while(1)
     {
         uint32_t peripheral_id = m_irq.read(); //blocking read 
-        if (peripheral_id < NUMBER_PERIPHERALS) 
-        {
-            if (cntr[peripheral_id] < ProgramOptions::GetInstance()->get_nr_xfers())
-            {
-                (this->*mv_program_peripheral[peripheral_id])();
-                cntr[peripheral_id]++;
-            }
-        }
-        // read the result
-
+        
         bool is_exit = false;
         for (int i = 0; i < NUMBER_PERIPHERALS; i++)
         {
@@ -117,6 +108,17 @@ GenericCPU::STMain()
             cout << "Test PASSED" << endl; 
             exit(0);
         }
+        
+        
+        if (peripheral_id < NUMBER_PERIPHERALS) 
+        {
+            if (cntr[peripheral_id] < ProgramOptions::GetInstance()->get_nr_xfers())
+            {
+                (this->*mv_program_peripheral[peripheral_id])();
+                cntr[peripheral_id]++;
+            }
+        }
+
     }
 }
 

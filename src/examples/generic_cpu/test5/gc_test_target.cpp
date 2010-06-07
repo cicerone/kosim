@@ -34,7 +34,7 @@ void GCTestTarget::STMain()
 
     for (uint32_t i = 0; i < ProgramOptions::GetInstance()->get_memory_size(); i++)
     {
-        mp_memory_map->Write(i, 7);
+        mp_memory_map->Write(i, i);
     }
     
     uint32_t k = 0;
@@ -51,7 +51,7 @@ void GCTestTarget::STMain()
             k++;
             if (k > mp_memory_map->get_memory_size()) k = 0;
             
-//            if (m_id == 1) fprintf(stderr, "data(%d)\n", data);
+            if (m_id == 1) fprintf(stderr, "data(%d)\n", data);
         }
         wait(10, SC_NS);
         mv_irq[0]->write(m_id);
