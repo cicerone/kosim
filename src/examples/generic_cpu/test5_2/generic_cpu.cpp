@@ -69,7 +69,7 @@ GenericCPU::TreatPeripheral0()
 void 
 GenericCPU::TreatPeripheral1()
 {
-//    printf("%s\n", __PRETTY_FUNCTION__);
+//    fprintf(stderr, "%s\n", __PRETTY_FUNCTION__);
     uint64_t addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress2(MEM1, 0); 
     Write(addr, &m_data[0], m_data.size() * sizeof(uint32_t));
 }
@@ -82,17 +82,38 @@ void
 GenericCPU::STMain()
 {
     InitSystem();
-    int32_t cntr = 0; 
+    int32_t cntr[NUMBER_PERIPHERALS];
+    for (int i = 0; i < NUMBER_PERIPHERALS; i++)
+    {
+        cntr[i] = 0;
+    } 
+    
     while(1)
     {
         uint32_t peripheral_id = m_irq.read(); //blocking read 
-        if (peripheral_id < NUMBER_PERIPHERALS) {
-            (this->*mv_program_peripheral[peripheral_id])();
+        if (peripheral_id < NUMBER_PERIPHERALS) 
+        {
+            if (cntr[peripheral_id] < ProgramOptions::GetInstance()->get_nr_xfers())
+            {
+                (this->*mv_program_peripheral[peripheral_id])();
+                cntr[peripheral_id]++;
+            }
         }
         // read the result
 
-        if (cntr++ > ProgramOptions::GetInstance()->get_nr_xfers()) 
-        { 
+        bool is_exit = false;
+        for (int i = 0; i < NUMBER_PERIPHERALS; i++)
+        {
+            if (cntr[i] < ProgramOptions::GetInstance()->get_nr_xfers()) { 
+                break;
+            }   
+            else {
+                if (i == NUMBER_PERIPHERALS - 1) {
+                    is_exit = true;
+                }
+            }
+        }
+        if (is_exit) {
             cout << "Test PASSED" << endl; 
             exit(0);
         }

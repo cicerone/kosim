@@ -79,12 +79,12 @@ void InitiatorAdapter::IRQThread()
     {
         uint32_t irq_vector = m_irq.read(); //blocking read
         scoped_lock<interprocess_mutex> lock(mp_target_sm->mutex_irq);
+        mp_target_sm->irq_vector = irq_vector; 
+        mp_target_sm->is_irq_consumed = false;
+
         if (!mp_target_sm->is_irq_consumed) {
             mp_target_sm->cond_irq_consumed.wait(lock);
         }
-
-        mp_target_sm->irq_vector = irq_vector; 
-        mp_target_sm->is_irq_consumed = false;
     }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////

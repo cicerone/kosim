@@ -50,8 +50,9 @@ void GCTestTarget::STMain()
             mp_memory_map->Write(k, data);
             k++;
             if (k > mp_memory_map->get_memory_size()) k = 0;
+            
+//            fprintf(stderr, "data(%d)\n", data);
         }
-        fprintf(stderr, "BINGO_1\n");
         
         wait(10, SC_NS);
         mv_irq[0]->write(m_id);

@@ -50,15 +50,9 @@ void GCTestTarget::STMain()
             mp_memory_map->Write(k, data);
             k++;
             if (k > mp_memory_map->get_memory_size()) k = 0;
+            
+//            if (m_id == 1) fprintf(stderr, "data(%d)\n", data);
         }
-//       uint32_t mem[3];
-//       mem[0] = mp_memory_map->Read(0);
-//       mem[1] = mp_memory_map->Read(1);
-//       mem[2] = mp_memory_map->Read(2);
-//      
-//       mem[2] = mem[0] + mem[1];
-//
-//       mp_memory_map->Write(2, mem[2]);
         wait(10, SC_NS);
         mv_irq[0]->write(m_id);
     }
