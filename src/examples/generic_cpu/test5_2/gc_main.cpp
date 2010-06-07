@@ -60,9 +60,8 @@ Top::Top(sc_module_name name_) : sc_module(name_)
 // rcm IPC       sprintf(txt, "p_test_target_%d", i);
 // rcm IPC       p_test_target[i] = new GCTestTarget(txt, i);  
 // rcm IPC     }
-     p_test_target = new GCTestTarget("p_test_target", 1); // rcm keep the ID (even if does not matter)
-     p_initiator_adapter = new InitiatorAdapter("p_initiator_target", 1); // the  ID does not matter
-     
+     p_test_target = new GCTestTarget("p_test_target", 1);               
+     p_initiator_adapter = new InitiatorAdapter("p_initiator_target", 1);      
      // Bind sockets
      p_initiator_adapter->socket.bind( p_test_target->socket );
 //rcm IPC     p_gcpu->socket.bind( *(p_router->mp_target_socket[0]) );

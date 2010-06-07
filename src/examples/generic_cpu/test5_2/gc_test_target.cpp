@@ -51,11 +51,15 @@ void GCTestTarget::STMain()
             k++;
             if (k > mp_memory_map->get_memory_size()) k = 0;
             
-            fprintf(stderr, "data(%d)\n", data);
+            if (m_id == 1) fprintf(stderr, "data(%d)\n", data);
         }
-        
         wait(10, SC_NS);
-        mv_irq[0]->write(m_id);
+        if (mp_memory_map->Read(0) != 0)
+        {
+            mp_memory_map->Write(0, 0);
+            mv_irq[0]->write(m_id);
+            fprintf(stderr, "GENERRATE interrupts m_id(%d)\n", m_id);
+        }
     }
 }
 

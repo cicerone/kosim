@@ -118,6 +118,14 @@ void InitiatorAdapter::DataThread()
                      mp_target_sm->tlm_payload_rd.get_data_length());
                 
                 mp_target_sm->is_buff_rd_empty = false;
+
+//                mp_target_sm->tlm_payload_rd.update_original_from(*mp_payload, false); // does the copy of data too; 
+//                                                                                          data is already copied by The above Read(...)
+                mp_target_sm->tlm_payload_rd.update_extensions_from(*mp_payload);
+                // Copy back the response status and DMI hint attributes
+                mp_target_sm->tlm_payload_rd.set_response_status(mp_payload->get_response_status());
+                mp_target_sm->tlm_payload_rd.set_dmi_allowed(mp_payload->is_dmi_allowed());
+                                
                 mp_target_sm->cond_buff_rd_full.notify_one();
             }
         }
