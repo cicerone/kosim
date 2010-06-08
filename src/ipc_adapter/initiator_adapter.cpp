@@ -78,6 +78,7 @@ void InitiatorAdapter::IRQThread()
     while(1)
     {
         uint32_t irq_vector = m_irq.read(); //blocking read
+        wait(SC_ZERO_TIME);  // make sure that DataThread finishes is Read/Write transction before an interrupt is generated
         scoped_lock<interprocess_mutex> lock(mp_target_sm->mutex_irq);
         mp_target_sm->irq_vector = irq_vector; 
         mp_target_sm->is_irq_consumed = false;
@@ -85,6 +86,8 @@ void InitiatorAdapter::IRQThread()
         if (!mp_target_sm->is_irq_consumed) {
             mp_target_sm->cond_irq_consumed.wait(lock);
         }
+        mp_target_sm->cond_irq_sync.notify_one();
+        
     }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -107,7 +110,8 @@ void InitiatorAdapter::DataThread()
                 mp_target_sm->is_buff_wr_full = false;
                 mp_target_sm->tlm_payload_wr.update_original_from(*mp_payload, false);
                 mp_target_sm->cond_buff_wr_empty.notify_one();
-            }
+                mp_target_sm->cond_buff_wr_sync.wait(lock);
+             }
         }
         {
             scoped_lock<interprocess_mutex> lock(mp_target_sm->mutex_rd);
@@ -127,6 +131,7 @@ void InitiatorAdapter::DataThread()
                 mp_target_sm->tlm_payload_rd.set_dmi_allowed(mp_payload->is_dmi_allowed());
                                 
                 mp_target_sm->cond_buff_rd_full.notify_one();
+                mp_target_sm->cond_buff_rd_sync.wait(lock);
             }
         }
     }

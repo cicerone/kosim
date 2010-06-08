@@ -21,8 +21,9 @@ using namespace std;
 GenericCPU::GenericCPU(sc_module_name name_, uint32_t id_) : 
     GenericCPUBase(name_, id_)
 {
-    m_data.resize(ProgramOptions::GetInstance()->get_transfer_size() , 5);
-    m_data[0] = 0;
+    m_data_wr.resize(ProgramOptions::GetInstance()->get_transfer_size() , 5);
+    m_data_rd.resize(ProgramOptions::GetInstance()->get_transfer_size() , 9);    
+    m_data_wr[0] = 0;
     SC_THREAD(STMain);
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -58,12 +59,13 @@ void
 GenericCPU::TreatPeripheral0()
 {
 //    fprintf(stderr, "%s\n", __PRETTY_FUNCTION__);
-    uint64_t addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress2(MEM0, 4); 
-    Write(addr, &m_data[1], (m_data.size() - 1) * sizeof(uint32_t));
-    //wait(10, SC_NS);
-    Write(addr, &m_data[1], (m_data.size() - 1) * sizeof(uint32_t));
-
-//    Read(addr, &m_data[0], m_data.size() * sizeof(uint32_t));
+    uint64_t addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress2(MEM0, 0); 
+    Write(addr, &m_data_wr[0], (m_data_wr.size()) * sizeof(uint32_t));
+    Write(addr, &m_data_wr[0], (m_data_wr.size()) * sizeof(uint32_t));  
+    Read(addr, &m_data_rd[0], m_data_rd.size() * sizeof(uint32_t));
+    Read(addr, &m_data_rd[0], m_data_rd.size() * sizeof(uint32_t));
+    Write(addr, &m_data_wr[0], (m_data_wr.size()) * sizeof(uint32_t));
+    
     addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress2(MEM0, 0);
     Write(addr, 7); // instruct to generate interrupt
 }
@@ -75,14 +77,15 @@ GenericCPU::TreatPeripheral0()
 void 
 GenericCPU::TreatPeripheral1()
 {
-//    Read(addr, &m_data[0], m_data.size() * sizeof(uint32_t));    
+//    Read(addr, &m_data_wr[0], m_data_wr.size() * sizeof(uint32_t));    
 //    fprintf(stderr, "%s\n", __PRETTY_FUNCTION__);
-    uint64_t addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress2(MEM1, 4); 
-    Write(addr, &m_data[1], (m_data.size() - 1) * sizeof(uint32_t));
-    //wait(10, SC_NS);
-    Write(addr, &m_data[1], (m_data.size() - 1) * sizeof(uint32_t));
-
-//    Read(addr, &m_data[0], m_data.size() * sizeof(uint32_t));
+    uint64_t addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress2(MEM1, 0); 
+    Write(addr, &m_data_wr[0], (m_data_wr.size()) * sizeof(uint32_t));
+    Write(addr, &m_data_wr[0], (m_data_wr.size()) * sizeof(uint32_t));
+    Read(addr, &m_data_rd[0], m_data_rd.size() * sizeof(uint32_t));
+    Read(addr, &m_data_rd[0], m_data_rd.size() * sizeof(uint32_t));
+    Write(addr, &m_data_wr[0], (m_data_wr.size()) * sizeof(uint32_t));
+        
     addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress2(MEM1, 0);
     Write(addr, 7); // instruct to generate interrupt
 

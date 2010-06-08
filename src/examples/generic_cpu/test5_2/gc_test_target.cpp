@@ -43,23 +43,28 @@ void GCTestTarget::STMain()
     {
         wait(m_io_event);
 //        fprintf(stdout, "%s_(%d)\n", __PRETTY_FUNCTION__, m_id);
-        for (uint32_t i = 0; i < ProgramOptions::GetInstance()->get_nr_ops_per_xfer(); i++)
-        {
-            uint32_t data =  mp_memory_map->Read(k);
-            data *= 9;
-            mp_memory_map->Write(k, data);
-            k++;
-            if (k > mp_memory_map->get_memory_size()) k = 0;
-            
-            if (m_id == 1) fprintf(stderr, "data(%d)\n", data);
-        }
-        wait(10, SC_NS);
+
         if (mp_memory_map->Read(0) != 0)
         {
             mp_memory_map->Write(0, 0);
             mv_irq[0]->write(m_id);
-            fprintf(stderr, "GENERRATE interrupts m_id(%d)\n", m_id);
+//            fprintf(stderr, "GENERRATE interrupts m_id(%d)\n", m_id);
         }
+        else
+        {
+            for (uint32_t i = 0; i < ProgramOptions::GetInstance()->get_nr_ops_per_xfer(); i++)
+            {
+                uint32_t data =  mp_memory_map->Read(k);
+                data *= 9;
+                mp_memory_map->Write(k, data);
+                k++;
+                if (k > mp_memory_map->get_memory_size()) k = 0;
+            
+                if (m_id == 1) fprintf(stderr, "data(%d)\n", data);
+//                fprintf(stderr, "m_id(%d) data(%d)\n", m_id, data);
+            }
+        }
+//        wait(10, SC_NS);
     }
 }
 

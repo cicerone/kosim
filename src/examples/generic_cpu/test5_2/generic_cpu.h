@@ -36,7 +36,8 @@ private:
   
   typedef  void (GenericCPU::*MethodPointer)(); 
   std::vector<MethodPointer> mv_program_peripheral;
-  std::vector<uint32_t> m_data;
+  std::vector<uint32_t> m_data_wr;
+  std::vector<uint32_t> m_data_rd;
 };
 
 

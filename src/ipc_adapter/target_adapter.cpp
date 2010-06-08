@@ -5,6 +5,7 @@
     Support: kosim@kotys.biz 
 ===============================================================================================*/
 
+
 #include <boost/interprocess/shared_memory_object.hpp>
 #include <boost/interprocess/mapped_region.hpp>
 #include <boost/interprocess/sync/scoped_lock.hpp>
@@ -81,6 +82,8 @@ void TargetAdapter::IRQThread()
             mv_irq[0]->write(mp_target_sm->irq_vector); 
             mp_target_sm->is_irq_consumed = true;
             mp_target_sm->cond_irq_consumed.notify_one();
+            mp_target_sm->cond_irq_sync.wait(lock);
+            
         }
     }
 }
@@ -103,7 +106,7 @@ void TargetAdapter::DataThread()
                 mp_target_sm->cond_buff_wr_empty.wait(lock);
             }
             mp_last_tlm_payload->update_original_from(mp_target_sm->tlm_payload_wr, false);
-
+            mp_target_sm->cond_buff_wr_sync.notify_one();
         }
         else if ( mp_last_tlm_payload->get_command() == tlm::TLM_READ_COMMAND)
         {
@@ -114,6 +117,7 @@ void TargetAdapter::DataThread()
                 mp_target_sm->cond_buff_rd_full.wait(lock);
             }
             mp_last_tlm_payload->update_original_from(mp_target_sm->tlm_payload_rd, false);
+            mp_target_sm->cond_buff_rd_sync.notify_one();
         }
     }
 }
