@@ -124,7 +124,14 @@ int sc_main(int argc, char* argv[])
         pid = fork();
         if (!pid)
         {
-            sched_yield(); // make sure taht the parrent starts first ???
+//            sched_yield(); // make sure taht the parrent starts first ???
+            timespec req, rem;
+            req.tv_sec = 0   ;
+            req.tv_nsec = 90000000; // delay for 90 milisec so that the parent process has time to initialize common resources 
+            nanosleep(&req, &rem); // ideally this should be replaced with some sync mechanism... 
+
+
+            
 
 //            char* const args[] = { "kosim_generic_cpu_test5_2", "--cfg",  "sim_accel.cfg", NULL };           
             char* const args[] = { "kosim_generic_cpu_test5_2", argv[1],  argv[2], NULL };           

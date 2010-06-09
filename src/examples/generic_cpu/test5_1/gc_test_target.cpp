@@ -58,7 +58,7 @@ void GCTestTarget::STMain()
                 data *= 9;
                 mp_memory_map->Write(k, data);
                 k++;
-                if (k > mp_memory_map->get_memory_size()) k = 0;
+                if (k >= mp_memory_map->get_memory_size()) k = 0;
             
 //                if (m_id == 1) fprintf(stderr, "data(%d)\n", data);
 //                fprintf(stderr, "m_id(%d) data(%d)\n", m_id, data);
