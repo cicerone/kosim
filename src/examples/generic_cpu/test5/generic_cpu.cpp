@@ -105,6 +105,9 @@ GenericCPU::STMain()
         cntr[i] = 0;
     } 
     
+    
+    
+    
     while(1)
     {
         uint32_t peripheral_id = m_irq.read(); //blocking read 
@@ -121,9 +124,11 @@ GenericCPU::STMain()
                 }
             }
         }
-        if (is_exit) {
+        if (is_exit) 
+        {
             cout << "Test PASSED" << endl; 
-            exit(0);
+            sc_stop();
+            
         }
         
         

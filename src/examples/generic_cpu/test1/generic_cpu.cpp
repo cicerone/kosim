@@ -134,6 +134,6 @@ GenericCPU::STMain()
         // read the result
         
 
-        if (cntr++ > 20) { cout << "Test PASSED" << endl; exit(0);}
+        if (cntr++ > 20) { cout << "Test PASSED" << endl; sc_stop();}
     }
 }

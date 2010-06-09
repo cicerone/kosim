@@ -7,6 +7,12 @@
 
 #define SC_INCLUDE_DYNAMIC_PROCESSES
 
+#include <sys/types.h>
+#include <unistd.h>
+#include <signal.h>
+#include <sched.h>
+
+
 #include "generic_cpu.h"
 #include "gc_test_target.h"
 #include "b_router.h"
@@ -110,8 +116,51 @@ int sc_main(int argc, char* argv[])
 //    cout << ProgramOptions::GetInstance()->get_cmd_line_arg1  () << endl;
     cout << "=======================================================" << endl;
 
+#define LAUNCH_CHILD_PROCESS
+
+#ifdef LAUNCH_CHILD_PROCESS
+    pid_t pid;
+    {
+        pid = fork();
+        if (!pid)
+        {
+            sched_yield(); // make sure taht the parrent starts first ???
+
+//            char* const args[] = { "kosim_generic_cpu_test5_2", "--cfg",  "sim_accel.cfg", NULL };           
+            char* const args[] = { "kosim_generic_cpu_test5_2", argv[1],  argv[2], NULL };           
+            int ret = execv("../test5_2/kosim_generic_cpu_test5_2", args);
+            if (ret == -1)
+            {
+                perror("execv");
+                exit(EXIT_FAILURE);
+            }
+        }
+        else if (pid > 0)
+        {
+            fprintf(stderr, "The parent of the pid(%d)\n", pid);
+        }
+        else if (pid == -1)
+        {
+            perror ("fork");
+        }
+    }
+#endif
+
     Top top("top");
     sc_start();
+
+#ifdef LAUNCH_CHILD_PROCESS
+    // NOTE: with the current implementation this code is not reached. The child must be destroyed manually. 
+    {
+        if (pid > 0)
+        {
+             fprintf(stderr, "Terminate the child process - pid(%d).\n", pid);
+             int ret = kill(pid, SIGKILL);
+             if (ret) perror("kill");
+        }
+    }
+#endif
+
     return 0;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -129,5 +178,6 @@ void run_sim()
 
     Top top("top");
     sc_start();
+    
 }
 

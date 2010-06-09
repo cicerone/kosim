@@ -65,6 +65,7 @@ TargetAdapter::~TargetAdapter()
     delete mp_mapped_region;
     delete mp_shared_mem;
     shared_memory_object::remove("ipc_adapter_shared_memory");
+    fprintf(stderr, "ZZZZZZZZZZZZZZZZZZZZZ\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////

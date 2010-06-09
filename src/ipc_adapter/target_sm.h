@@ -31,7 +31,7 @@ public:
     TargetSharedMemory();
     ~TargetSharedMemory();
 
-    static const uint32_t BUFF_SIZE = 1024;
+    static const uint32_t BUFF_SIZE = 102400;
 
     uint32_t irq_vector;      // the location in shared memory where the interrupt vector is stored
     bool     is_irq_consumed; // true if the Target Adapter did not consume the irq_vector that was sent by the Initiator Adapter

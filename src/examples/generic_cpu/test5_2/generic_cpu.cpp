@@ -123,7 +123,7 @@ GenericCPU::STMain()
         }
         if (is_exit) {
             cout << "Test PASSED" << endl; 
-            exit(0);
+            sc_stop();
         }
         
         
