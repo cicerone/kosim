@@ -22,37 +22,50 @@ using namespace std;
 GCTestTarget::GCTestTarget(sc_module_name name_, uint32_t id_, uint32_t no_irq_) : 
     GCTarget(name_, id_, no_irq_)
 {
-    SC_THREAD(STMain);
+    SC_THREAD(TReadWrite);
+    SC_THREAD(TProcess);
+    
+    
+    for (uint32_t i = 0; i < ProgramOptions::GetInstance()->get_memory_size(); i++)
+    {
+        mp_memory_map->Write(i, i);
+    }
+    
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // IN: 
 // OUT: 
 // RET: 
-void GCTestTarget::STMain()
+void GCTestTarget::TReadWrite()
 {
 
-    for (uint32_t i = 0; i < ProgramOptions::GetInstance()->get_memory_size(); i++)
-    {
-        mp_memory_map->Write(i, i);
-    }
-    
-    uint32_t k = 0;
     
     while(1)
     {
         wait(m_io_event);
-//        fprintf(stdout, "%s_(%d)\n", __PRETTY_FUNCTION__, m_id);
 
         if (mp_memory_map->Read(0) != 0)
         {
             mp_memory_map->Write(0, 0);
-            mv_irq[0]->write(m_id);
-//            fprintf(stderr, "GENERRATE interrupts m_id(%d)\n", m_id);
+            m_ev_process.notify(10, SC_NS);
+            //m_ev_process.notify(SC_ZERO_TIME);
+//       fprintf(stdout, "%s_(%d)\n", __PRETTY_FUNCTION__, m_id);
+            
         }
-        else
-        {
-            for (uint32_t i = 0; i < ProgramOptions::GetInstance()->get_nr_ops_per_xfer(); i++)
+    }
+}
+
+void GCTestTarget::TProcess()
+{
+    while(1)
+    {
+        wait(m_ev_process);
+        
+        uint32_t k = 0;
+
+    
+           for (uint32_t i = 0; i < ProgramOptions::GetInstance()->get_nr_ops_per_xfer(); i++)
             {
                 uint32_t data =  mp_memory_map->Read(k);
                 data *= 10;
@@ -63,8 +76,11 @@ void GCTestTarget::STMain()
                 if (k >= mp_memory_map->get_memory_size()) k = 0;
             
             }
-        }
-//        wait(10, SC_NS);
+            
+        mv_irq[0]->write(m_id);
+//            fprintf(stderr, "GENERRATE interrupts m_id(%d)\n", m_id);
     }
+    
 }
+
 

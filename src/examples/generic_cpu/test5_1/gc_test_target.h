@@ -31,7 +31,10 @@ public:
   ~GCTestTarget() {};
 
 private:
-  void STMain();
+  void TReadWrite();
+  void TProcess();
+  sc_event m_ev_process;
+
 };
 
 
