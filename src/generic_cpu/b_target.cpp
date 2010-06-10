@@ -68,7 +68,7 @@ BTarget::b_transport( tlm::tlm_generic_payload& payload_, sc_time& delay_ )
 //     return;
 //   }
     
-//#define IGNORE_RDL    
+#define IGNORE_RDL    
 #ifdef IGNORE_RDL    
     if ( command == tlm::TLM_READ_COMMAND ) {
         memcpy(data_ptr, mp_memory_map->GetPhysicalAddress(mem_address), data_length);
@@ -114,6 +114,7 @@ BTarget::b_transport( tlm::tlm_generic_payload& payload_, sc_time& delay_ )
     payload_.set_response_status( tlm::TLM_OK_RESPONSE );
     
     m_io_event.notify(SC_ZERO_TIME);
+    wait(SC_ZERO_TIME); // make sure that another read/write transaction can happen 
     wait(delay_);
     delay_ = SC_ZERO_TIME;
 

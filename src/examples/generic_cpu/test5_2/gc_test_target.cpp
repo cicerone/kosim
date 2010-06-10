@@ -55,13 +55,13 @@ void GCTestTarget::STMain()
             for (uint32_t i = 0; i < ProgramOptions::GetInstance()->get_nr_ops_per_xfer(); i++)
             {
                 uint32_t data =  mp_memory_map->Read(k);
-                data *= 9;
+                data *= 10;
                 mp_memory_map->Write(k, data);
+                if (m_id == 1) fprintf(stderr, "k(%d) i(%d) data(%d)\n", k, i, data);
+                
                 k++;
                 if (k >= mp_memory_map->get_memory_size()) k = 0;
             
-//                if (m_id == 1) fprintf(stderr, "data(%d)\n", data);
-//                fprintf(stderr, "m_id(%d) data(%d)\n", m_id, data);
             }
         }
 //        wait(10, SC_NS);
