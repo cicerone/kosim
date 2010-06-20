@@ -70,7 +70,7 @@ void GCTestTarget::TProcess()
                 uint32_t data =  mp_memory_map->Read(k);
                 data *= 10;
                 mp_memory_map->Write(k, data);
-                if (m_id == 1) fprintf(stderr, "k(%d) i(%d) data(%d)\n", k, i, data);
+//                if (m_id == 1) fprintf(stderr, "k(%d) i(%d) data(%d)\n", k, i, data);
                 
                 k++;
                 if (k >= mp_memory_map->get_memory_size()) k = 0;
