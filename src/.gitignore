@@ -6,4 +6,12 @@ cmake_install.cmake
 
 # ignore the generated libraries
 *.so
+# 
+#
+
+#ignore
+main/generic_cpu/test*/options_builder.cpp
+main/generic_cpu/test*/options_builder.h
+main/generic_cpu/test*/program_options_base.cpp
+main/generic_cpu/test*/program_options_base.h
 
