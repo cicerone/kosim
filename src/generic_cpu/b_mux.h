@@ -73,13 +73,13 @@ BMux<N_INITIATORS>::BMux(sc_module_name name_) :
     }
     
     {
-        sprintf(name, "initiator_socket_%d", i);
+        sprintf(name, "initiator_socket");
         mp_initiator_socket = new tlm_utils::simple_initiator_socket_tagged<BMux>(name);
 
         // Register callbacks for incoming interface method calls, including tags
-        mp_initiator_socket->register_invalidate_direct_mem_ptr(this, &BMux::invalidate_direct_mem_ptr, i);
+        mp_initiator_socket->register_invalidate_direct_mem_ptr(this, &BMux::invalidate_direct_mem_ptr, 0);
         
-        sprintf(name, "initiator_mutex_%d", i);
+        sprintf(name, "initiator_mutex");
         mp_mutex = new sc_mutex(name);
     }
 }
@@ -109,7 +109,7 @@ void BMux<N_INITIATORS>::b_transport( tlm::tlm_generic_payload& payload_, sc_tim
 {
     // Forward transaction to appropriate target
     mp_mutex->lock();
-    ( *mp_initiator_socket[target_nr] )->b_transport( payload_, delay_ );
+    ( *mp_initiator_socket)->b_transport( payload_, delay_ );
     mp_mutex->unlock();
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -122,7 +122,7 @@ bool BMux<N_INITIATORS>::get_direct_mem_ptr(tlm::tlm_generic_payload& payload_, 
 {
     // Forward transaction to appropriate target
     mp_mutex->lock();
-    bool status = ( *mp_initiator_socket[target_nr] )->get_direct_mem_ptr( payload_, dmi_data_ );
+    bool status = ( *mp_initiator_socket)->get_direct_mem_ptr( payload_, dmi_data_ );
     mp_mutex->unlock();
 
     return status;
@@ -135,9 +135,10 @@ bool BMux<N_INITIATORS>::get_direct_mem_ptr(tlm::tlm_generic_payload& payload_, 
 template<uint32_t N_INITIATORS>
 uint32_t BMux<N_INITIATORS>::transport_dbg(tlm::tlm_generic_payload& payload_ )
 {
+    uint32_t ret  = 0;
     // Forward debug transaction to appropriate target
     mp_mutex->lock();
-    ret = ( *mp_initiator_socket[target_nr] )->transport_dbg( payload_ );
+    ret = ( *mp_initiator_socket)->transport_dbg( payload_ );
     mp_mutex->unlock();
     return ret;
 }
