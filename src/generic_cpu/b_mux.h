@@ -109,6 +109,10 @@ void BMux<N_INITIATORS>::b_transport( tlm::tlm_generic_payload& payload_, sc_tim
 {
     // Forward transaction to appropriate target
     mp_mutex->lock();
+    // NOTE: data serialization happens here
+    const sc_time time_per_byte(10, SC_NS); 
+    sc_time delay_serial = time_per_byte * payload_.get_data_length();
+    wait(delay_serial);
     ( *mp_initiator_socket)->b_transport( payload_, delay_ );
     mp_mutex->unlock();
 }
