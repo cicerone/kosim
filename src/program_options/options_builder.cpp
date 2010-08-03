@@ -37,6 +37,6 @@ void OptionsBuilder::BuildArgv()
 void  OptionsBuilder::InitProgramOptions()
 {
     ProgramOptions* p_program_options = ProgramOptions::GetInstance(m_argv.size(), mp_argv);
-//    p_program_options->Help();
+    p_program_options->Help();
 }
 
