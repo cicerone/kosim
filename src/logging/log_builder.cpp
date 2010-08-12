@@ -103,10 +103,15 @@ void    LogBuilder::SetLogFile(const std::string& name_)
         assert(p_stream->is_open());
         p_backend->add_stream(p_stream);
         
-        mp_sink->locked_backend()->set_formatter(fmt::stream
-           << "" << fmt::attr< severity_level >("Severity", std::nothrow) << ""
-           << "[" << fmt::named_scope("Scope", keywords::iteration = fmt::reverse) << "] "
-           << fmt::message()); // here goes the log record text
+//       mp_sink->locked_backend()->set_formatter(fmt::stream
+//          << "" << fmt::attr< severity_level >("Severity", std::nothrow) << ""
+//          << "[" << fmt::named_scope("Scope", keywords::iteration = fmt::reverse) << "] "
+//          << fmt::message()); // here goes the log record text
+//
+         mp_sink->locked_backend()->set_formatter(fmt::stream
+            << "" << fmt::attr< severity_level >("Severity", std::nothrow) << ""
+            << "" << fmt::named_scope("Scope", keywords::iteration = fmt::reverse) << ""
+            << fmt::message()); // here goes the log record text
 
         boost::shared_ptr< logging::attribute > pNamedScope(new attrs::named_scope());
         logging::core::get()->add_thread_attribute("Scope", pNamedScope);
