@@ -11,7 +11,7 @@
 #include <stdint.h>
 #include <vector>
 
-#define SC_INCLUDE_DYNAMIC_PROCESSES
+//#define SC_INCLUDE_DYNAMIC_PROCESSES defined in CMakeList.txt defined in CMakeList.txt
 #include "systemc.h"
 #include "b_ipc_target.h"
 

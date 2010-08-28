@@ -5,7 +5,7 @@
     Support: kosim@kotys.biz 
 ===============================================================================================*/
 
-#define SC_INCLUDE_DYNAMIC_PROCESSES
+//#define SC_INCLUDE_DYNAMIC_PROCESSES defined in CMakeList.txt defined in CMakeList.txt
 
 #include "generic_cpu.h"
 #include "gc_test_target.h"

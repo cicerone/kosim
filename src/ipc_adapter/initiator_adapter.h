@@ -10,7 +10,7 @@
 #define KOSIM_IPCA_INITIATOR_ADAPTER_H
 
 
-#define SC_INCLUDE_DYNAMIC_PROCESSES
+//#define SC_INCLUDE_DYNAMIC_PROCESSES defined in CMakeList.txt defined in CMakeList.txt
 #include "systemc.h"
 #include "generic_cpu_base.h"
 

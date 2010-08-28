@@ -5,7 +5,7 @@
     Support: kosim@kotys.biz 
 ===============================================================================================*/
 
-#define SC_INCLUDE_DYNAMIC_PROCESSES
+//#define SC_INCLUDE_DYNAMIC_PROCESSES defined in CMakeList.txt defined in CMakeList.txt
 
 #include <sys/types.h>
 #include <unistd.h>

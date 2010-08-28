@@ -10,7 +10,7 @@
 
 #include <stdint.h>
 
-#define SC_INCLUDE_DYNAMIC_PROCESSES
+//#define SC_INCLUDE_DYNAMIC_PROCESSES defined in CMakeList.txt defined in CMakeList.txt
 #include "systemc.h"
 #include "tlm.h"
 #include "tlm_utils/simple_initiator_socket.h"

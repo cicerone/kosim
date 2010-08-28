@@ -10,7 +10,7 @@
 #define KOSIM_IPCA_TARGET_ADAPTER_H
 
 
-#define SC_INCLUDE_DYNAMIC_PROCESSES
+//#define SC_INCLUDE_DYNAMIC_PROCESSES defined in CMakeList.txt defined in CMakeList.txt
 #include "systemc.h"
 #include "gc_ipc_target.h"
 

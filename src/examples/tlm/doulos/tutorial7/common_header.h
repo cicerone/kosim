@@ -23,7 +23,7 @@
 #ifndef __COMMON_HEADER_H__
 #define __COMMON_HEADER_H__
 
-#define SC_INCLUDE_DYNAMIC_PROCESSES
+//#define SC_INCLUDE_DYNAMIC_PROCESSES defined in CMakeList.txt defined in CMakeList.txt
 
 #include "systemc"
 using namespace sc_core;
