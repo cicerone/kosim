@@ -47,8 +47,8 @@ void
 BTarget::b_transport( tlm::tlm_generic_payload& payload_, sc_time& delay_ )
 {
     tlm::tlm_command command   = payload_.get_command();
-//    uint64_t      mem_address  = payload_.get_address() / sizeof(mem[0]);
-    uint64_t      mem_address  = payload_.get_address();
+//    sc_dt::uint64      mem_address  = payload_.get_address() / sizeof(mem[0]);
+    sc_dt::uint64      mem_address  = payload_.get_address();
     uint8_t*      data_ptr     = payload_.get_data_ptr();
     uint32_t      data_length  = payload_.get_data_length();
     uint8_t*      byte_enable  = payload_.get_byte_enable_ptr();
@@ -77,7 +77,7 @@ BTarget::b_transport( tlm::tlm_generic_payload& payload_, sc_time& delay_ )
          memcpy(mp_memory_map->GetPhysicalAddress(mem_address), data_ptr, data_length);
     }
 #else    
-    uint64_t hw_resource_id = mem_address >> 2;
+    sc_dt::uint64 hw_resource_id = mem_address >> 2;
     //NOTE: Here is where we "force" registers to be first and no gap between memory and registers
     if (hw_resource_id < mp_memory_map->get_number_regs()) // the hw_resource_id points to a register
     {
@@ -150,13 +150,13 @@ unsigned int
 BTarget::transport_dbg(tlm::tlm_generic_payload& payload_)
 {
     tlm::tlm_command command = payload_.get_command();
-    uint64_t     mem_address = payload_.get_address();
+    sc_dt::uint64     mem_address = payload_.get_address();
     uint8_t*     data_ptr    = payload_.get_data_ptr();
     uint32_t     data_length = payload_.get_data_length();
 
     // Calculate the number of bytes to be actually copied
-    uint64_t  length_to_end = mp_memory_map->get_memory_space() - mem_address;
-    uint64_t  num_bytes = data_length < length_to_end ? data_length : length_to_end ;
+    sc_dt::uint64  length_to_end = mp_memory_map->get_memory_space() - mem_address;
+    sc_dt::uint64  num_bytes = data_length < length_to_end ? data_length : length_to_end ;
     if ( command == tlm::TLM_READ_COMMAND ) {
         memcpy(data_ptr, mp_memory_map->GetPhysicalAddress(mem_address), data_length);
     }

@@ -28,15 +28,15 @@ public:
   BInitiator(sc_module_name name_);
   virtual ~BInitiator();
 
-  void     Write   (const uint64_t addr_, uint32_t data_);
-  uint32_t Read    (const uint64_t addr_);
-  void     DbgWrite(const uint64_t addr_, uint32_t data_);
-  uint32_t DbgRead (const uint64_t addr_);
+  void     Write   (const sc_dt::uint64 addr_, uint32_t data_);
+  uint32_t Read    (const sc_dt::uint64 addr_);
+  void     DbgWrite(const sc_dt::uint64 addr_, uint32_t data_);
+  uint32_t DbgRead (const sc_dt::uint64 addr_);
   
-  void    Write   (const uint64_t addr_, uint32_t* const p_data_, const uint32_t size_ = 4);
-  void    Read    (const uint64_t addr_, uint32_t* const p_data_, const uint32_t size_ = 4);
-  void    DbgWrite(const uint64_t addr_, uint32_t* const p_data_, const uint32_t size_ = 4);
-  void    DbgRead (const uint64_t addr_, uint32_t* const p_data_, const uint32_t size_ = 4);
+  void    Write   (const sc_dt::uint64 addr_, uint32_t* const p_data_, const uint32_t size_ = 4);
+  void    Read    (const sc_dt::uint64 addr_, uint32_t* const p_data_, const uint32_t size_ = 4);
+  void    DbgWrite(const sc_dt::uint64 addr_, uint32_t* const p_data_, const uint32_t size_ = 4);
+  void    DbgRead (const sc_dt::uint64 addr_, uint32_t* const p_data_, const uint32_t size_ = 4);
 
 protected:
   tlm::tlm_generic_payload* mp_payload;
@@ -45,7 +45,7 @@ private:
   virtual void InitSystem() = 0;
 
   // TLM-2 backward DMI method
-  void invalidate_direct_mem_ptr(uint64_t start_range_, uint64_t end_range_);
+  void invalidate_direct_mem_ptr(sc_dt::uint64 start_range_, sc_dt::uint64 end_range_);
   void CheckAddressAlignment(const uint32_t addr_);
   void CheckDataSize(const uint32_t size_);
 

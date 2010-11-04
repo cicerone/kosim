@@ -79,7 +79,7 @@ GenericCPU::TreatPeripheral2()
 {
 printf("%s\n", __PRETTY_FUNCTION__);
     
-   uint64_t addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress(MEM2, M2_REG0); 
+   sc_dt::uint64 addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress(MEM2, M2_REG0); 
    uint32_t reg_val = Read(addr);
    fprintf(stderr, "==== Read reg_val(0x%8x)\n", reg_val);
    reg_val = DbgRead(addr);

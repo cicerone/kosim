@@ -121,7 +121,7 @@ RegisterTraits::~RegisterTraits()
 // IN: 
 // OUT: 
 // RET: 
-MemoryMap::MemoryMap(const uint32_t id_, const string& name_, const uint64_t offset_) :
+MemoryMap::MemoryMap(const uint32_t id_, const string& name_, const sc_dt::uint64 offset_) :
   m_id              (id_    ),
   m_name            (name_  ),
   m_offset          (offset_),
@@ -148,11 +148,11 @@ MemoryMap::~MemoryMap()
 //      mem_size_ - the size of the memory bank
 // OUT: 
 // RET: 
-void MemoryMap::SetSpaceSize(const uint64_t num_regs_, const uint64_t mem_size_)
+void MemoryMap::SetSpaceSize(const sc_dt::uint64 num_regs_, const sc_dt::uint64 mem_size_)
 {
     m_number_registers = num_regs_;
     m_memory_size      = mem_size_;
-    uint64_t size = num_regs_ + mem_size_;
+    sc_dt::uint64 size = num_regs_ + mem_size_;
     m_hw_resource.resize(size, 0);
     m_register.resize(m_number_registers);
 }
@@ -161,7 +161,7 @@ void MemoryMap::SetSpaceSize(const uint64_t num_regs_, const uint64_t mem_size_)
 // IN:  num_fields_ - the total number of fields of all registers 
 // OUT: 
 // RET: 
-void MemoryMap::SetRegisterFieldsSize(const uint64_t num_fields_)
+void MemoryMap::SetRegisterFieldsSize(const sc_dt::uint64 num_fields_)
 {
     m_register_field.resize(num_fields_);
 }
@@ -171,7 +171,7 @@ void MemoryMap::SetRegisterFieldsSize(const uint64_t num_fields_)
 //       data_ - the value to be written
 // OUT: 
 // RET:  
-void MemoryMap::Write(const uint64_t resource_id_, const uint32_t data_) // RESOURCES_ON_32_BITS
+void MemoryMap::Write(const sc_dt::uint64 resource_id_, const uint32_t data_) // RESOURCES_ON_32_BITS
 {
     if (resource_id_ > m_hw_resource.size()) {
         fprintf(stderr, "ERROR! Block %s has resource ID (0x%x) out of range (0x%x)\n", m_name.c_str(), resource_id_, m_hw_resource.size()); 
@@ -184,7 +184,7 @@ void MemoryMap::Write(const uint64_t resource_id_, const uint32_t data_) // RESO
 // IN:  resource_id_ - the ID of reg/memory
 // OUT: p_data_      - reference to data that is read 
 // RET:  
-uint32_t MemoryMap::Read (const uint64_t resource_id_)  // RESOURCES_ON_32_BITS
+uint32_t MemoryMap::Read (const sc_dt::uint64 resource_id_)  // RESOURCES_ON_32_BITS
 {
     if (resource_id_ > m_hw_resource.size()) {
         fprintf(stderr, "ERROR! Block %s has resource ID (0x%x) out of range (0x%x)\n", m_name.c_str(), resource_id_, m_hw_resource.size()); 
@@ -198,7 +198,7 @@ uint32_t MemoryMap::Read (const uint64_t resource_id_)  // RESOURCES_ON_32_BITS
 //       data_ - the value to be written
 // OUT: 
 // RET:  
-void MemoryMap::WriteHwRDL(const uint64_t reg_id_, const uint32_t data_) // RESOURCES_ON_32_BITS
+void MemoryMap::WriteHwRDL(const sc_dt::uint64 reg_id_, const uint32_t data_) // RESOURCES_ON_32_BITS
 {
     if (reg_id_ > m_register.size()) {
         fprintf(stderr, "ERROR! Block %s has resource ID (0x%x) out of range (0x%x)\n", m_name.c_str(), reg_id_, m_register.size()); 
@@ -219,7 +219,7 @@ void MemoryMap::WriteHwRDL(const uint64_t reg_id_, const uint32_t data_) // RESO
 // IN:  resource_id_ - the ID of reg/memory
 // OUT: p_data_      - reference to data that is read 
 // RET:  
-uint32_t MemoryMap::ReadHwRDL (const uint64_t reg_id_)  // RESOURCES_ON_32_BITS
+uint32_t MemoryMap::ReadHwRDL (const sc_dt::uint64 reg_id_)  // RESOURCES_ON_32_BITS
 {
     if (reg_id_ > m_hw_resource.size()) {
         fprintf(stderr, "ERROR! Block %s has resource ID (0x%x) out of range (0x%x)\n", m_name.c_str(), reg_id_, m_hw_resource.size()); 
@@ -243,7 +243,7 @@ uint32_t MemoryMap::ReadHwRDL (const uint64_t reg_id_)  // RESOURCES_ON_32_BITS
 //       data_  - the value to be written
 // OUT: 
 // RET:  
-void MemoryMap::Write(const uint64_t reg_id_, const uint32_t field_, const uint32_t data_) // RESOURCES_ON_32_BITS
+void MemoryMap::Write(const sc_dt::uint64 reg_id_, const uint32_t field_, const uint32_t data_) // RESOURCES_ON_32_BITS
 {
     m_field_accessor = m_hw_resource[reg_id_];
     m_field_accessor.range(m_register_field[field_].msb, m_register_field[field_].lsb) = data_;
@@ -254,7 +254,7 @@ void MemoryMap::Write(const uint64_t reg_id_, const uint32_t field_, const uint3
 //      field_  - the field the data is read from
 // OUT:
 // RET: the field value  
-uint32_t MemoryMap::Read (const uint64_t reg_id_, const uint32_t field_) // RESOURCES_ON_32_BITS
+uint32_t MemoryMap::Read (const sc_dt::uint64 reg_id_, const uint32_t field_) // RESOURCES_ON_32_BITS
 {
     m_field_accessor = m_hw_resource[reg_id_];
     return m_field_accessor.range(m_register_field[field_].msb, m_register_field[field_].lsb);
@@ -265,7 +265,7 @@ uint32_t MemoryMap::Read (const uint64_t reg_id_, const uint32_t field_) // RESO
 //       data_  - the value to be written
 // OUT: 
 // RET:  
-void MemoryMap::WriteHwRDL(const uint64_t reg_id_, const uint32_t field_id_, const uint32_t data_) // RESOURCES_ON_32_BITS
+void MemoryMap::WriteHwRDL(const sc_dt::uint64 reg_id_, const uint32_t field_id_, const uint32_t data_) // RESOURCES_ON_32_BITS
 {
     if (m_register_field[field_id_].is_hw_write == false) return;
     FieldTraits field = m_register_field[field_id_];
@@ -300,7 +300,7 @@ void MemoryMap::WriteHwRDL(const uint64_t reg_id_, const uint32_t field_id_, con
 //      field_  - the field the data is read from
 // OUT:  
 // RET: the value of the field  
-uint32_t MemoryMap::ReadHwRDL (const uint64_t reg_id_, const uint32_t field_) // RESOURCES_ON_32_BITS
+uint32_t MemoryMap::ReadHwRDL (const sc_dt::uint64 reg_id_, const uint32_t field_) // RESOURCES_ON_32_BITS
 {
     if (m_register_field[field_].is_hw_read == false) return 0;
     m_field_accessor_field = m_hw_resource[reg_id_];
@@ -311,9 +311,9 @@ uint32_t MemoryMap::ReadHwRDL (const uint64_t reg_id_, const uint32_t field_) //
 // IN:  addr_ - the address of reg/memory; it is 4 bytes aligned
 // OUT:
 // RET: reference to the physical address where the vector data is stored 
-uint32_t* MemoryMap::GetPhysicalAddress(const uint64_t addr_)   // RESOURCES_ON_32_BITS
+uint32_t* MemoryMap::GetPhysicalAddress(const sc_dt::uint64 addr_)   // RESOURCES_ON_32_BITS
 {
-    uint64_t local_addr = addr_ >> 2;
+    sc_dt::uint64 local_addr = addr_ >> 2;
     if (local_addr > m_hw_resource.size()) {
         fprintf(stderr, "ERROR! Block %s has address (0x%x) out of range (0x%x)\n", m_name.c_str(), addr_, m_hw_resource.size()); 
         exit(1);
@@ -335,7 +335,7 @@ FieldTraits* MemoryMap::GetFieldTraits(const uint32_t field_)
 // IN:  field_ - the field ID
 // OUT:
 // RET: reference to the field's traits 
-void MemoryMap::AddField(const uint64_t reg_id_, const uint32_t field_)
+void MemoryMap::AddField(const sc_dt::uint64 reg_id_, const uint32_t field_)
 {
     m_register[reg_id_].m_fields.push_back(field_);  
     Write(reg_id_, field_, m_register_field[field_].reset_value); // reset the field
@@ -357,7 +357,7 @@ RegisterTraits* MemoryMap::GetRegisterTraits(const uint32_t reg_id_)
 // OUT: 
 // RET: the new value of the entire register (32 bit) 
 void 
-MemoryMap::WriteSwRDL(const uint64_t reg_id_, const uint32_t field_id_, const uint32_t field_value_) // RESOURCES_ON_32_BITS
+MemoryMap::WriteSwRDL(const sc_dt::uint64 reg_id_, const uint32_t field_id_, const uint32_t field_value_) // RESOURCES_ON_32_BITS
 {
     if (m_register_field[field_id_].is_sw_write == false) return;     
     m_field_accessor_field = m_hw_resource[reg_id_];
@@ -380,7 +380,7 @@ MemoryMap::WriteSwRDL(const uint64_t reg_id_, const uint32_t field_id_, const ui
 // OUT:
 // RET: the value of the field  
 uint32_t 
-MemoryMap::ReadSwRDL(const uint64_t reg_id_, const uint32_t field_id_) // RESOURCES_ON_32_BITS
+MemoryMap::ReadSwRDL(const sc_dt::uint64 reg_id_, const uint32_t field_id_) // RESOURCES_ON_32_BITS
 {
     FieldTraits field = m_register_field[field_id_];
     if ( field.is_sw_read == false) return 0; // returns 0 for all fields that are not readable 

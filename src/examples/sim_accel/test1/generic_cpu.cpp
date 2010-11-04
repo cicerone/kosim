@@ -61,7 +61,7 @@ void
 GenericCPU::TreatPeripheral0()
 {
 //    printf("%s\n", __PRETTY_FUNCTION__);
-    uint64_t addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress2(MEM0, 0); 
+    sc_dt::uint64 addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress2(MEM0, 0); 
     Write(addr, &m_data[0], m_data.size() * sizeof(uint32_t));
 //    printf("zzz size(%d)\n", m_data.size());
 }
@@ -74,7 +74,7 @@ void
 GenericCPU::TreatPeripheral1()
 {
 //    printf("%s\n", __PRETTY_FUNCTION__);
-    uint64_t addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress2(MEM1, 0); 
+    sc_dt::uint64 addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress2(MEM1, 0); 
     Write(addr, &m_data[0], m_data.size() * sizeof(uint32_t));
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -86,7 +86,7 @@ void
 GenericCPU::TreatPeripheral2()
 {
 //    printf("%s\n", __PRETTY_FUNCTION__);
-    uint64_t addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress2(MEM2, 0); 
+    sc_dt::uint64 addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress2(MEM2, 0); 
     Write(addr, &m_data[0], m_data.size() * sizeof(uint32_t));
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,7 +98,7 @@ void
 GenericCPU::TreatPeripheral3()
 {
 //    printf("%s\n", __PRETTY_FUNCTION__);
-    uint64_t addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress2(MEM3, 0); 
+    sc_dt::uint64 addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress2(MEM3, 0); 
     Write(addr, &m_data[0], m_data.size() * sizeof(uint32_t));
 
 }

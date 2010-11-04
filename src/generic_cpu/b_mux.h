@@ -44,7 +44,7 @@ private:
   // BACKWARD path methods 
 
   // Tagged backward DMI method
-  void invalidate_direct_mem_ptr(int id, uint64_t start_range_, uint64_t end_range_);
+  void invalidate_direct_mem_ptr(int id, sc_dt::uint64 start_range_, sc_dt::uint64 end_range_);
   
   sc_mutex* mp_mutex;
 
@@ -148,14 +148,14 @@ uint32_t BMux<N_INITIATORS>::transport_dbg(tlm::tlm_generic_payload& payload_ )
 // OUT: 
 // RET: 
 template<uint32_t N_INITIATORS>
-void BMux<N_INITIATORS>::invalidate_direct_mem_ptr(int32_t id, uint64_t start_range_, uint64_t end_range_)
+void BMux<N_INITIATORS>::invalidate_direct_mem_ptr(int32_t id, sc_dt::uint64 start_range_, sc_dt::uint64 end_range_)
 {
 fprintf(stderr, "FIXME! Not Implemented!\n");
 exit(1);
 /*
     // Reconstruct address range in system memory map
-    uint64_t bw_start_range_ = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress( id, start_range_ );
-    uint64_t bw_end_range_   = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress( id, end_range_ );
+    sc_dt::uint64 bw_start_range_ = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress( id, start_range_ );
+    sc_dt::uint64 bw_end_range_   = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress( id, end_range_ );
     (*mp_target_socket)->invalidate_direct_mem_ptr(bw_start_range_, bw_end_range_);
 */    
 }

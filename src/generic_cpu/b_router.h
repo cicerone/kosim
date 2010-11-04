@@ -44,7 +44,7 @@ private:
   // BACKWARD path methods 
 
   // Tagged backward DMI method
-  void invalidate_direct_mem_ptr(int id, uint64_t start_range_, uint64_t end_range_);
+  void invalidate_direct_mem_ptr(int id, sc_dt::uint64 start_range_, sc_dt::uint64 end_range_);
   
   sc_mutex* mp_mutex[N_TARGETS];
 
@@ -110,8 +110,8 @@ BRouter<N_INITIATORS, N_TARGETS>::~BRouter()
 template<uint32_t N_INITIATORS, uint32_t N_TARGETS>
 void BRouter<N_INITIATORS, N_TARGETS>::b_transport( tlm::tlm_generic_payload& payload_, sc_time& delay_ )
 {
-    uint64_t address = payload_.get_address();
-    uint64_t masked_address;
+    sc_dt::uint64 address = payload_.get_address();
+    sc_dt::uint64 masked_address;
     uint32_t target_nr = MemoryMapBuilder::GetInstance()->FindTarget(address, &masked_address);
 
     // Modify address within transaction
@@ -130,7 +130,7 @@ void BRouter<N_INITIATORS, N_TARGETS>::b_transport( tlm::tlm_generic_payload& pa
 template<uint32_t N_INITIATORS, uint32_t N_TARGETS>
 bool BRouter<N_INITIATORS, N_TARGETS>::get_direct_mem_ptr(tlm::tlm_generic_payload& payload_, tlm::tlm_dmi& dmi_data_)
 {
-    uint64_t masked_address;
+    sc_dt::uint64 masked_address;
     uint32_t target_nr = MemoryMapBuilder::GetInstance()->FindTarget(payload_.get_address(), &masked_address);
 
     payload_.set_address( masked_address );
@@ -155,7 +155,7 @@ template<uint32_t N_INITIATORS, uint32_t N_TARGETS>
 uint32_t BRouter<N_INITIATORS, N_TARGETS>::transport_dbg(tlm::tlm_generic_payload& payload_ )
 {
     uint32_t ret = 0;
-    uint64_t masked_address;
+    sc_dt::uint64 masked_address;
     uint32_t target_nr = MemoryMapBuilder::GetInstance()->FindTarget(payload_.get_address(), &masked_address);
     payload_.set_address( masked_address );
 
@@ -171,14 +171,14 @@ uint32_t BRouter<N_INITIATORS, N_TARGETS>::transport_dbg(tlm::tlm_generic_payloa
 // OUT: 
 // RET: 
 template<uint32_t N_INITIATORS, uint32_t N_TARGETS>
-void BRouter<N_INITIATORS, N_TARGETS>::invalidate_direct_mem_ptr(int32_t id, uint64_t start_range_, uint64_t end_range_)
+void BRouter<N_INITIATORS, N_TARGETS>::invalidate_direct_mem_ptr(int32_t id, sc_dt::uint64 start_range_, sc_dt::uint64 end_range_)
 {
 fprintf(stderr, "FIXME! Not Implemented!\n");
 exit(1);
 /*
     // Reconstruct address range in system memory map
-    uint64_t bw_start_range_ = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress( id, start_range_ );
-    uint64_t bw_end_range_   = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress( id, end_range_ );
+    sc_dt::uint64 bw_start_range_ = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress( id, start_range_ );
+    sc_dt::uint64 bw_end_range_   = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress( id, end_range_ );
     (*mp_target_socket)->invalidate_direct_mem_ptr(bw_start_range_, bw_end_range_);
 */    
 }

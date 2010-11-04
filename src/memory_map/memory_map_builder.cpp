@@ -69,9 +69,9 @@ void MemoryMapBuilder::AddBlock(MemoryMap*  p_memmap_)
 //       hw_resource_id_ - the local id of a resource (reg or memory) 
 // OUT: 
 // RET:  the address in the absolute memory space of the reource 
-uint64_t MemoryMapBuilder::GetAbsoluteAddress(const uint32_t block_id_, const uint32_t hw_resource_id_) const
+sc_dt::uint64 MemoryMapBuilder::GetAbsoluteAddress(const uint32_t block_id_, const uint32_t hw_resource_id_) const
 {
-    uint64_t addr = m_memory_map[block_id_]->get_offset() + (hw_resource_id_ << 2); // RESOURCES_ON_32_BITS  
+    sc_dt::uint64 addr = m_memory_map[block_id_]->get_offset() + (hw_resource_id_ << 2); // RESOURCES_ON_32_BITS  
     return addr;
 }
 /////////////////////////////////////////////////////////////////////////////////////
@@ -80,9 +80,9 @@ uint64_t MemoryMapBuilder::GetAbsoluteAddress(const uint32_t block_id_, const ui
 //       local_addr_ - the local address of a resource (reg or memory) 
 // OUT: 
 // RET:  the address in the absolute memory space of the reource 
-uint64_t   MemoryMapBuilder::GetAbsoluteAddress2(const uint32_t block_id_, const uint64_t local_addr_) const
+sc_dt::uint64   MemoryMapBuilder::GetAbsoluteAddress2(const uint32_t block_id_, const sc_dt::uint64 local_addr_) const
 {
-    uint64_t addr = m_memory_map[block_id_]->get_offset() + local_addr_;   
+    sc_dt::uint64 addr = m_memory_map[block_id_]->get_offset() + local_addr_;   
     return addr;
 }
 /////////////////////////////////////////////////////////////////////////////////////
@@ -90,7 +90,7 @@ uint64_t   MemoryMapBuilder::GetAbsoluteAddress2(const uint32_t block_id_, const
 // IN:  addr_ - the address of the resource in the global memory space 
 // OUT: p_ local_addr__ - reference to the local address of the target 
 // RET: the ID of the block that contains the adress addr_
-uint32_t MemoryMapBuilder::FindTarget(const uint64_t addr_, uint64_t* const p_local_addr_)  
+uint32_t MemoryMapBuilder::FindTarget(const sc_dt::uint64 addr_, sc_dt::uint64* const p_local_addr_)  
 {
     vector<MemoryMap*>::iterator pos;
     MemoryMap local_mmap(0, "local", addr_);

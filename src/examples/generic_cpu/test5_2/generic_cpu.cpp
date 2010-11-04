@@ -59,7 +59,7 @@ void
 GenericCPU::TreatPeripheral0()
 {
 //    fprintf(stderr, "%s\n", __PRETTY_FUNCTION__);
-    uint64_t addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress2(MEM0, 0); 
+    sc_dt::uint64 addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress2(MEM0, 0); 
     Write(addr, &m_data_wr[0], (m_data_wr.size()) * sizeof(uint32_t));
     Write(addr, &m_data_wr[0], (m_data_wr.size()) * sizeof(uint32_t));  
     Read(addr, &m_data_rd[0], m_data_rd.size() * sizeof(uint32_t));
@@ -79,7 +79,7 @@ GenericCPU::TreatPeripheral1()
 {
 //    Read(addr, &m_data_wr[0], m_data_wr.size() * sizeof(uint32_t));    
 //    fprintf(stderr, "%s\n", __PRETTY_FUNCTION__);
-    uint64_t addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress2(MEM1, 0); 
+    sc_dt::uint64 addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress2(MEM1, 0); 
     Write(addr, &m_data_wr[0], (m_data_wr.size()) * sizeof(uint32_t));
     Write(addr, &m_data_wr[0], (m_data_wr.size()) * sizeof(uint32_t));
     Read(addr, &m_data_rd[0], m_data_rd.size() * sizeof(uint32_t));

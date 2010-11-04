@@ -46,7 +46,7 @@ BInitiator::~BInitiator()
 // OUT: 
 // RET: 
 void
-BInitiator::Write   (const uint64_t addr_, uint32_t data_)
+BInitiator::Write   (const sc_dt::uint64 addr_, uint32_t data_)
 {
     CheckAddressAlignment(addr_);
     mp_payload->set_command        ( tlm::TLM_WRITE_COMMAND);
@@ -74,7 +74,7 @@ BInitiator::Write   (const uint64_t addr_, uint32_t data_)
 // OUT: 
 // RET:  the read value
 uint32_t
-BInitiator::Read    (const uint64_t addr_)
+BInitiator::Read    (const sc_dt::uint64 addr_)
 {
     int32_t read_data = 0;
     CheckAddressAlignment(addr_);
@@ -104,7 +104,7 @@ BInitiator::Read    (const uint64_t addr_)
 // OUT: 
 // RET: 
 void    
-BInitiator::DbgWrite(const uint64_t addr_, uint32_t data_)
+BInitiator::DbgWrite(const sc_dt::uint64 addr_, uint32_t data_)
 {
     CheckAddressAlignment(addr_);
     uint32_t xfer_size = sizeof(int32_t);
@@ -127,7 +127,7 @@ BInitiator::DbgWrite(const uint64_t addr_, uint32_t data_)
 // OUT: 
 // RET: the read value   
 uint32_t 
-BInitiator::DbgRead(const uint64_t addr_)
+BInitiator::DbgRead(const sc_dt::uint64 addr_)
 {
     CheckAddressAlignment(addr_);
     uint32_t xfer_size = sizeof(int32_t);
@@ -153,7 +153,7 @@ BInitiator::DbgRead(const uint64_t addr_)
 // OUT: 
 // RET:
 void 
-BInitiator::Write   (const uint64_t addr_, uint32_t* const p_data_, const uint32_t size_)
+BInitiator::Write   (const sc_dt::uint64 addr_, uint32_t* const p_data_, const uint32_t size_)
 {
     CheckAddressAlignment(addr_);
     CheckDataSize( size_);
@@ -183,7 +183,7 @@ BInitiator::Write   (const uint64_t addr_, uint32_t* const p_data_, const uint32
 // OUT: 
 // RET:
 void 
-BInitiator::Read    (const uint64_t addr_,       uint32_t* const p_data_, const uint32_t size_)
+BInitiator::Read    (const sc_dt::uint64 addr_,       uint32_t* const p_data_, const uint32_t size_)
 {
     CheckAddressAlignment(addr_);
     CheckDataSize( size_);
@@ -213,7 +213,7 @@ BInitiator::Read    (const uint64_t addr_,       uint32_t* const p_data_, const 
 // OUT: 
 // RET:
 void 
-BInitiator::DbgWrite(const uint64_t addr_, uint32_t* const p_data_, const uint32_t size_)
+BInitiator::DbgWrite(const sc_dt::uint64 addr_, uint32_t* const p_data_, const uint32_t size_)
 {
     CheckAddressAlignment(addr_);
     CheckDataSize( size_);
@@ -238,7 +238,7 @@ BInitiator::DbgWrite(const uint64_t addr_, uint32_t* const p_data_, const uint32
 // OUT: 
 // RET:
 void 
-BInitiator::DbgRead (const uint64_t addr_,       uint32_t* const p_data_, const uint32_t size_)
+BInitiator::DbgRead (const sc_dt::uint64 addr_,       uint32_t* const p_data_, const uint32_t size_)
 {
     CheckAddressAlignment(addr_);
     CheckDataSize( size_);
@@ -261,7 +261,7 @@ BInitiator::DbgRead (const uint64_t addr_,       uint32_t* const p_data_, const 
 // OUT: 
 // RET: 
 void 
-BInitiator::invalidate_direct_mem_ptr(uint64_t start_range_, uint64_t end_range_)
+BInitiator::invalidate_direct_mem_ptr(sc_dt::uint64 start_range_, sc_dt::uint64 end_range_)
 {
     // Ignore range and invalidate all DMI pointers regardless
     m_is_dmi_ptr_valid = false;

@@ -20,8 +20,8 @@
 // RET: 
 void BuildMemoryMap4Mem0()
 {
-    uint64_t m0_memory_space_offset = 0;
-    uint64_t m0_memory_size = ProgramOptions::GetInstance()->get_memory_size();
+    sc_dt::uint64 m0_memory_space_offset = 0;
+    sc_dt::uint64 m0_memory_size = ProgramOptions::GetInstance()->get_memory_size();
     MemoryMapBuilder* p_mm_builder = MemoryMapBuilder::GetInstance();
     MemoryMap* p_mm0 = new MemoryMap(MEM0, "MEMORY_MAP_0", m0_memory_space_offset);
     p_mm0->SetSpaceSize(M0_NUMBER_REGS, m0_memory_size);
@@ -35,8 +35,8 @@ void BuildMemoryMap4Mem0()
 // RET: 
 void BuildMemoryMap4Mem1()
 {
-    uint64_t m1_memory_space_offset = ProgramOptions::GetInstance()->get_memory_size();
-    uint64_t m1_memory_size = ProgramOptions::GetInstance()->get_memory_size();
+    sc_dt::uint64 m1_memory_space_offset = ProgramOptions::GetInstance()->get_memory_size();
+    sc_dt::uint64 m1_memory_size = ProgramOptions::GetInstance()->get_memory_size();
     MemoryMapBuilder* p_mm_builder = MemoryMapBuilder::GetInstance();
     MemoryMap* p_mm1 = new MemoryMap(MEM1, "MEMORY_MAP_1", m1_memory_space_offset);
     p_mm1->SetSpaceSize(M1_NUMBER_REGS, m1_memory_size);
@@ -50,8 +50,8 @@ void BuildMemoryMap4Mem1()
 // RET: 
 void BuildMemoryMap4Mem2()
 {
-    uint64_t m2_memory_space_offset = 2*ProgramOptions::GetInstance()->get_memory_size();
-    uint64_t m2_memory_size = ProgramOptions::GetInstance()->get_memory_size();
+    sc_dt::uint64 m2_memory_space_offset = 2*ProgramOptions::GetInstance()->get_memory_size();
+    sc_dt::uint64 m2_memory_size = ProgramOptions::GetInstance()->get_memory_size();
     MemoryMapBuilder* p_mm_builder = MemoryMapBuilder::GetInstance();
     MemoryMap* p_mm2 = new MemoryMap(MEM2, "MEMORY_MAP_2", m2_memory_space_offset);
     p_mm2->SetSpaceSize(M2_NUMBER_REGS, m2_memory_size);
@@ -65,8 +65,8 @@ void BuildMemoryMap4Mem2()
 // RET: 
 void BuildMemoryMap4Mem3()
 {
-    uint64_t m3_memory_space_offset = 3*ProgramOptions::GetInstance()->get_memory_size();
-    uint64_t m3_memory_size = ProgramOptions::GetInstance()->get_memory_size();
+    sc_dt::uint64 m3_memory_space_offset = 3*ProgramOptions::GetInstance()->get_memory_size();
+    sc_dt::uint64 m3_memory_size = ProgramOptions::GetInstance()->get_memory_size();
     MemoryMapBuilder* p_mm_builder = MemoryMapBuilder::GetInstance();
     MemoryMap* p_mm3 = new MemoryMap(MEM3, "MEMORY_MAP_3", m3_memory_space_offset);
     p_mm3->SetSpaceSize(M3_NUMBER_REGS, m3_memory_size);

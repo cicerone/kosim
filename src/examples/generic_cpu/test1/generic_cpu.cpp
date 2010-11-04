@@ -84,7 +84,7 @@ GenericCPU::TreatPeripheral2()
 {
 printf("%s\n", __PRETTY_FUNCTION__);
     
-    uint64_t addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress(MEM2, M2_REG0); 
+    sc_dt::uint64 addr = MemoryMapBuilder::GetInstance()->GetAbsoluteAddress(MEM2, M2_REG0); 
 //    printf("addr = (0x%x)\n", addr);
     uint32_t reg_val = 5;
     Write(addr, reg_val);

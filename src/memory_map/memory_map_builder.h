@@ -22,9 +22,9 @@ class MemoryMapBuilder : boost::noncopyable
 public:
     static     MemoryMapBuilder* GetInstance();     
     void       AddBlock(MemoryMap* p_memmap_);
-    uint64_t   GetAbsoluteAddress(const uint32_t block_id_, const uint32_t hw_resource_id_) const;
-    uint64_t   GetAbsoluteAddress2(const uint32_t block_id_, const uint64_t local_addr_) const;
-    uint32_t   FindTarget(const uint64_t addr_, uint64_t* const p_local_addr_);
+    sc_dt::uint64   GetAbsoluteAddress(const uint32_t block_id_, const uint32_t hw_resource_id_) const;
+    sc_dt::uint64   GetAbsoluteAddress2(const uint32_t block_id_, const sc_dt::uint64 local_addr_) const;
+    uint32_t   FindTarget(const sc_dt::uint64 addr_, sc_dt::uint64* const p_local_addr_);
     MemoryMap* GetMemoryMap(const uint32_t block_id_) const ;
 
     int  PrintMemoryMap();
