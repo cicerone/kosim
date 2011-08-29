@@ -2,11 +2,11 @@
 
 # Change these variables to point to the actual location of
 # the SystemC, SCV, and TLM installation.
-INSTALL_PREFIX="/usr/local"
+INSTALL_PREFIX=/home/roni/kotys/kosim_full
 SYSTEMC_ROOT="$INSTALL_PREFIX/systemc-2.2.0"
 SCV_ROOT="$INSTALL_PREFIX/scv-1.0p2-sysc2.2"
 TLM_ROOT="$INSTALL_PREFIX/TLM-2009-07-15"
-BOOST_ROOT="$INSTALL_PREFIX/boost_1_41_0"
+BOOST_ROOT="$INSTALL_PREFIX/boost_1_42_0"
 
 # Include paths:
 export PYTHON_INCLUDE="/usr/include/python`python --version 2>&1 | cut -d ' ' -f2 | cut -d '.' -f1-2`"
